@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+        <div class="w">
+            <div class="content">
+                {% for category, product_list in products.iteritems() %}
+                <p class="menu-category">
+                    {{ category }}
+                </p>
+                {% for product in product_list %}
+                <img id="product-cancel-{{product.get('id')}}" class="product-cancel" onclick="cancel_order('{{menu_id}}', '{{product.get('id')}}')" alt="" src="/static/img/minus.png" width="16px" style="display: {% if product.get('count') %}block{% else %}none{%endif%}"/>
+                <p class="menu-item {% if product.get('count') %}ordered{% endif %}" onclick="send_order('{{menu_id}}', '{{product.get('id')}}')" id="{{product.get('id')}}">
+                    {{ product.get('name') }}
+                    <span class="product-weight">
+                        {% if product.get('weight') %}
+                        {{ product.get('weight') }}
+                        {% endif %}
+                    </span>
+
+                    <span class="product-cost">
+                        <span id="order-count-{{product.get('id')}}">{% if product.get('count') > 1 %}{{ product.get('count') }}×{% endif %}</span>{{ product.get('cost') }} ₽
+                    </span>
+                    {% if product.get('compound') %}
+                    <span class="product-compound">{{ product.get('compound') }}</span>
+                    {% endif %}
+                </p>
+                {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+
+{% endblock %}
