@@ -4,7 +4,6 @@ import re
 import os
 from collections import OrderedDict
 
-from xlutils.copy import copy
 from xlrd import open_workbook
 
 import bson
@@ -62,7 +61,7 @@ def add_products_from_xls(filename):
             if is_food_row(rslc):
                 try:
                     category = Category.objects.get(name=unicode(current_category))
-                except:
+                except DoesNotExist:
                     category = Category()
                     category.name = unicode(current_category)
                     category.save()
@@ -73,9 +72,9 @@ def add_products_from_xls(filename):
                 weight = unicode(rslc[2].value).replace('.0', '').strip('-')
                 if not weight:
                     # grammi
-                    maybe_weight_is_here = re.findall(u'([0-9,]+)(\W?\u0433\u0440)', product.name)
+                    maybe_weight_is_here = re.findall(ur'([0-9,]+)(\W?\u0433\u0440)', product.name)
                     if len(maybe_weight_is_here) > 0:
-                        pieces = re.findall(u'\u043f\u043e\W*\d+\W*\u043f', product.name)
+                        pieces = re.findall(ur'\u043f\u043e\W*\d+\W*\u043f', product.name)
                         weight, description = maybe_weight_is_here.pop()
                         product.name = product.name.replace(weight + description, '')
                         weight = weight + u' \u0433'
@@ -178,6 +177,16 @@ def add_products_from_xls(filename):
                     continue
             else:
                 current_category = rslc[0].value
+                replacements = {
+                    u'ПЕРВЫЕ БЛЮДА': u'Первые блюда',
+                    u'ВТОРЫЕ БЛЮДА': u'Вторые блюда',
+                    u'САЛАТЫ ЗАПРАВЛЕННЫЕ  И ЗАКУСКИ': u'Салаты заправленные и закуски',
+                    u'САЛАТЫ НЕ ЗАПРАВЛЕННЫЕ': u'Салаты незаправленные',
+                    u'ЗАПРАВКИ К САЛАТАМ И СОУСЫ': u'Заправки к салатам и соуса',
+                    u'ПИРОЖНОЕ': u'Пирожные',
+                }
+                for was, then in replacements.iteritems():
+                    current_category = re.sub(was, then, current_category)
 
 
 @bp_public.route('/')
@@ -275,7 +284,10 @@ def view_menu():
             'count': order_count,
         })
 
-    return render_template('viewmenu.html', products=products, menu_id=menu.id)
+    if menu and products:
+        return render_template('viewmenu.html', products=products, menu_id=menu.id)
+    else:
+        return render_template('500.html'), 500
 
 @bp_public.route('/loadmenu', methods=['GET', 'POST'])
 @login_required

@@ -1,3 +1,7 @@
+h1 {
+
+}
+
 .menu-category {
     margin-top: 1.5em;
     margin-bottom: 0.75em;
@@ -57,6 +61,6 @@
 
 .product-cancel {
     float: left;
-    padding: 5px 0px 0px 0px;
+    padding: 4px 0px 0px 0px;
     cursor: pointer;
 }
