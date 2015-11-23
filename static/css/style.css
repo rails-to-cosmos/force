@@ -1,11 +1,15 @@
 h1 {
+    cursor: default;
+}
 
+.content {
+    max-width: 800px;
 }
 
 .menu-category {
+    cursor: default;
     margin-top: 1.5em;
     margin-bottom: 0.75em;
-    margin-left: 1em;
     font-size: 150%;
 }
 
@@ -14,7 +18,6 @@ h1 {
     border-bottom: 1px solid #FFCC99;
     margin-bottom: 1.5em;
     cursor: pointer;
-    margin-left: 1.5em;
 
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -59,8 +62,14 @@ h1 {
     font-size: 75%;
 }
 
+.menu-item-container {
+    position: relative;
+}
+
 .product-cancel {
     float: left;
     padding: 4px 0px 0px 0px;
     cursor: pointer;
+    position: absolute;
+    left: -25px;
 }

@@ -2,6 +2,8 @@
 
 import re
 import os
+from datetime import datetime
+from datetime import timedelta
 from collections import OrderedDict
 
 from xlrd import open_workbook
@@ -259,7 +261,17 @@ def cancel():
 @bp_public.route('/menu')
 @login_required
 def view_menu():
-    menu = Menu.objects(date='2015-11-24').first()
+    now = datetime.today()
+    if now.hour > 15:
+        # tomorrow
+        now = datetime.today() + timedelta(days=1)
+    else:
+        now = datetime.today()
+
+    menu_date = '{year}-{month}-{day}'.format(year=now.year,
+                                              month=now.month,
+                                              day=now.day)
+    menu = Menu.objects(date=menu_date).first()
     all_products = MenuProduct.objects.filter(menu=menu).values_list('product').all_fields()
     ordered_products = Order.objects.filter(product__in=all_products, menu=menu).all_fields()
 
@@ -284,10 +296,38 @@ def view_menu():
             'count': order_count,
         })
 
+    months = [u'января',
+              u'февраля',
+              u'марта',
+              u'апреля',
+              u'мая',
+              u'июня',
+              u'июля',
+              u'августа',
+              u'сентбяря',
+              u'октября',
+              u'ноября',
+              u'декабря']
+
+    weekdays = [u'понедельник',
+                u'вторник',
+                u'среду',
+                u'четверг',
+                u'пятницу',
+                u'субботу',
+                u'воскресение']
+
     if menu and products:
-        return render_template('viewmenu.html', products=products, menu_id=menu.id)
+        return render_template('viewmenu.html',
+                               products=products,
+                               menu_id=menu.id,
+                               menu_day=now.day,
+                               menu_weekday=weekdays[now.weekday()],
+                               menu_month=months[now.month-1],
+                               menu_year=now.year)
     else:
         return render_template('500.html'), 500
+
 
 @bp_public.route('/loadmenu', methods=['GET', 'POST'])
 @login_required
