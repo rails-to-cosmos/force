@@ -1,9 +1,14 @@
+.w {
+    position: relative;
+}
+
 h1 {
     cursor: default;
 }
 
 .content {
     max-width: 800px;
+    position: relative;
 }
 
 .menu-category {
@@ -72,4 +77,27 @@ h1 {
     cursor: pointer;
     position: absolute;
     left: -25px;
+}
+
+.sales-receipt {
+    width: 320px;
+    height: 400px;
+    position: absolute;
+    left: 925px;
+    top: 100px;
+    font-size: 85%;
+    padding: 0px 10px 0px 10px;
+}
+
+.sales-receipt.fixed {
+    position: fixed;
+    top: 0px;
+}
+
+#total-cost span {
+    border-top: 1px solid black;
+}
+
+#order-table tr {
+    margin: 5px;
 }

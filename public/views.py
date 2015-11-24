@@ -2,6 +2,7 @@
 
 import re
 import os
+import mongoengine
 from datetime import datetime
 from datetime import timedelta
 from collections import OrderedDict
@@ -16,6 +17,7 @@ from flask.ext.mongoengine import MongoEngine
 from flask.templating import render_template
 from flask import make_response
 from flask_security.decorators import roles_required, login_required
+from flask import jsonify
 from user.models import User
 from flask.ext.security import current_user
 from mongoengine.queryset import DoesNotExist
@@ -228,9 +230,9 @@ def order():
         order.user = User.objects.get(id=current_user.id)
         order.save()
 
-    return render_template('order.html',
-                           count=order.count)
-
+    return jsonify(count=order.count,
+                   name=product.name,
+                   cost=product.cost)
 
 @bp_public.route('/cancel', methods=['POST'])
 @login_required
@@ -250,12 +252,17 @@ def cancel():
 
     try:
         order = Order.objects.get(menu=menu, product=product)
-        order.delete()
+        if order.count > 1:
+            order.count -= 1
+        else:
+            order.delete()
+        order.save()
     except DoesNotExist:
         pass
 
-    return render_template('order.html',
-                           count=0)
+    return jsonify(count=order.count,
+                   name=product.name,
+                   cost=product.cost)
 
 
 @bp_public.route('/menu')
@@ -264,9 +271,9 @@ def view_menu():
     now = datetime.today()
     if now.hour > 15:
         # tomorrow
-        now = datetime.today() + timedelta(days=1)
+        now = datetime.today() + timedelta(days=2)
     else:
-        now = datetime.today()
+        now = datetime.today() + timedelta(days=1)
 
     menu_date = '{year}-{month}-{day}'.format(year=now.year,
                                               month=now.month,
