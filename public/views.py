@@ -2,6 +2,9 @@
 
 import re
 import os
+import mongoengine
+from datetime import datetime
+from datetime import timedelta
 from collections import OrderedDict
 
 from xlrd import open_workbook
@@ -14,6 +17,7 @@ from flask.ext.mongoengine import MongoEngine
 from flask.templating import render_template
 from flask import make_response
 from flask_security.decorators import roles_required, login_required
+from flask import jsonify
 from user.models import User
 from flask.ext.security import current_user
 from mongoengine.queryset import DoesNotExist
@@ -226,9 +230,9 @@ def order():
         order.user = User.objects.get(id=current_user.id)
         order.save()
 
-    return render_template('order.html',
-                           count=order.count)
-
+    return jsonify(count=order.count,
+                   name=product.name,
+                   cost=product.cost)
 
 @bp_public.route('/cancel', methods=['POST'])
 @login_required
@@ -248,18 +252,33 @@ def cancel():
 
     try:
         order = Order.objects.get(menu=menu, product=product)
-        order.delete()
+        if order.count > 1:
+            order.count -= 1
+        else:
+            order.delete()
+        order.save()
     except DoesNotExist:
         pass
 
-    return render_template('order.html',
-                           count=0)
+    return jsonify(count=order.count,
+                   name=product.name,
+                   cost=product.cost)
 
 
 @bp_public.route('/menu')
 @login_required
 def view_menu():
-    menu = Menu.objects(date='2015-11-24').first()
+    now = datetime.today()
+    if now.hour > 15:
+        # tomorrow
+        now = datetime.today() + timedelta(days=2)
+    else:
+        now = datetime.today() + timedelta(days=1)
+
+    menu_date = '{year}-{month}-{day}'.format(year=now.year,
+                                              month=now.month,
+                                              day=now.day)
+    menu = Menu.objects(date=menu_date).first()
     all_products = MenuProduct.objects.filter(menu=menu).values_list('product').all_fields()
     ordered_products = Order.objects.filter(product__in=all_products, menu=menu).all_fields()
 
@@ -284,10 +303,38 @@ def view_menu():
             'count': order_count,
         })
 
+    months = [u'января',
+              u'февраля',
+              u'марта',
+              u'апреля',
+              u'мая',
+              u'июня',
+              u'июля',
+              u'августа',
+              u'сентбяря',
+              u'октября',
+              u'ноября',
+              u'декабря']
+
+    weekdays = [u'понедельник',
+                u'вторник',
+                u'среду',
+                u'четверг',
+                u'пятницу',
+                u'субботу',
+                u'воскресение']
+
     if menu and products:
-        return render_template('viewmenu.html', products=products, menu_id=menu.id)
+        return render_template('viewmenu.html',
+                               products=products,
+                               menu_id=menu.id,
+                               menu_day=now.day,
+                               menu_weekday=weekdays[now.weekday()],
+                               menu_month=months[now.month-1],
+                               menu_year=now.year)
     else:
         return render_template('500.html'), 500
+
 
 @bp_public.route('/loadmenu', methods=['GET', 'POST'])
 @login_required

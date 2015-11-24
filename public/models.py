@@ -1,4 +1,3 @@
-from datetime import datetime
 from extensions import db
 from user.models import User
 
@@ -16,6 +15,7 @@ class Product(db.Document):
     weight = db.StringField()
     compound = db.StringField()
     cost = db.IntField()
+    popularity = db.IntField(min_value=0, default=0)
 
     def __unicode__(self):
         return self.name
