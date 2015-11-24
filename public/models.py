@@ -10,11 +10,11 @@ class Category(db.Document):
 
 
 class Product(db.Document):
-    name = db.StringField(required=True, unique_with=('cost', 'weight'))
     category = db.ReferenceField(Category)
     weight = db.StringField()
     compound = db.StringField()
     cost = db.IntField()
+    name = db.StringField(required=True, unique_with='cost')
     popularity = db.IntField(min_value=0, default=0)
 
     def __unicode__(self):

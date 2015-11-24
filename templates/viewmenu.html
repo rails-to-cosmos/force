@@ -21,27 +21,35 @@
                 </span>
 
                 <span class="product-cost">
-                    <span id="order-count-{{product.get('id')}}">{% if product.get('count') > 1 %}{{ product.get('count') }}×{% endif %}</span>{{ product.get('cost') }} ₽
+                    <span id="order-count-{{product.get('id')}}" class="hidden">{% if product.get('count') > 1 %}{{ product.get('count') }}×{% endif %}</span>{{ product.get('cost') }} ₽
                 </span>
                 {% if product.get('compound') %}
                 <span class="product-compound">{{ product.get('compound') }}</span>
                 {% endif %}
             </p>
         </div>
+        {% if product.get('count') %}
+        <script>
+         if (typeof ordered_products == "undefined") {
+             ordered_products = [];
+         }
+         ordered_products.push(["{{product.get('id')}}", "{{product.get('name')}}", {{product.get('cost')}}, {{product.get('count')}}]);
+        </script>
+        {% endif %}
         {% endfor %}
         {% endfor %}
     </div>
-</div>
-<div class="sales-receipt" id="sales-receipt">
-    <h2 style="margin-bottom: 5px; position: relative; left: -4px;"><span style="background: #FFCC99; padding: 2px 4px;">Вы заказали:</span></h2>
-    <table width="100%" id="order-table">
-        <tr>
-            <td>
-            </td>
-            <td width="50">
-            </td>
-        </tr>
-    </table>
+    <div class="sales-receipt" id="sales-receipt">
+        <h2 class="order-label hidden" id="order-label"><span style="background: #FFCC99; padding: 2px 4px;">Вы заказали:</span></h2>
+        <table width="100%" id="order-table">
+            <tr>
+                <td>
+                </td>
+                <td width="50">
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 {% endblock %}

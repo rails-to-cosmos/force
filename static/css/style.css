@@ -8,6 +8,7 @@ h1 {
 
 .content {
     max-width: 800px;
+    min-width: 650px;
     position: relative;
 }
 
@@ -85,7 +86,7 @@ h1 {
     position: absolute;
     left: 925px;
     top: 100px;
-    font-size: 85%;
+    font-size: 70%;
     padding: 0px 10px 0px 10px;
 }
 
@@ -100,4 +101,14 @@ h1 {
 
 #order-table tr {
     margin: 5px;
+}
+
+.order-label {
+    margin-bottom: 5px;
+    position: relative;
+    left: -4px;
+}
+
+.hidden {
+    display: none;
 }

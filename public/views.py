@@ -137,9 +137,9 @@ def add_products_from_xls(filename):
                 weight = re.sub(u'(\w)(\u0448\u0442)', '\\1 \\2', weight)
                 product.name = chg_quotes(product.name)
                 replacements = {
-                    r'\.': '',
-                    r',(\W)': ', \\1',
-                    r'[,. ]+$': '',
+                    r'\.': u'',
+                    r',(\W)': u', \\1',
+                    r'[,. ]+$': u'',
                     u'Шоколад «Аленка» с начинкой Вареная сгущенка': u'Шоколад «Алёнка» с варёной сгущёнкой',
                     u'Щи Щавелевые с яйцом': u'Щи щавелевые с яйцом',
                     u'Лапша Грибная домашняя': u'Лапша грибная домашняя',
@@ -252,15 +252,20 @@ def cancel():
 
     try:
         order = Order.objects.get(menu=menu, product=product)
-        if order.count > 1:
-            order.count -= 1
-        else:
-            order.delete()
-        order.save()
     except DoesNotExist:
-        pass
+        return jsonify(count=0,
+                       name=product.name,
+                       cost=0)
 
-    return jsonify(count=order.count,
+    if order.count > 1:
+        order.count -= 1
+        count = order.count
+    else:
+        count = 0
+        order.delete()
+    order.save()
+
+    return jsonify(count=count,
                    name=product.name,
                    cost=product.cost)
 
