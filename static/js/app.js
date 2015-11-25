@@ -53,7 +53,7 @@ ajax.post = function(url, data, callback, sync) {
   ajax.send(url, callback, 'POST', query.join('&'), sync);
 };
 
-function draw_add_order(product_id, name, cost, count, menu_id) {
+function draw_add_order(product_id, name, cost, count, menu_id, total) {
   if (count <= 0) {
     return False;
   }
@@ -89,9 +89,6 @@ function draw_add_order(product_id, name, cost, count, menu_id) {
     button_minus.style.verticalAlign = 'middle';
     button_minus.style.cursor = 'pointer';
     button_minus.setAttribute('onclick', 'cancel_order(\''+menu_id+'\', \''+product_id+'\')');
-    // button_minus.addEventListener('click', function(){
-    //   cancel_order(menu_id, product_id);
-    // });
     button_minus.src = '/static/img/minus.png';
     button_minus.width = 16;
 
@@ -108,23 +105,20 @@ function draw_add_order(product_id, name, cost, count, menu_id) {
     tr.appendChild(td_food);
     tr.appendChild(td_cost);
     order_table.appendChild(tr);
-    cost_sum = old_cost_num + cost*count;
   } else {
     td_cost = document.getElementById('product-cost-'+product_id);
     td_cost.innerHTML = cost*count + ' ₽';
-    cost_sum = old_cost_num + cost;
   }
 
   new_cost = document.createElement('tr');
   new_cost.id = 'total-cost';
   td_empty = document.createElement('td');
-  td_empty2 = document.createElement('td');
+  td_empty.setAttribute('colspan', '2');
   td_cost = document.createElement('td');
   span_cost = document.createElement('span');
-  span_cost.innerHTML = cost_sum + ' ₽';
+  span_cost.innerHTML = total + ' ₽';
   td_cost.appendChild(span_cost);
   new_cost.appendChild(td_empty);
-  new_cost.appendChild(td_empty2);
   new_cost.appendChild(td_cost);
   order_table.appendChild(new_cost);
   document.getElementById('order-label').className = document.getElementById('order-label').className.replace(/hidden/g, '');
@@ -135,7 +129,7 @@ function draw_add_order(product_id, name, cost, count, menu_id) {
 function send_order(menu, product) {
   ajax.post('/order', {menu: menu, product: product}, function(response) {
     response = JSON.parse(response);
-    draw_add_order(product, response.name, response.cost, response.count, response.menu);
+    draw_add_order(product, response.name, response.cost, response.count, response.menu, response.total);
   }, 'async');
 }
 
@@ -148,9 +142,7 @@ function cancel_order(menu, product) {
     if (tr != undefined) {
       if (response.count == 0) {
         tr.parentNode.removeChild(tr);
-        // document.getElementById('order-count-'+product).innerHTML = '';
         document.getElementById(product).className = document.getElementById(product).className.replace(/ordered/g, '');
-        // document.getElementById('product-cancel-'+product).style.display = 'none';
       } else {
         td_cost = document.getElementById('product-cost-'+product);
         td_cost.innerHTML = response.cost*response.count + ' ₽';
@@ -165,22 +157,18 @@ function cancel_order(menu, product) {
       old_cost_num = 0;
     }
 
-    cost_value = old_cost_num - response.cost;
-
-    if(cost_value > 0) {
+    if(response.total > 0) {
       new_cost = document.createElement('tr');
       new_cost.id = 'total-cost';
       td_empty = document.createElement('td');
+      td_empty.setAttribute('colspan', '2');
       td_cost = document.createElement('td');
       span_cost = document.createElement('span');
-      span_cost.innerHTML = (cost_value) + ' ₽';
+      span_cost.innerHTML = response.total + ' ₽';
       td_cost.appendChild(span_cost);
       new_cost.appendChild(td_empty);
       new_cost.appendChild(td_cost);
       order_table.appendChild(new_cost);
-    } else {
-      document.getElementById('order-label').className = document.getElementById('order-label').className.replace(/hidden/g, '');
-      document.getElementById('order-label').className = document.getElementById('order-label').className + ' hidden';
     }
   });
 }
@@ -199,11 +187,16 @@ window.onload = function () {
   };
   window.addEventListener('scroll', listener, false);
 
+  if (typeof ordered_products == "undefined") {
+    ordered_products = [];
+  }
+
   for (op in ordered_products) {
     draw_add_order(ordered_products[op][0],
                    ordered_products[op][1],
                    ordered_products[op][2],
                    ordered_products[op][3],
-                   ordered_products[op][4]);
+                   ordered_products[op][4],
+                   ordered_products[op][5]);
   }
 }

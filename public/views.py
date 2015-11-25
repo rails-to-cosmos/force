@@ -232,10 +232,15 @@ def order():
         myorder.user = cuser
         myorder.save()
 
+    myorders = Order.objects(menu=menu, user=cuser).values_list('product', 'count')
+    mycosts = [(mt[0].cost, mt[1]) for mt in myorders]
+    total = sum(mc[0]*mc[1] for mc in mycosts)
+
     return jsonify(count=myorder.count,
                    name=product.name,
                    cost=product.cost,
-                   menu=menu_id)
+                   menu=menu_id,
+                   total=total)
 
 @bp_public.route('/cancel', methods=['POST'])
 @login_required
@@ -269,9 +274,15 @@ def cancel():
         order.delete()
     order.save()
 
+    myorders = Order.objects(menu=menu, user=cuser).values_list('product', 'count')
+    mycosts = [(mt[0].cost, mt[1]) for mt in myorders]
+    total = sum(mc[0]*mc[1] for mc in mycosts)
+
     return jsonify(count=count,
                    name=product.name,
-                   cost=product.cost)
+                   cost=product.cost,
+                   menu=menu_id,
+                   total=total)
 
 
 @bp_public.route('/menu')
@@ -335,13 +346,18 @@ def view_menu():
                 u'воскресение']
 
     if menu and products:
+        myorders = Order.objects(menu=menu, user=cuser).values_list('product', 'count')
+        mycosts = [(mt[0].cost, mt[1]) for mt in myorders]
+        total = sum(mc[0]*mc[1] for mc in mycosts)
+
         return render_template('viewmenu.html',
                                products=products,
                                menu_id=menu.id,
                                menu_day=now.day,
                                menu_weekday=weekdays[now.weekday()],
                                menu_month=months[now.month-1],
-                               menu_year=now.year)
+                               menu_year=now.year,
+                               total=total)
     else:
         return render_template('500.html'), 500
 

@@ -32,7 +32,7 @@
          if (typeof ordered_products == "undefined") {
              ordered_products = [];
          }
-         ordered_products.push(["{{product.get('id')}}", "{{product.get('name')}}", {{product.get('cost')}}, {{product.get('count')}}, "{{menu_id}}"]);
+         ordered_products.push(["{{product.get('id')}}", "{{product.get('name')}}", {{product.get('cost')}}, {{product.get('count')}}, "{{menu_id}}", {{total}}]);
         </script>
         {% endif %}
         {% endfor %}
