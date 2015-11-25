@@ -24,6 +24,7 @@ h1 {
     border-bottom: 1px solid #FFCC99;
     margin-bottom: 1em;
     cursor: pointer;
+    font-size: 80%;
 
     -moz-user-select: none;
     -webkit-user-select: none;
