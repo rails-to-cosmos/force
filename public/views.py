@@ -276,6 +276,7 @@ def cancel():
 @bp_public.route('/menu')
 @login_required
 def view_menu():
+    cuser = User.objects.get(id=current_user.id)
     now = datetime.today()
     if now.hour > 15:
         # tomorrow
@@ -288,7 +289,7 @@ def view_menu():
                                               day=now.day)
     menu = Menu.objects(date=menu_date).first()
     all_products = MenuProduct.objects.filter(menu=menu).values_list('product').all_fields()
-    ordered_products = Order.objects.filter(product__in=all_products, menu=menu).all_fields()
+    ordered_products = Order.objects.filter(product__in=all_products, menu=menu, user=cuser).all_fields()
 
     products = OrderedDict()
     for product in all_products:
