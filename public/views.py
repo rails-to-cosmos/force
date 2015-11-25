@@ -234,7 +234,8 @@ def order():
 
     return jsonify(count=myorder.count,
                    name=product.name,
-                   cost=product.cost)
+                   cost=product.cost,
+                   menu=menu_id)
 
 @bp_public.route('/cancel', methods=['POST'])
 @login_required

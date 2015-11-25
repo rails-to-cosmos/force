@@ -50,23 +50,21 @@ ajax.post = function(url, data, callback, sync) {
   for (var key in data) {
     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
   }
-  ajax.send(url, callback, 'POST', query.join('&'), sync)
+  ajax.send(url, callback, 'POST', query.join('&'), sync);
 };
 
-function draw_add_order(product, name, cost, count) {
+function draw_add_order(product_id, name, cost, count, menu_id) {
   if (count <= 0) {
     return False;
   }
 
   if (count > 1) {
-    document.getElementById('order-count-'+product).innerHTML = count + '×';
+    document.getElementById('order-count-'+product_id).innerHTML = count + '×';
   }
 
-  if (document.getElementById(product).className.indexOf('ordered') == -1) {
-    document.getElementById(product).className += ' ordered';
+  if (document.getElementById(product_id).className.indexOf('ordered') == -1) {
+    document.getElementById(product_id).className += ' ordered';
   }
-
-  document.getElementById('product-cancel-'+product).style.display = 'block';
 
   old_cost = document.getElementById('total-cost');
   if (old_cost != undefined) {
@@ -77,23 +75,42 @@ function draw_add_order(product, name, cost, count) {
   }
 
   order_table = document.getElementById('order-table');
-  tr_id = 'ordered-item-' + product;
+  tr_id = 'ordered-item-' + product_id;
   tr = document.getElementById(tr_id);
 
-  if (tr == undefined) {
+  if (tr == undefined) { // new item, add it
     tr = document.createElement('tr');
-    tr.id = 'ordered-item-' + product;
+    tr.id = 'ordered-item-' + product_id;
+    td_op = document.createElement('td');
+    td_op.width = 16;
+    button_minus = document.createElement('img');
+    button_minus.id = 'product-cancel-'+product_id;
+    button_minus.className = product_id+'-cancel';
+    button_minus.style.verticalAlign = 'middle';
+    button_minus.style.cursor = 'pointer';
+    button_minus.setAttribute('onclick', 'cancel_order(\''+menu_id+'\', \''+product_id+'\')');
+    // button_minus.addEventListener('click', function(){
+    //   cancel_order(menu_id, product_id);
+    // });
+    button_minus.src = '/static/img/minus.png';
+    button_minus.width = 16;
+
+    td_op.appendChild(button_minus);
+
     td_food = document.createElement('td');
     td_food.innerHTML = name;
+
     td_cost = document.createElement('td');
-    td_cost.id = 'product-cost-'+product;
+    td_cost.id = 'product-cost-'+product_id;
     td_cost.innerHTML = cost*count + ' ₽';
+    td_cost.width = 30;
+    tr.appendChild(td_op);
     tr.appendChild(td_food);
     tr.appendChild(td_cost);
     order_table.appendChild(tr);
     cost_sum = old_cost_num + cost*count;
   } else {
-    td_cost = document.getElementById('product-cost-'+product);
+    td_cost = document.getElementById('product-cost-'+product_id);
     td_cost.innerHTML = cost*count + ' ₽';
     cost_sum = old_cost_num + cost;
   }
@@ -101,21 +118,25 @@ function draw_add_order(product, name, cost, count) {
   new_cost = document.createElement('tr');
   new_cost.id = 'total-cost';
   td_empty = document.createElement('td');
+  td_empty2 = document.createElement('td');
   td_cost = document.createElement('td');
   span_cost = document.createElement('span');
   span_cost.innerHTML = cost_sum + ' ₽';
   td_cost.appendChild(span_cost);
   new_cost.appendChild(td_empty);
+  new_cost.appendChild(td_empty2);
   new_cost.appendChild(td_cost);
   order_table.appendChild(new_cost);
   document.getElementById('order-label').className = document.getElementById('order-label').className.replace(/hidden/g, '');
+
+  return false;
 }
 
 function send_order(menu, product) {
   ajax.post('/order', {menu: menu, product: product}, function(response) {
     response = JSON.parse(response);
-      draw_add_order(product, response.name, response.cost, response.count);
-  });
+    draw_add_order(product, response.name, response.cost, response.count, response.menu);
+  }, 'async');
 }
 
 function cancel_order(menu, product) {
@@ -127,9 +148,9 @@ function cancel_order(menu, product) {
     if (tr != undefined) {
       if (response.count == 0) {
         tr.parentNode.removeChild(tr);
-        document.getElementById('order-count-'+product).innerHTML = '';
+        // document.getElementById('order-count-'+product).innerHTML = '';
         document.getElementById(product).className = document.getElementById(product).className.replace(/ordered/g, '');
-        document.getElementById('product-cancel-'+product).style.display = 'none';
+        // document.getElementById('product-cancel-'+product).style.display = 'none';
       } else {
         td_cost = document.getElementById('product-cost-'+product);
         td_cost.innerHTML = response.cost*response.count + ' ₽';
@@ -182,6 +203,7 @@ window.onload = function () {
     draw_add_order(ordered_products[op][0],
                    ordered_products[op][1],
                    ordered_products[op][2],
-                   ordered_products[op][3]);
+                   ordered_products[op][3],
+                   ordered_products[op][4]);
   }
 }

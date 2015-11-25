@@ -1,0 +1,4 @@
+* Heroku
+* Count in check
+* Weight in table
+* Minus in check

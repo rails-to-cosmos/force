@@ -11,7 +11,6 @@
         </p>
         {% for product in product_list %}
         <div class="menu-item-container">
-            <img id="product-cancel-{{product.get('id')}}" class="product-cancel" onclick="cancel_order('{{menu_id}}', '{{product.get('id')}}')" alt="" src="/static/img/minus.png" width="16px" style="display: {% if product.get('count') %}block{% else %}none{%endif%}"/>
             <p class="menu-item {% if product.get('count') %}ordered{% endif %}" onclick="send_order('{{menu_id}}', '{{product.get('id')}}')" id="{{product.get('id')}}">
                 {{ product.get('name') }}
                 <span class="product-weight">
@@ -33,7 +32,7 @@
          if (typeof ordered_products == "undefined") {
              ordered_products = [];
          }
-         ordered_products.push(["{{product.get('id')}}", "{{product.get('name')}}", {{product.get('cost')}}, {{product.get('count')}}]);
+         ordered_products.push(["{{product.get('id')}}", "{{product.get('name')}}", {{product.get('cost')}}, {{product.get('count')}}, "{{menu_id}}"]);
         </script>
         {% endif %}
         {% endfor %}
