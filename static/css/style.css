@@ -21,7 +21,7 @@ h1 {
 
 .menu-item {
     position: relative;
-    border-bottom: 1px solid #FFCC99;
+    border-bottom: 1px solid #CCCCCC;
     margin-bottom: 1em;
     cursor: pointer;
     font-size: 80%;
