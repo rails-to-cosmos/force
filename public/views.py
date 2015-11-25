@@ -52,6 +52,7 @@ def add_products_from_xls(filename):
         sheet = rb.sheet_by_index(sheet_index)
 
         menu_date = re.findall(r'\d{2}.\d{2}.\d{2}', sheet.cell_value(0, 1)).pop()
+        menu_date = datetime.strptime(menu_date, '%d.%m.%y')
         current_category = ''
 
         try:
