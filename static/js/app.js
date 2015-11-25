@@ -81,8 +81,9 @@ function draw_add_order(product_id, name, cost, count, menu_id, total) {
   if (tr == undefined) { // new item, add it
     tr = document.createElement('tr');
     tr.id = 'ordered-item-' + product_id;
+
     td_op = document.createElement('td');
-    td_op.width = 16;
+    td_op.style.minWidth = '20px';
     button_minus = document.createElement('img');
     button_minus.id = 'product-cancel-'+product_id;
     button_minus.className = product_id+'-cancel';
@@ -94,26 +95,44 @@ function draw_add_order(product_id, name, cost, count, menu_id, total) {
 
     td_op.appendChild(button_minus);
 
+    td_count = document.createElement('td');
+    td_count.id = 'product-count-'+product_id;
+    td_count.style.minWidth = '15px';
+    if (count > 1) {
+      td_count.innerHTML = count + '×';
+    }
+    td_count.style.textAlign = 'right';
+
     td_food = document.createElement('td');
+    td_food.width = '100%';
+    td_food.className = 'td-food';
     td_food.innerHTML = name;
 
     td_cost = document.createElement('td');
     td_cost.id = 'product-cost-'+product_id;
     td_cost.innerHTML = cost*count + ' ₽';
-    td_cost.width = 30;
+    td_cost.style.minWidth = '50px';
+
     tr.appendChild(td_op);
+    tr.appendChild(td_count);
     tr.appendChild(td_food);
     tr.appendChild(td_cost);
     order_table.appendChild(tr);
   } else {
     td_cost = document.getElementById('product-cost-'+product_id);
     td_cost.innerHTML = cost*count + ' ₽';
+    td_count = document.getElementById('product-count-'+product_id);
+    if (count > 1) {
+      td_count.innerHTML = count + '×';
+    } else {
+      td_count.innerHTML = '';
+    }
   }
 
   new_cost = document.createElement('tr');
   new_cost.id = 'total-cost';
   td_empty = document.createElement('td');
-  td_empty.setAttribute('colspan', '2');
+  td_empty.setAttribute('colspan', '3');
   td_cost = document.createElement('td');
   span_cost = document.createElement('span');
   span_cost.innerHTML = total + ' ₽';
@@ -143,9 +162,18 @@ function cancel_order(menu, product) {
       if (response.count == 0) {
         tr.parentNode.removeChild(tr);
         document.getElementById(product).className = document.getElementById(product).className.replace(/ordered/g, '');
+        if (response.total == 0) {
+          document.getElementById('order-label').className = document.getElementById('order-label').className + ' hidden';
+        }
       } else {
         td_cost = document.getElementById('product-cost-'+product);
         td_cost.innerHTML = response.cost*response.count + ' ₽';
+        td_count = document.getElementById('product-count-'+product);
+        if (response.count > 1) {
+          td_count.innerHTML = response.count + '×';
+        } else {
+          td_count.innerHTML = '';
+        }
       }
     }
 
@@ -161,7 +189,7 @@ function cancel_order(menu, product) {
       new_cost = document.createElement('tr');
       new_cost.id = 'total-cost';
       td_empty = document.createElement('td');
-      td_empty.setAttribute('colspan', '2');
+      td_empty.setAttribute('colspan', '3');
       td_cost = document.createElement('td');
       span_cost = document.createElement('span');
       span_cost.innerHTML = response.total + ' ₽';
