@@ -222,17 +222,17 @@ def order():
         pass
 
     try:
-        order = Order.objects.get(menu=menu, product=product, user=cuser)
-        order.count += 1
-        order.save()
+        myorder = Order.objects.get(menu=menu, product=product, user=cuser)
+        myorder.count += 1
+        myorder.save()
     except DoesNotExist:
-        order = Order()
-        order.menu = menu
-        order.product = product
-        order.user = cuser
-        order.save()
+        myorder = Order()
+        myorder.menu = menu
+        myorder.product = product
+        myorder.user = cuser
+        myorder.save()
 
-    return jsonify(count=order.count,
+    return jsonify(count=myorder.count,
                    name=product.name,
                    cost=product.cost)
 
