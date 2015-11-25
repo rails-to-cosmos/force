@@ -207,6 +207,7 @@ def static_from_root():
 @bp_public.route('/order', methods=['POST'])
 @login_required
 def order():
+    cuser = User.objects.get(id=current_user.id)
     product_id = request.values.get('product')
     menu_id = request.values.get('menu')
 
@@ -221,14 +222,14 @@ def order():
         pass
 
     try:
-        order = Order.objects.get(menu=menu, product=product)
+        order = Order.objects.get(menu=menu, product=product, user=cuser)
         order.count += 1
         order.save()
     except DoesNotExist:
         order = Order()
         order.menu = menu
         order.product = product
-        order.user = User.objects.get(id=current_user.id)
+        order.user = cuser
         order.save()
 
     return jsonify(count=order.count,
@@ -238,6 +239,7 @@ def order():
 @bp_public.route('/cancel', methods=['POST'])
 @login_required
 def cancel():
+    cuser = User.objects.get(id=current_user.id)
     product_id = request.values.get('product')
     menu_id = request.values.get('menu')
 
@@ -252,7 +254,7 @@ def cancel():
         pass
 
     try:
-        order = Order.objects.get(menu=menu, product=product)
+        order = Order.objects.get(menu=menu, product=product, user=cuser)
     except DoesNotExist:
         return jsonify(count=0,
                        name=product.name,
