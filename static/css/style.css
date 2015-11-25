@@ -22,7 +22,7 @@ h1 {
 .menu-item {
     position: relative;
     border-bottom: 1px solid #FFCC99;
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
     cursor: pointer;
 
     -moz-user-select: none;
