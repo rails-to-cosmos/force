@@ -278,7 +278,7 @@ def cancel():
 def view_menu():
     cuser = User.objects.get(id=current_user.id)
     now = datetime.today()
-    if now.hour > 15:
+    if now.hour >= 15:
         # tomorrow
         now = datetime.today() + timedelta(days=2)
     else:
