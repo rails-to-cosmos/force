@@ -106,7 +106,7 @@ function draw_add_order(product_id, name, cost, count, menu_id, total) {
     td_food = document.createElement('td');
     td_food.width = '100%';
     td_food.className = 'td-food';
-    td_food.innerHTML = name;
+    td_food.innerHTML = '<div class="td-food-inner">' + name + '</div>';
 
     td_cost = document.createElement('td');
     td_cost.id = 'product-cost-'+product_id;

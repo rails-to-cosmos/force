@@ -119,3 +119,11 @@ h1 {
 .hidden {
     display: none;
 }
+
+table tr td {
+    line-height: 1.5;
+}
+
+.td-food-inner {
+    padding: 5px 0px;
+}
