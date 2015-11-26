@@ -96,15 +96,21 @@ h1 {
     top: 0px;
 }
 
-#total-cost span {
+#total-cost span, #prev-total-cost span {
     border-top: 1px solid black;
 }
 
-#order-table tr {
+#order-table tr, #prev-order-table tr {
     margin: 5px;
 }
 
 .order-label {
+    margin-bottom: 5px;
+    position: relative;
+    left: -4px;
+}
+
+.prev-order-label {
     margin-bottom: 5px;
     position: relative;
     left: -4px;

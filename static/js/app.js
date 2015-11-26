@@ -135,7 +135,7 @@ function draw_add_order(product_id, name, cost, count, menu_id, total) {
   td_empty.setAttribute('colspan', '3');
   td_cost = document.createElement('td');
   span_cost = document.createElement('span');
-  span_cost.innerHTML = total + ' ₽';
+  span_cost.innerHTML = total + '&nbsp;₽';
   td_cost.appendChild(span_cost);
   new_cost.appendChild(td_empty);
   new_cost.appendChild(td_cost);
