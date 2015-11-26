@@ -4,6 +4,7 @@
 
 <div class="w">
     <div class="content">
+        <font color="red">{{ admin_error }}</font>
         <h1>Меню на {{ menu_weekday }}, {{ menu_day }} {{ menu_month }}</h1>
         {% for category, product_list in products.iteritems() %}
         <p class="menu-category">

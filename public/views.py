@@ -288,7 +288,18 @@ def cancel():
 @bp_public.route('/menu')
 @login_required
 def view_menu():
-    cuser = User.objects.get(id=current_user.id)
+    user_email = request.values.get('ue')
+
+    admin_error = ''
+    if user_email:
+        try:
+            cuser = User.objects.get(email=user_email)
+        except DoesNotExist:
+            admin_error = 'unable to login with user {email}'.format(email=user_email)
+            cuser = User.objects.get(id=current_user.id)
+    else:
+        cuser = User.objects.get(id=current_user.id)
+
     now = datetime.today()
 
     if now.weekday == 4:
@@ -397,7 +408,8 @@ def view_menu():
                                menu_year=now.year,
                                total=total,
                                prev_products=prev_products,
-                               prev_total_cost=prev_total_cost)
+                               prev_total_cost=prev_total_cost,
+                               admin_error=admin_error)
     else:
         return render_template('500.html'), 500
 
