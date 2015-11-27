@@ -311,12 +311,13 @@ def view_menu():
     elif now.weekday() == 6: # sunday
         now = datetime.today() + timedelta(days=1)
         prev_date = datetime.today() - timedelta(days=2)
-    else:
-        prev_date = datetime.today()
+    else: # weekdays
         if now.hour >= 15:
             now = datetime.today() + timedelta(days=2)
+            prev_date = datetime.today() + timedelta(days=1)
         else:
             now = datetime.today() + timedelta(days=1)
+            prev_date = datetime.today()
 
     menu_date = '{year}-{month}-{day}'.format(year=now.year,
                                               month=now.month,
