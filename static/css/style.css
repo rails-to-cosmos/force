@@ -127,3 +127,19 @@ table tr td {
 .td-food-inner {
     padding: 5px 10px 5px 0px;
 }
+
+span.free-delivery {
+    background: #CCFFCC;
+}
+
+span.expensive-delivery {
+    background: #FF9999;
+}
+
+span.cheap-delivery {
+    background: #FFCCCC;
+}
+
+span.inorder-highlited {
+    padding: 2px 4px;
+}

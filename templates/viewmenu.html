@@ -33,7 +33,7 @@
          if (typeof ordered_products == "undefined") {
              ordered_products = [];
          }
-         ordered_products.push(["{{product.get('id')}}", "{{product.get('name')}}", {{product.get('cost')}}, {{product.get('count')}}, "{{menu_id}}", {{total}}]);
+         ordered_products.push(["{{product.get('id')}}", "{{product.get('name')}}", {{product.get('cost')}}, {{product.get('count')}}, "{{menu_id}}", {{total}}, {{sum_order_cost}}]);
         </script>
         {% endif %}
         {% endfor %}
@@ -41,7 +41,7 @@
     </div>
     <div class="sales-receipt" id="sales-receipt">
         {% if prev_products %}
-        <h2 class="prev-order-label" id="prev-order-label"><span style="background: #DDD; padding: 2px 4px;">В прошлый раз вы заказывали:</span></h2>
+        <h2 class="prev-order-label" id="prev-order-label"><span style="background: #DDD; padding: 2px 4px;">В прошлый раз вы заказывали</span></h2>
         <table width="100%" id="prev-order-table">
             {% for prev_cat in prev_products %}
             {% for prev_pdct in prev_products[prev_cat] %}
@@ -75,7 +75,7 @@
             </tr>
         </table>
         {% endif %}
-        <h2 class="order-label hidden" id="order-label"><span style="background: #FFCC99; padding: 2px 4px;">Вы заказали:</span></h2>
+        <h2 class="order-label hidden" id="order-label"><span style="background: #FFCC99; padding: 2px 4px;">Ваш заказ</span></h2>
         <table width="100%" id="order-table">
             <tr>
                 <td>
@@ -84,6 +84,25 @@
                 </td>
             </tr>
         </table>
+        <h2 class="order-label hidden" id="no-one-ordered">
+            Пока ещё никто ничего не заказал
+        </h2>
+        <h2 class="order-label hidden" id="total-delivery">
+            Мы все вместе заказали на <span id="sum-order-cost-total"></span>&nbsp;₽
+        </h2>
+        <h2 class="order-label hidden" id="not-free-delivery-container">Стоимость доставки:
+            <span class="cheap-delivery inorder-highlited hidden" id="cheap-delivery">
+                <span id="delivery-cost-cheap"></span>&nbsp;₽
+            </span>
+            <span class="expensive-delivery inorder-highlited hidden" id="expensive-delivery">
+                <span id="delivery-cost-expensive"></span>&nbsp;₽
+            </span>
+        </h2>
+        <h2 class="order-label hidden" id="free-delivery-container">
+            <span class="free-delivery inorder-highlited" id="free-delivery">
+                Бесплатная доставка
+            </span>
+        </h2>
     </div>
 </div>
 

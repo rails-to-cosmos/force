@@ -235,12 +235,17 @@ def order():
     myorders = Order.objects(menu=menu, user=cuser).values_list('product', 'count')
     mycosts = [(mt[0].cost, mt[1]) for mt in myorders]
     total = sum(mc[0]*mc[1] for mc in mycosts)
+    allorders = Order.objects(menu=menu).values_list('product', 'count')
+    allcosts = [(mt[0].cost, mt[1]) for mt in allorders]
+    sum_order_cost = sum(mc[0]*mc[1] for mc in allcosts)
+
 
     return jsonify(count=myorder.count,
                    name=product.name,
                    cost=product.cost,
                    menu=menu_id,
-                   total=total)
+                   total=total,
+                   sum_order_cost=sum_order_cost)
 
 @bp_public.route('/cancel', methods=['POST'])
 @login_required
@@ -400,6 +405,19 @@ def view_menu():
         myorders = Order.objects(menu=menu, user=cuser).values_list('product', 'count')
         mycosts = [(mt[0].cost, mt[1]) for mt in myorders]
         total = sum(mc[0]*mc[1] for mc in mycosts)
+        allorders = Order.objects(menu=menu).values_list('product', 'count')
+        allcosts = [(mt[0].cost, mt[1]) for mt in allorders]
+        sum_order_cost = sum(mc[0]*mc[1] for mc in allcosts)
+
+        if sum_order_cost > 1500:
+            delivery_cost = 0.0
+            delivery_type = 'free'
+        elif sum_order_cost > 1000:
+            delivery_cost = 100.0
+            delivery_type = 'cheap'
+        else:
+            delivery_cost = 200.0
+            delivery_type = 'expensive'
 
         return render_template('viewmenu.html',
                                products=products,
@@ -411,7 +429,10 @@ def view_menu():
                                total=total,
                                prev_products=prev_products,
                                prev_total_cost=prev_total_cost,
-                               admin_error=admin_error)
+                               admin_error=admin_error,
+                               sum_order_cost=sum_order_cost,
+                               delivery_cost=delivery_cost,
+                               delivery_type=delivery_type)
     else:
         return render_template('500.html'), 500
 

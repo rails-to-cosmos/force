@@ -53,7 +53,7 @@ ajax.post = function(url, data, callback, sync) {
   ajax.send(url, callback, 'POST', query.join('&'), sync);
 };
 
-function draw_add_order(product_id, name, cost, count, menu_id, total) {
+function draw_add_order(product_id, name, cost, count, menu_id, total, sum_order_cost) {
   if (count <= 0) {
     return False;
   }
@@ -142,13 +142,17 @@ function draw_add_order(product_id, name, cost, count, menu_id, total) {
   order_table.appendChild(new_cost);
   document.getElementById('order-label').className = document.getElementById('order-label').className.replace(/hidden/g, '');
 
+  if (sum_order_cost > 0) {
+
+  }
+
   return false;
 }
 
 function send_order(menu, product) {
   ajax.post('/order', {menu: menu, product: product}, function(response) {
     response = JSON.parse(response);
-    draw_add_order(product, response.name, response.cost, response.count, response.menu, response.total);
+    draw_add_order(product, response.name, response.cost, response.count, response.menu, response.total, response.sum_order_cost);
   }, 'async');
 }
 
@@ -225,6 +229,7 @@ window.onload = function () {
                    ordered_products[op][2],
                    ordered_products[op][3],
                    ordered_products[op][4],
-                   ordered_products[op][5]);
+                   ordered_products[op][5],
+                   ordered_products[op][6]);
   }
 }
