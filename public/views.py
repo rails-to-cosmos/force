@@ -304,7 +304,10 @@ def view_menu():
 
     if now.weekday() == 4: # friday
         now = datetime.today() + timedelta(days=3)
-        prev_date = now
+        if now.hour >= 15:
+            prev_date = now
+        else:
+            prev_date = datetime.today() - timedelta(days=1)
     elif now.weekday() == 5: # saturday
         now = datetime.today() + timedelta(days=2)
         prev_date = now - timedelta(days=1)
