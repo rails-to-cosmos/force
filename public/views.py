@@ -288,24 +288,64 @@ def cancel():
 @bp_public.route('/menu')
 @login_required
 def view_menu():
-    cuser = User.objects.get(id=current_user.id)
+    user_email = request.values.get('ue')
+
+    admin_error = ''
+    if user_email:
+        try:
+            cuser = User.objects.get(email=user_email)
+        except DoesNotExist:
+            admin_error = 'unable to login with user {email}'.format(email=user_email)
+            cuser = User.objects.get(id=current_user.id)
+    else:
+        cuser = User.objects.get(id=current_user.id)
+
     now = datetime.today()
 
-    if now.weekday == 4:  # friday or saturday
+    if now.weekday == 4:
         now = datetime.today() + timedelta(days=3)
 
     if now.hour >= 15:
-        # tomorrow
         now = datetime.today() + timedelta(days=2)
+        prev_date = now
     else:
         now = datetime.today() + timedelta(days=1)
+        prev_date = now - timedelta(1)
 
     menu_date = '{year}-{month}-{day}'.format(year=now.year,
                                               month=now.month,
                                               day=now.day)
+    prev_menu_date = '{year}-{month}-{day}'.format(year=prev_date.year,
+                                                   month=prev_date.month,
+                                                   day=prev_date.day)
+
     menu = Menu.objects(date=menu_date).first()
+    prev_menu = Menu.objects(date=prev_menu_date).first()
     all_products = MenuProduct.objects.filter(menu=menu).values_list('product').all_fields()
     ordered_products = Order.objects.filter(product__in=all_products, menu=menu, user=cuser).all_fields()
+
+    all_prev_products = MenuProduct.objects.filter(menu=prev_menu).values_list('product').all_fields()
+    prev_orders = Order.objects.filter(product__in=all_prev_products, menu=prev_menu, user=cuser)
+
+    prev_products = OrderedDict()
+    prev_total_cost = 0
+    for prev_order in prev_orders:
+        prev_product = prev_order.product
+
+        if not prev_products.get(prev_product.category.name):
+            prev_products[prev_product.category.name] = []
+
+        prev_total_cost += prev_product.cost*prev_order.count
+
+        prev_products[prev_product.category.name].append({
+            'id': prev_order.product.id,
+            'category_id': prev_product.category.id,
+            'name': prev_product.name,
+            'weight': prev_product.weight,
+            'cost': prev_product.cost*prev_order.count,
+            'compound': prev_product.compound,
+            'count': prev_order.count,
+        })
 
     products = OrderedDict()
     for product in all_products:
@@ -361,7 +401,10 @@ def view_menu():
                                menu_weekday=weekdays[now.weekday()],
                                menu_month=months[now.month-1],
                                menu_year=now.year,
-                               total=total)
+                               total=total,
+                               prev_products=prev_products,
+                               prev_total_cost=prev_total_cost,
+                               admin_error=admin_error)
     else:
         return render_template('500.html'), 500
 

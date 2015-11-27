@@ -4,6 +4,7 @@
 
 <div class="w">
     <div class="content">
+        <font color="red">{{ admin_error }}</font>
         <h1>Меню на {{ menu_weekday }}, {{ menu_day }} {{ menu_month }}</h1>
         {% for category, product_list in products.iteritems() %}
         <p class="menu-category">
@@ -48,6 +49,41 @@
                 </td>
             </tr>
         </table>
+        {% if prev_products %}
+        <h2 class="prev-order-label" id="prev-order-label"><span style="background: #DDD; padding: 2px 4px;">В прошлый раз вы заказывали:</span></h2>
+        <table width="100%" id="prev-order-table">
+            {% for prev_cat in prev_products %}
+            {% for prev_pdct in prev_products[prev_cat] %}
+            <tr>
+                <td style="min-width: 20px">
+
+                </td>
+                <td style="min-width: 15px">
+                    {% if prev_pdct.get('count') > 1 %}
+                    {{ prev_pdct.get('count')}}×
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="td-food-inner">
+                        {{ prev_pdct.get('name') }}
+                    </div>
+                </td>
+                <td style="min-width: 50px">
+                    {{ prev_pdct.get('cost') }}&nbsp;₽
+                </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+            <tr>
+                <td colspan="3"></td>
+                <td id="prev-total-cost">
+                    <span>
+                        {{ prev_total_cost }}&nbsp;₽
+                    </span>
+                </td>
+            </tr>
+        </table>
+        {% endif %}
     </div>
 </div>
 
