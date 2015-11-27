@@ -304,23 +304,19 @@ def view_menu():
 
     if now.weekday() == 4: # friday
         now = datetime.today() + timedelta(days=3)
-        if now.hour >= 15:
-            prev_date = now
-        else:
-            prev_date = datetime.today() - timedelta(days=1)
+        prev_date = datetime.today()
     elif now.weekday() == 5: # saturday
         now = datetime.today() + timedelta(days=2)
-        prev_date = now - timedelta(days=1)
+        prev_date = datetime.today() - timedelta(days=1)
     elif now.weekday() == 6: # sunday
         now = datetime.today() + timedelta(days=1)
-        prev_date = now - timedelta(days=2)
+        prev_date = datetime.today() - timedelta(days=2)
     else:
+        prev_date = datetime.today()
         if now.hour >= 15:
             now = datetime.today() + timedelta(days=2)
-            prev_date = now
         else:
             now = datetime.today() + timedelta(days=1)
-            prev_date = now - timedelta(1)
 
     menu_date = '{year}-{month}-{day}'.format(year=now.year,
                                               month=now.month,
