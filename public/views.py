@@ -290,6 +290,10 @@ def cancel():
 def view_menu():
     cuser = User.objects.get(id=current_user.id)
     now = datetime.today()
+
+    if now.weekday == 4:  # friday or saturday
+        now = datetime.today() + timedelta(days=3)
+
     if now.hour >= 15:
         # tomorrow
         now = datetime.today() + timedelta(days=2)
