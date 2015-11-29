@@ -133,13 +133,18 @@ span.free-delivery {
 }
 
 span.expensive-delivery {
-    background: #FF9999;
-}
-
-span.cheap-delivery {
     background: #FFCCCC;
 }
 
-span.inorder-highlited {
+span.cheap-delivery {
+    background: #FFFFCC;
+}
+
+span.inorder-highlighted {
     padding: 2px 4px;
+}
+
+span.inorder-moved {
+    position: relative;
+    left: -2px;
 }

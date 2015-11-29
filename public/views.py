@@ -282,12 +282,16 @@ def cancel():
     myorders = Order.objects(menu=menu, user=cuser).values_list('product', 'count')
     mycosts = [(mt[0].cost, mt[1]) for mt in myorders]
     total = sum(mc[0]*mc[1] for mc in mycosts)
+    allorders = Order.objects(menu=menu).values_list('product', 'count')
+    allcosts = [(mt[0].cost, mt[1]) for mt in allorders]
+    sum_order_cost = sum(mc[0]*mc[1] for mc in allcosts)
 
     return jsonify(count=count,
                    name=product.name,
                    cost=product.cost,
                    menu=menu_id,
-                   total=total)
+                   total=total,
+                   sum_order_cost=sum_order_cost)
 
 
 @bp_public.route('/menu')

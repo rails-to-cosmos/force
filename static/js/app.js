@@ -1,3 +1,28 @@
+var toggle = {
+
+  hide : function(obj) {
+    if (typeof obj == 'undefined' || typeof obj.className == 'undefined') {
+      return false;
+    }
+
+    if (obj.className.indexOf('hidden') == -1) {
+      obj.className = obj.className + ' hidden';
+    }
+
+    return true;
+  },
+
+  show : function(obj) {
+    if (typeof obj == 'undefined' || typeof obj.className == 'undefined') {
+      return false;
+    }
+
+    obj.className = obj.className.replace(/hidden/g, '');
+    return true;
+  }
+
+};
+
 var ajax = {};
 ajax.x = function() {
   if (typeof XMLHttpRequest !== 'undefined') {
@@ -140,13 +165,76 @@ function draw_add_order(product_id, name, cost, count, menu_id, total, sum_order
   new_cost.appendChild(td_empty);
   new_cost.appendChild(td_cost);
   order_table.appendChild(new_cost);
-  document.getElementById('order-label').className = document.getElementById('order-label').className.replace(/hidden/g, '');
+  order_label = document.getElementById('order-label');
+  toggle.show(order_label);
 
-  if (sum_order_cost > 0) {
-
-  }
+  view_delivery_cost(sum_order_cost);
 
   return false;
+}
+
+function view_delivery_cost(sum_order_cost) {
+  delivery_info = document.getElementById('delivery-info');
+  if (sum_order_cost <= 0) {
+    toggle.hide(delivery_info);
+  } else {
+    toggle.show(delivery_info);
+  }
+
+  if (sum_order_cost > 0) {
+    document.getElementById('sum-order-cost-total').innerHTML = sum_order_cost;
+    els = document.getElementsByClassName('sum-order-label');
+    for (el in els) {
+      if (els[el].id == 'total-delivery') {
+        toggle.show(els[el]);
+      } else {
+        toggle.hide(els[el]);
+      }
+    }
+  }
+
+  if (sum_order_cost < 1500) {
+    // order cost
+    els = document.getElementsByClassName('sum-delivery-label');
+    for (el in els) {
+      if (els[el].id == 'not-free-delivery-container') {
+        toggle.show(els[el]);
+      } else {
+        toggle.hide(els[el]);
+      }
+    }
+
+    if (sum_order_cost > 1000) {
+      document.getElementById('delivery-cost-cheap').innerHTML = 100;
+      els = document.getElementsByClassName('delivery-cost');
+      for (el in els) {
+        if (els[el].id == 'cheap-delivery') {
+          toggle.show(els[el]);
+        } else {
+          toggle.hide(els[el]);
+        }
+      }
+    } else {
+      document.getElementById('delivery-cost-expensive').innerHTML = 200;
+      els = document.getElementsByClassName('delivery-cost');
+      for (el in els) {
+        if (els[el].id == 'expensive-delivery') {
+          toggle.show(els[el]);
+        } else {
+          toggle.hide(els[el]);
+        }
+      }
+    }
+  } else {
+    els = document.getElementsByClassName('sum-delivery-label');
+    for (el in els) {
+      if (els[el].id == 'free-delivery-container') {
+        toggle.show(els[el]);
+      } else {
+        toggle.hide(els[el]);
+      }
+    }
+  }
 }
 
 function send_order(menu, product) {
@@ -167,7 +255,8 @@ function cancel_order(menu, product) {
         tr.parentNode.removeChild(tr);
         document.getElementById(product).className = document.getElementById(product).className.replace(/ordered/g, '');
         if (response.total == 0) {
-          document.getElementById('order-label').className = document.getElementById('order-label').className + ' hidden';
+          order_label = document.getElementById('order-label');
+          toggle.hide(order_label);
         }
       } else {
         td_cost = document.getElementById('product-cost-'+product);
@@ -202,6 +291,8 @@ function cancel_order(menu, product) {
       new_cost.appendChild(td_cost);
       order_table.appendChild(new_cost);
     }
+
+    view_delivery_cost(response.sum_order_cost);
   });
 }
 

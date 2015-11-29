@@ -75,7 +75,7 @@
             </tr>
         </table>
         {% endif %}
-        <h2 class="order-label hidden" id="order-label"><span style="background: #FFCC99; padding: 2px 4px;">Ваш заказ</span></h2>
+        <h2 class="my-order-label order-label hidden" id="order-label"><span style="background: #FFCC99; padding: 2px 4px;">Ваш заказ</span></h2>
         <table width="100%" id="order-table">
             <tr>
                 <td>
@@ -84,25 +84,24 @@
                 </td>
             </tr>
         </table>
-        <h2 class="order-label hidden" id="no-one-ordered">
-            Пока ещё никто ничего не заказал
-        </h2>
-        <h2 class="order-label hidden" id="total-delivery">
-            Мы все вместе заказали на <span id="sum-order-cost-total"></span>&nbsp;₽
-        </h2>
-        <h2 class="order-label hidden" id="not-free-delivery-container">Стоимость доставки:
-            <span class="cheap-delivery inorder-highlited hidden" id="cheap-delivery">
-                <span id="delivery-cost-cheap"></span>&nbsp;₽
-            </span>
-            <span class="expensive-delivery inorder-highlited hidden" id="expensive-delivery">
-                <span id="delivery-cost-expensive"></span>&nbsp;₽
-            </span>
-        </h2>
-        <h2 class="order-label hidden" id="free-delivery-container">
-            <span class="free-delivery inorder-highlited" id="free-delivery">
-                Бесплатная доставка
-            </span>
-        </h2>
+        <div id="delivery-info" class="hidden">
+            <h2 class="sum-order-label order-label hidden" id="total-delivery">
+                Мы все вместе заказали на <span id="sum-order-cost-total"></span>&nbsp;₽
+            </h2>
+            <h2 class="sum-delivery-label order-label hidden" id="not-free-delivery-container">Стоимость доставки &mdash;
+                <span class="delivery-cost cheap-delivery inorder-highlighted hidden" id="cheap-delivery">
+                    <span id="delivery-cost-cheap"></span>&nbsp;₽
+                </span>
+                <span class="delivery-cost expensive-delivery inorder-highlighted hidden" id="expensive-delivery">
+                    <span id="delivery-cost-expensive"></span>&nbsp;₽
+                </span>
+            </h2>
+            <h2 class="sum-delivery-label order-label hidden" id="free-delivery-container">
+                <span class="free-delivery inorder-highlighted inorder-moved" id="free-delivery">
+                    Бесплатная доставка
+                </span>
+            </h2>
+        </div>
     </div>
 </div>
 
