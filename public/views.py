@@ -311,16 +311,16 @@ def view_menu():
 
     now = datetime.today()
 
-    if now.weekday() == 4: # friday
+    if now.weekday() == 4:  # friday
         now = datetime.today() + timedelta(days=3)
         prev_date = datetime.today()
-    elif now.weekday() == 5: # saturday
+    elif now.weekday() == 5:  # saturday
         now = datetime.today() + timedelta(days=2)
         prev_date = datetime.today() - timedelta(days=1)
-    elif now.weekday() == 6: # sunday
+    elif now.weekday() == 6:  # sunday
         now = datetime.today() + timedelta(days=1)
         prev_date = datetime.today() - timedelta(days=2)
-    else: # weekdays
+    else:  # weekdays
         if now.hour >= 15:
             now = datetime.today() + timedelta(days=2)
             prev_date = datetime.today() + timedelta(days=1)

@@ -16,15 +16,18 @@ h1 {
     cursor: default;
     margin-top: 1.5em;
     margin-bottom: 0.75em;
-    font-size: 150%;
+    font-size: 100%;
+    height: 50px;
 }
 
 .menu-item {
     position: relative;
-    border-bottom: 1px solid #eee;
+    /* border-bottom: 1px solid #ccc; */
     margin-bottom: 1em;
     cursor: pointer;
     font-size: 80%;
+
+    height: 25px;
 
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -33,9 +36,27 @@ h1 {
     -o-user-select:none;
 }
 
-.menu-item.ordered {
-    font-weight: bold;
+label.ordered {
+    display: none;
+    /* background-color: #FFFFCC; */
+    color: lightgreen;
+    border-radius: 5px;
+    padding: 2px 5px;
+    position: absolute;
+    left: -20px;
+    top: 0px;
+    width: 15px;
+    height: 15px;
 }
+
+.menu-item.ordered {
+
+}
+
+.menu-item.ordered label.ordered{
+    display: inline;
+}
+
 
 .menu-item:hover {
     color: #CC3333
@@ -47,26 +68,19 @@ h1 {
 
 .product-weight {
     color: #CC6633;
-    font-size: 70%;
+    font-size: 100%;
+    display: none;
 }
 
 .product-cost {
-    float: right;
-}
 
-.product-index {
-    float: left;
-    font-size: 85%;
-    margin-right: 3px;
-}
-
-.product-index:hover {
-    color: red;
 }
 
 .product-compound {
     display: block;
-    font-size: 75%;
+    font-size: 80%;
+    font-style: italic;
+    margin-left: 10pt;
 }
 
 .menu-item-container {
@@ -147,4 +161,15 @@ span.inorder-highlighted {
 span.inorder-moved {
     position: relative;
     left: -2px;
+}
+
+.fill-it-with-dotes {
+    overflow: hidden;
+    letter-spacing: 10px;
+    direction: rtl;
+    padding-right: 5px;
+}
+
+.product-name {
+    position: relative;
 }
