@@ -39,7 +39,7 @@ h1 {
 label.ordered {
     display: none;
     /* background-color: #FFFFCC; */
-    color: lightgreen;
+    /* color: lightgreen; */
     border-radius: 5px;
     padding: 2px 5px;
     position: absolute;
