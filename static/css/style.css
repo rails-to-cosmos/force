@@ -6,6 +6,11 @@ h1 {
     cursor: default;
 }
 
+h2.my-order-label, h2.prev-order-label {
+    font-size: 150%;
+    margin-bottom: 2.5pt;
+}
+
 .content {
     max-width: 800px;
     min-width: 650px;
@@ -22,7 +27,6 @@ h1 {
 
 .menu-item {
     position: relative;
-    /* border-bottom: 1px solid #ccc; */
     margin-bottom: 1em;
     cursor: pointer;
     font-size: 80%;
@@ -120,14 +124,10 @@ label.ordered {
 
 .order-label {
     margin-bottom: 5px;
-    position: relative;
-    left: -4px;
 }
 
 .prev-order-label {
     margin-bottom: 5px;
-    position: relative;
-    left: -4px;
 }
 
 .hidden {

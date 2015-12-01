@@ -239,13 +239,17 @@ def order():
     allcosts = [(mt[0].cost, mt[1]) for mt in allorders]
     sum_order_cost = sum(mc[0]*mc[1] for mc in allcosts)
 
+    rest = 1500 - sum_order_cost
+    if rest < 0:
+        rest = 0
 
     return jsonify(count=myorder.count,
                    name=product.name,
                    cost=product.cost,
                    menu=menu_id,
                    total=total,
-                   sum_order_cost=sum_order_cost)
+                   sum_order_cost=sum_order_cost,
+                   rest=rest)
 
 @bp_public.route('/cancel', methods=['POST'])
 @login_required
@@ -285,13 +289,17 @@ def cancel():
     allorders = Order.objects(menu=menu).values_list('product', 'count')
     allcosts = [(mt[0].cost, mt[1]) for mt in allorders]
     sum_order_cost = sum(mc[0]*mc[1] for mc in allcosts)
+    rest = 1500 - sum_order_cost
+    if rest < 0:
+        rest = 0
 
     return jsonify(count=count,
                    name=product.name,
                    cost=product.cost,
                    menu=menu_id,
                    total=total,
-                   sum_order_cost=sum_order_cost)
+                   sum_order_cost=sum_order_cost,
+                   rest=rest)
 
 
 @bp_public.route('/menu')
@@ -413,6 +421,10 @@ def view_menu():
         allcosts = [(mt[0].cost, mt[1]) for mt in allorders]
         sum_order_cost = sum(mc[0]*mc[1] for mc in allcosts)
 
+        rest = 1500 - sum_order_cost
+        if rest < 0:
+            rest = 0
+
         if sum_order_cost > 1500:
             delivery_cost = 0.0
             delivery_type = 'free'
@@ -422,6 +434,10 @@ def view_menu():
         else:
             delivery_cost = 200.0
             delivery_type = 'expensive'
+
+        rest = 1500 - sum_order_cost
+        if rest < 0:
+            rest = 0
 
         return render_template('viewmenu.html',
                                products=products,
@@ -436,7 +452,8 @@ def view_menu():
                                admin_error=admin_error,
                                sum_order_cost=sum_order_cost,
                                delivery_cost=delivery_cost,
-                               delivery_type=delivery_type)
+                               delivery_type=delivery_type,
+                               rest=rest)
     else:
         return render_template('500.html'), 500
 

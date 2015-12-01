@@ -24,6 +24,9 @@ class Product(db.Document):
 class Menu(db.Document):
     date = db.DateTimeField(required=True, unique=True)
 
+    def __unicode__(self):
+        return self.date.strftime('%d.%m.%Y')
+
 
 class MenuProduct(db.Document):
     menu = db.ReferenceField(Menu)

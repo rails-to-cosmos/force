@@ -50,7 +50,17 @@
              if (typeof ordered_products == "undefined") {
                  ordered_products = [];
              }
-             ordered_products.push(["{{product.get('id')}}", "{{product.get('name')}}", {{product.get('cost')}}, {{product.get('count')}}, "{{menu_id}}", {{total}}, {{sum_order_cost}}]);
+             ordered_products.push(
+                 {
+                     'id': "{{product.get('id')}}",
+                     'name': "{{product.get('name')}}",
+                     'cost': {{product.get('cost')}},
+                     'count': {{product.get('count')}},
+                     'menu_id': "{{menu_id}}",
+                     'total': {{total}},
+                     'rest': {{rest}}
+                 }
+             );
             </script>
             {% endif %}
             {% endfor %}
@@ -59,21 +69,16 @@
     </div>
     <div class="sales-receipt" id="sales-receipt">
         {% if prev_products %}
-        <h2 class="prev-order-label" id="prev-order-label"><span style="background: #DDD; padding: 2px 4px;">В прошлый раз вы заказывали</span></h2>
+        <h2 class="prev-order-label" id="prev-order-label">В прошлый раз вы заказывали</h2>
         <table width="100%" id="prev-order-table">
             {% for prev_cat in prev_products %}
             {% for prev_pdct in prev_products[prev_cat] %}
             <tr>
-                <td style="min-width: 20px">
-
-                </td>
-                <td style="min-width: 15px">
-                    {% if prev_pdct.get('count') > 1 %}
-                    {{ prev_pdct.get('count')}}×
-                    {% endif %}
-                </td>
                 <td>
                     <div class="td-food-inner">
+                        {% if prev_pdct.get('count') > 1 %}
+                        {{ prev_pdct.get('count')}}×
+                        {% endif %}
                         {{ prev_pdct.get('name') }}
                     </div>
                 </td>
@@ -84,7 +89,7 @@
             {% endfor %}
             {% endfor %}
             <tr>
-                <td colspan="3"></td>
+                <td></td>
                 <td id="prev-total-cost">
                     <span>
                         {{ prev_total_cost }}&nbsp;₽
@@ -93,7 +98,7 @@
             </tr>
         </table>
         {% endif %}
-        <h2 class="my-order-label order-label hidden" id="order-label"><span style="background: #FFCC99; padding: 2px 4px;">Чек</span></h2>
+        <h2 class="my-order-label hidden" id="order-label">Чек</h2>
         <table width="100%" id="order-table">
             <tr>
                 <td>
@@ -104,7 +109,7 @@
         </table>
         <div id="delivery-info" class="hidden">
             <h2 class="sum-order-label order-label hidden" id="total-delivery">
-                Мы все вместе заказали на <span id="sum-order-cost-total"></span>&nbsp;₽
+                До бесплатной доставки осталось <span id="sum-order-cost-total"></span>&nbsp;₽
             </h2>
             <h2 class="sum-delivery-label order-label hidden" id="not-free-delivery-container">Стоимость доставки &mdash;
                 <span class="delivery-cost cheap-delivery inorder-highlighted hidden" id="cheap-delivery">
