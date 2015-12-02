@@ -35,7 +35,7 @@ table {
 caption, th, td {
   text-align: left;
   font-weight: normal;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 q, blockquote {
