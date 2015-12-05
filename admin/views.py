@@ -50,3 +50,7 @@ class CategoryView(ModelView):
 class UserDocumentView(ModelView):
     def is_accessible(self):
         return current_user.has_role('admin')
+
+class ProductPositionsInXLSView(ModelView):
+    def is_accessible(self):
+        return current_user.has_role('admin')

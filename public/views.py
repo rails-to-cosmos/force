@@ -556,7 +556,7 @@ def get_menu():
 
     menu = Menu.objects(date=formatted_date).first()
     orders = Order.objects(menu=menu)
-    ppixs = ProductPositionsInXLS.objects.filter(product__in=orders.values_list('product'))
+    ppixs = ProductPositionsInXLS.objects.filter(product__in=orders.values_list('product'), menu=menu)
 
     style = xlwt.XFStyle()
     font = xlwt.Font()
@@ -583,6 +583,7 @@ def get_menu():
         write_sheet.write(ppix.row_in_xls, 4, count, style=style)
         write_sheet.write(ppix.row_in_xls, 5, cost, style=style)
         total += cost
+
     write_sheet.write(total_row_pos, 5, total, style=total_cell_style)
     write_book.save(tmp_filename)
 

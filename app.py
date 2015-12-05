@@ -31,6 +31,9 @@ from admin.views import CategoryView
 from public.models import UserDocument
 from admin.views import UserDocumentView
 
+from public.models import ProductPositionsInXLS
+from admin.views import ProductPositionsInXLSView
+
 
 def create_app(config_object=ProdConfig):
     app = Flask(__name__)
@@ -70,6 +73,7 @@ def register_admin_views(admin):
     admin.add_view(OrderView(Order))
     admin.add_view(CategoryView(Category))
     admin.add_view(UserDocumentView(UserDocument))
+    admin.add_view(ProductPositionsInXLSView(ProductPositionsInXLS))
     return None
 
 

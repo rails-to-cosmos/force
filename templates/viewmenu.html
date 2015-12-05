@@ -70,8 +70,11 @@
     </div>
     <div class="sales-receipt" id="sales-receipt">
         {% if user_is_admin %}
+        <div class="admin-gadgets">
         <h2 class="on-flow-panel">Админские примочки</h2>
         <a href="/getmenu">Взять меню</a>
+        <a href="/logout">Выйти</a>
+        </div>
         {% endif %}
         {% if prev_products %}
         <h2 class="on-flow-panel prev-order-label" id="prev-order-label">В прошлый раз вы заказывали</h2>
@@ -112,19 +115,19 @@
                 </td>
             </tr>
         </table>
-        <div id="delivery-info" class="hidden">
+        <div id="delivery-info">
             <h2 class="sum-order-label order-label hidden" id="total-delivery">
-                До бесплатной доставки осталось <span id="sum-order-cost-total"></span>&nbsp;₽
+                До бесплатной доставки осталось <span id="sum-order-cost-total">{{ rest }}</span>&nbsp;₽
             </h2>
             <h2 class="sum-delivery-label order-label hidden" id="not-free-delivery-container">Стоимость доставки &mdash;
-                <span class="delivery-cost cheap-delivery inorder-highlighted hidden" id="cheap-delivery">
-                    <span id="delivery-cost-cheap"></span>&nbsp;₽
+                <span class="delivery-cost cheap-delivery inorder-highlighted {% if rest > 500 %} hidden {% endif %}" id="cheap-delivery">
+                    <span id="delivery-cost-cheap">{{ rest }}</span>&nbsp;₽
                 </span>
-                <span class="delivery-cost expensive-delivery inorder-highlighted hidden" id="expensive-delivery">
-                    <span id="delivery-cost-expensive"></span>&nbsp;₽
+                <span class="delivery-cost expensive-delivery inorder-highlighted {% if rest < 500 %} hidden {% endif %}" id="expensive-delivery">
+                    <span id="delivery-cost-expensive">{{ rest }}</span>&nbsp;₽
                 </span>
             </h2>
-            <h2 class="sum-delivery-label order-label hidden" id="free-delivery-container">
+            <h2 class="sum-delivery-label order-label {% if rest > 0 %} hidden {% endif %}" id="free-delivery-container">
                 <span class="free-delivery inorder-highlighted inorder-moved" id="free-delivery">
                     Бесплатная доставка
                 </span>

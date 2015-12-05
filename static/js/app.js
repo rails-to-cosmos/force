@@ -169,12 +169,12 @@ function draw_add_order(product_id, name, cost, count, menu_id, total, rest) {
   order_label = document.getElementById('order-label');
   toggle.show(order_label);
 
-  view_delivery_cost(rest);
+  view_delivery_cost(rest, total);
 
   return false;
 }
 
-function view_delivery_cost(rest) {
+function view_delivery_cost(rest, total) {
   delivery_info = document.getElementById('delivery-info');
   toggle.show(delivery_info);
 
@@ -246,6 +246,11 @@ function view_delivery_cost(rest) {
       toggle.hide(delivery_info);
     }
   }
+
+  if (total <= 0) {
+      delivery_info = document.getElementById('delivery-info');
+      toggle.hide(delivery_info);
+  }
 }
 
 function send_order(menu, product) {
@@ -306,7 +311,7 @@ function cancel_order(menu, product) {
       order_table.appendChild(new_cost);
     }
 
-    view_delivery_cost(response.rest);
+    view_delivery_cost(response.rest, response.total);
   });
 }
 

@@ -8,7 +8,15 @@ h1 {
 
 h2.on-flow-panel {
     font-size: 150%;
-    margin-bottom: 10pt;
+    margin-bottom: 3pt;
+}
+
+.admin-gadgets h2 {
+    margin-bottom: 0pt;
+}
+
+.admin-gadgets a {
+    margin: 0pt 5pt 5pt 0pt;
 }
 
 .content {
@@ -125,7 +133,7 @@ label.ordered {
 }
 
 .order-label {
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
 }
 
 .prev-order-label {

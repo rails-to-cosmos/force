@@ -84,4 +84,9 @@ h3 {
 
 input[type="text"], input[type="password"] {
     padding: 4px 6px;
+    margin: 0px 5pt 5pt 5pt;
+}
+
+.for-input {
+    padding: 2pt 15pt 2pt 0pt;
 }
