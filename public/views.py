@@ -398,8 +398,9 @@ def view_menu():
     menu = Menu.objects(date=menu_date).first()
     prev_menu = Menu.objects(date=prev_menu_date).first()
     all_products = MenuProduct.objects.filter(menu=menu).values_list('product').all_fields()
+    all_ordered_products = Order.objects.filter(product__in=all_products, menu=menu)
     ordered_products = Order.objects.filter(product__in=all_products, menu=menu, user=cuser).all_fields()
-    users_ordered = len(set(ordered_products.values_list('user')))
+    users_ordered = len(set(all_ordered_products.values_list('user')))
 
     all_prev_products = MenuProduct.objects.filter(menu=prev_menu).values_list('product').all_fields()
     prev_orders = Order.objects.filter(product__in=all_prev_products, menu=prev_menu, user=cuser)

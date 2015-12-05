@@ -71,9 +71,25 @@
     <div class="sales-receipt" id="sales-receipt">
         {% if user_is_admin %}
         <div class="admin-gadgets">
-        <h2 class="on-flow-panel">Админские примочки</h2>
-        <a href="/getmenu">Взять меню</a>
-        <a href="/logout">Выйти</a>
+            <h2 class="on-flow-panel">Админские примочки</h2>
+            <div>
+                {% if users_ordered > 0 %}
+                {% if users_ordered == 1 %}
+                Заказал один чувак.
+                {% elif users_ordered < 5 %}
+                Заказали {{ users_ordered }} чувака
+                {% elif users_ordered < 21 %}
+                Заказали {{ users_ordered }} чуваков
+                {% endif %}
+                {% else %}
+                Никто ничего не заказал
+                {% endif %}
+                {% if sum_order_cost > 0 %}
+                на {{ sum_order_cost }}&nbsp;₽
+                {% endif %}
+            </div>
+            <a href="/getmenu">Взять меню</a>
+            <a href="/logout">Выйти</a>
         </div>
         {% endif %}
         {% if prev_products %}
