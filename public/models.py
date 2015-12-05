@@ -27,10 +27,20 @@ class Menu(db.Document):
     def __unicode__(self):
         return self.date.strftime('%d.%m.%Y')
 
+class UserDocument(db.Document):
+    date = db.DateTimeField(required=True, unique=True)
+    contents = db.FileField()
+
 
 class MenuProduct(db.Document):
     menu = db.ReferenceField(Menu)
     product = db.ReferenceField(Product)
+
+
+class ProductPositionsInXLS(db.Document):
+    menu = db.ReferenceField(Menu)
+    product = db.ReferenceField(Product)
+    row_in_xls = db.IntField(required=True, unique_with=['product', 'menu'])
 
 
 class Order(db.Document):

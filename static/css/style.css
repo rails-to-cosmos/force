@@ -6,7 +6,7 @@ h1 {
     cursor: default;
 }
 
-h2.my-order-label, h2.prev-order-label {
+h2.on-flow-panel {
     font-size: 150%;
     margin-bottom: 10pt;
 }

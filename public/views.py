@@ -2,21 +2,32 @@
 
 import re
 import os
-import mongoengine
+# import mongoengine
 from datetime import datetime
 from datetime import timedelta
 from collections import OrderedDict
 
-from xlrd import open_workbook
+import xlrd
+import xlwt
+from xlutils.copy import copy as xlcopy
+
 
 import bson
 import flask
 
-from flask import Flask, request, abort, Response, redirect, url_for, flash, Blueprint, send_from_directory
-from flask.ext.mongoengine import MongoEngine
+from flask import Blueprint
+
+from flask import request
+from flask import send_from_directory
+from flask import Response
+# from flask import Flask, request, abort, Response, redirect, url_for, flash, Blueprint, send_from_directory
+# from flask.ext.mongoengine import MongoEngine
 from flask.templating import render_template
-from flask import make_response
-from flask_security.decorators import roles_required, login_required
+# from flask import make_response
+from flask_security.decorators import roles_required
+from flask_security.decorators import login_required
+# from flask_security.decorators import roles_accepted
+
 from flask import jsonify
 from user.models import User
 from flask.ext.security import current_user
@@ -28,6 +39,8 @@ from public.models import Product
 from public.models import Menu
 from public.models import Category
 from public.models import MenuProduct
+from public.models import UserDocument
+from public.models import ProductPositionsInXLS
 from public.models import Order
 
 
@@ -46,7 +59,7 @@ def allowed_file(filename):
 
 
 def add_products_from_xls(filename):
-    rb = open_workbook(filename, formatting_info=True)
+    rb = xlrd.open_workbook(filename, formatting_info=True)
 
     for sheet_index in xrange(5):
         sheet = rb.sheet_by_index(sheet_index)
@@ -55,21 +68,30 @@ def add_products_from_xls(filename):
         menu_date = datetime.strptime(menu_date, '%d.%m.%y')
         current_category = ''
 
+        ud = UserDocument()
+        ud.date = menu_date
+        menu_file = open(filename, 'r')
+        ud.contents.put(menu_file, content_type='application/vnd.ms-excel')
         try:
-            menu = Menu(date=menu_date).save()
+            ud.save()
+        except flask.ext.mongoengine.mongoengine.NotUniqueError:
+            pass
+
+        try:
+            menu = Menu(date=menu_date)
+            menu.save()
         except flask.ext.mongoengine.mongoengine.NotUniqueError:
             menu = Menu.objects.get(date=menu_date)
-            pass
 
         for rownum in range(sheet.nrows):
             rslc = sheet.row_slice(rownum)
             if is_food_row(rslc):
                 try:
-                    category = Category.objects.get(name=unicode(current_category))
-                except DoesNotExist:
                     category = Category()
-                    category.name = unicode(current_category)
+                    category.name = current_category
                     category.save()
+                except flask.ext.mongoengine.mongoengine.NotUniqueError:
+                    category = Category.objects.get(name=current_category)
 
                 product = Product()
                 product.name = unicode(rslc[1].value)
@@ -121,7 +143,7 @@ def add_products_from_xls(filename):
                 else:
                     weight = weight + u' \u0433'
 
-                def chg_quotes(text = None):
+                def chg_quotes(text=None):
                     if not text:
                         return
                     counter = 0
@@ -147,7 +169,7 @@ def add_products_from_xls(filename):
                     u'Суп Фасолевый с говядиной': u'Суп фасолевый с говядиной',
                     u'Борщ «Украинский» с курицей': u'Борщ украинский с курицей',
                     u'Суп Рыбный': u'Суп рыбный',
-                    u'ПАСТА Таглиателли с курицей в сырном соусе': u'Паста таглиателли с курицей в сырном соусе',
+                    u'ПАСТА Таглиателли с курицей в сырном соусе': u'Паста тальятелле с курицей в сырном соусе',
                     u'Лапша пшеничная удон с курицей, бульоном и яйцом': u'Лапша пшеничная удон (курица, бульон и яйцо)',
                 }
 
@@ -173,6 +195,16 @@ def add_products_from_xls(filename):
                 except bson.errors.InvalidBSON:
                     continue
 
+                # saving product position
+                ppix = ProductPositionsInXLS()
+                ppix.product = product
+                ppix.menu = menu
+                ppix.row_in_xls = rownum
+                try:
+                    ppix.save()
+                except flask.ext.mongoengine.mongoengine.NotUniqueError:
+                    pass
+
                 pmconnection = MenuProduct()
                 pmconnection.menu = menu
                 pmconnection.product = product
@@ -194,7 +226,7 @@ def add_products_from_xls(filename):
                     current_category = re.sub(was, then, current_category)
 
 
-@bp_public.route('/')
+@bp_public.route('/index')
 def index():
     return render_template('index.html')
 
@@ -251,6 +283,7 @@ def order():
                    sum_order_cost=sum_order_cost,
                    rest=rest)
 
+
 @bp_public.route('/cancel', methods=['POST'])
 @login_required
 def cancel():
@@ -302,7 +335,47 @@ def cancel():
                    rest=rest)
 
 
-@bp_public.route('/menu')
+def get_prev_order_menu_date():
+    now = datetime.today()
+
+    if now.weekday() == 4:  # friday
+        prev_date = datetime.today()
+    elif now.weekday() == 5:  # saturday
+        prev_date = datetime.today() - timedelta(days=1)
+    elif now.weekday() == 6:  # sunday
+        prev_date = datetime.today() - timedelta(days=2)
+    else:  # weekdays
+        if now.hour >= 15:
+            prev_date = datetime.today() + timedelta(days=1)
+        else:
+            prev_date = datetime.today()
+
+    return prev_date
+
+def get_order_menu_date():
+    now = datetime.today()
+
+    if now.weekday() == 4:  # friday
+        now = datetime.today() + timedelta(days=3)
+    elif now.weekday() == 5:  # saturday
+        now = datetime.today() + timedelta(days=2)
+    elif now.weekday() == 6:  # sunday
+        now = datetime.today() + timedelta(days=1)
+    else:  # weekdays
+        if now.hour >= 15:
+            now = datetime.today() + timedelta(days=2)
+        else:
+            now = datetime.today() + timedelta(days=1)
+
+    return now
+
+def menu_date_format(menu_date):
+    return '{year}-{month}-{day}'.format(year=menu_date.year,
+                                         month=menu_date.month,
+                                         day=menu_date.day)
+
+
+@bp_public.route('/')
 @login_required
 def view_menu():
     user_email = request.values.get('ue')
@@ -317,36 +390,16 @@ def view_menu():
     else:
         cuser = User.objects.get(id=current_user.id)
 
-    now = datetime.today()
-
-    if now.weekday() == 4:  # friday
-        now = datetime.today() + timedelta(days=3)
-        prev_date = datetime.today()
-    elif now.weekday() == 5:  # saturday
-        now = datetime.today() + timedelta(days=2)
-        prev_date = datetime.today() - timedelta(days=1)
-    elif now.weekday() == 6:  # sunday
-        now = datetime.today() + timedelta(days=1)
-        prev_date = datetime.today() - timedelta(days=2)
-    else:  # weekdays
-        if now.hour >= 15:
-            now = datetime.today() + timedelta(days=2)
-            prev_date = datetime.today() + timedelta(days=1)
-        else:
-            now = datetime.today() + timedelta(days=1)
-            prev_date = datetime.today()
-
-    menu_date = '{year}-{month}-{day}'.format(year=now.year,
-                                              month=now.month,
-                                              day=now.day)
-    prev_menu_date = '{year}-{month}-{day}'.format(year=prev_date.year,
-                                                   month=prev_date.month,
-                                                   day=prev_date.day)
+    order_menu_date = get_order_menu_date()
+    prev_order_menu_date = get_prev_order_menu_date()
+    menu_date = menu_date_format(order_menu_date)
+    prev_menu_date = menu_date_format(prev_order_menu_date)
 
     menu = Menu.objects(date=menu_date).first()
     prev_menu = Menu.objects(date=prev_menu_date).first()
     all_products = MenuProduct.objects.filter(menu=menu).values_list('product').all_fields()
     ordered_products = Order.objects.filter(product__in=all_products, menu=menu, user=cuser).all_fields()
+    users_ordered = len(set(ordered_products.values_list('user')))
 
     all_prev_products = MenuProduct.objects.filter(menu=prev_menu).values_list('product').all_fields()
     prev_orders = Order.objects.filter(product__in=all_prev_products, menu=prev_menu, user=cuser)
@@ -442,10 +495,10 @@ def view_menu():
         return render_template('viewmenu.html',
                                products=products,
                                menu_id=menu.id,
-                               menu_day=now.day,
-                               menu_weekday=weekdays[now.weekday()],
-                               menu_month=months[now.month-1],
-                               menu_year=now.year,
+                               menu_day=order_menu_date.day,
+                               menu_weekday=weekdays[order_menu_date.weekday()],
+                               menu_month=months[order_menu_date.month-1],
+                               menu_year=order_menu_date.year,
                                total=total,
                                prev_products=prev_products,
                                prev_total_cost=prev_total_cost,
@@ -453,13 +506,16 @@ def view_menu():
                                sum_order_cost=sum_order_cost,
                                delivery_cost=delivery_cost,
                                delivery_type=delivery_type,
-                               rest=rest)
+                               rest=rest,
+                               users_ordered=users_ordered,
+                               user_is_admin=current_user.has_role('admin'))
     else:
         return render_template('500.html'), 500
 
 
 @bp_public.route('/loadmenu', methods=['GET', 'POST'])
 @login_required
+@roles_required('admin')
 def load_menu():
     if request.method == 'GET':
         return render_template('loadmenu.html')
@@ -469,6 +525,7 @@ def load_menu():
             filename = secure_filename(menu.filename)
             path = os.path.join(Config.UPLOAD_FOLDER, filename)
             menu.save(path)
+
             try:
                 add_products_from_xls(path)
             except IndexError:
@@ -476,3 +533,57 @@ def load_menu():
             return render_template('loadmenu.html', status='success')
         else:
             return render_template('loadmenu.html', status='error')
+
+
+@bp_public.route('/getmenu', methods=['GET'])
+@login_required
+@roles_required('admin')
+def get_menu():
+    order_menu_date = get_order_menu_date()
+    formatted_date = menu_date_format(order_menu_date)
+    menu_xls = UserDocument.objects(date=formatted_date).first()
+    xls_contents = menu_xls.contents.read()
+    weekday = order_menu_date.weekday()
+
+    tmp_filename = '/tmp/tmp.xls'
+    tmp_xls = open(tmp_filename, 'w')
+    tmp_xls.write(xls_contents)
+    tmp_xls.close()
+
+    read_book = xlrd.open_workbook(tmp_filename, on_demand=True, formatting_info=True)
+    write_book = xlcopy(read_book)
+    write_sheet = write_book.get_sheet(weekday)
+
+    menu = Menu.objects(date=formatted_date).first()
+    orders = Order.objects(menu=menu)
+    ppixs = ProductPositionsInXLS.objects.filter(product__in=orders.values_list('product'))
+
+    style = xlwt.XFStyle()
+    font = xlwt.Font()
+    font.bold = True
+    font.height = 12*20
+    font.name = 'Calibri'
+    style.font = font
+
+    borders = xlwt.Borders()
+    borders.bottom = xlwt.Borders.THIN
+    borders.right = xlwt.Borders.THIN
+    borders.top = xlwt.Borders.THIN
+    borders.left = xlwt.Borders.THIN
+    style.borders = borders
+
+    total_cell_style = xlwt.XFStyle()
+    total_cell_style.font = font
+    total = 0
+    total_row_pos = ProductPositionsInXLS.objects.filter(menu=menu).order_by('-row_in_xls').first().row_in_xls + 1
+
+    for ppix in ppixs:
+        count = sum(order.count for order in orders.filter(product=ppix.product))
+        cost = ppix.product.cost * count
+        write_sheet.write(ppix.row_in_xls, 4, count, style=style)
+        write_sheet.write(ppix.row_in_xls, 5, cost, style=style)
+        total += cost
+    write_sheet.write(total_row_pos, 5, total, style=total_cell_style)
+    write_book.save(tmp_filename)
+
+    return Response(open(tmp_filename, 'r'), content_type='application/vnd.ms-excel')

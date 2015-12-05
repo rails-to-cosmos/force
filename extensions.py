@@ -10,6 +10,6 @@ from flask.ext.debugtoolbar import DebugToolbarExtension
 
 db = MongoEngine()
 cache = Cache()
-admin = Admin(name='Project Enferno :: Administration')
+admin = Admin(name='Ford :: Administration')
 mail = Mail()
 debug_toolbar = DebugToolbarExtension()

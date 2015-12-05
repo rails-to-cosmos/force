@@ -41,6 +41,12 @@ class OrderView(ModelView):
     def is_accessible(self):
         return current_user.has_role('admin')
 
+
 class CategoryView(ModelView):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+
+
+class UserDocumentView(ModelView):
     def is_accessible(self):
         return current_user.has_role('admin')

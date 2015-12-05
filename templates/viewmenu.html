@@ -6,6 +6,7 @@
     <div class="content">
         <font color="red">{{ admin_error }}</font>
         <h1>Меню на {{ menu_weekday }}, {{ menu_day }} {{ menu_month }}</h1>
+
         <table class="menu-item-container">
             {% for category, product_list in products.iteritems() %}
             <tr class="menu-category">
@@ -68,8 +69,12 @@
         </table>
     </div>
     <div class="sales-receipt" id="sales-receipt">
+        {% if user_is_admin %}
+        <h2 class="on-flow-panel">Админские примочки</h2>
+        <a href="/getmenu">Взять меню</a>
+        {% endif %}
         {% if prev_products %}
-        <h2 class="prev-order-label" id="prev-order-label">В прошлый раз вы заказывали</h2>
+        <h2 class="on-flow-panel prev-order-label" id="prev-order-label">В прошлый раз вы заказывали</h2>
         <table width="100%" id="prev-order-table">
             {% for prev_cat in prev_products %}
             {% for prev_pdct in prev_products[prev_cat] %}
@@ -98,7 +103,7 @@
             </tr>
         </table>
         {% endif %}
-        <h2 class="my-order-label hidden" id="order-label">Чек</h2>
+        <h2 class="on-flow-panel my-order-label hidden" id="order-label">Чек</h2>
         <table width="100%" id="order-table">
             <tr>
                 <td>

@@ -28,6 +28,9 @@ from admin.views import OrderView
 from public.models import Category
 from admin.views import CategoryView
 
+from public.models import UserDocument
+from admin.views import UserDocumentView
+
 
 def create_app(config_object=ProdConfig):
     app = Flask(__name__)
@@ -66,6 +69,7 @@ def register_admin_views(admin):
     admin.add_view(MenuView(Menu))
     admin.add_view(OrderView(Order))
     admin.add_view(CategoryView(Category))
+    admin.add_view(UserDocumentView(UserDocument))
     return None
 
 

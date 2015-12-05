@@ -81,3 +81,7 @@ h3 {
   line-height: 36px;
   line-height: 2.25rem;
 }
+
+input[type="text"], input[type="password"] {
+    padding: 4px 6px;
+}

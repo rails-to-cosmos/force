@@ -34,7 +34,6 @@ def _make_context():
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))
-
 manager.add_command('create_user', CreateUserCommand())
 manager.add_command('add_role', AddRoleCommand())
 manager.add_command('remove_role', RemoveRoleCommand())

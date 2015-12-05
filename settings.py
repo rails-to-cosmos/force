@@ -21,7 +21,7 @@ class Config(object):
     ALLOWED_EXTENSIONS = set(['xls'])
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
-    #security
+    # security
     SECURITY_REGISTERABLE = True
     SECURITY_RECOVERABLE = True
     SECURITY_CONFIRMABLE = False
@@ -33,7 +33,7 @@ class Config(object):
     SECURITY_POST_CONFIRM_VIEW = '/account'
 
 
-    #flask mail settings - Mailgun
+    # flask mail settings - Mailgun
     MAIL_SERVER = 'smtp.mailgun.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
@@ -56,5 +56,3 @@ class DevConfig(Config):
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True  # Don't bundle/minify static assets
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
-
-
