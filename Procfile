@@ -1,0 +1,1 @@
+web: gunicorn force.wsgi --log-file -
