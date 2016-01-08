@@ -9,6 +9,7 @@ __pycache__/
 node_modules/
 .Python
 env/
+forcenv/
 build/
 develop-eggs/
 dist/
