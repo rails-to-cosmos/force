@@ -2,13 +2,14 @@
   "initialize force development workflow"
   (interactive)
   (defvar force-server t)
+  (defvar force-root-dir "/Volumes/Main/Users/akatovda/Documents/Stuff/force")
   (dz-defservice force-server "python"
                  :args ("app.py")
-                 :cd "/Volumes/Main/Users/akatovda/Documents/Stuff/force")
+                 :cd force-root-dir)
   (elscreen-create)
   (force-server-start)
   (delete-other-windows)
-  (spawn-shell "*force-shell*" "/Volumes/Main/Users/akatovda/Documents/Stuff/force/")
+  (spawn-shell "*force-shell*" force-root-dir)
   (delete-other-windows))
 
 (provide 'force)
