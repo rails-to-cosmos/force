@@ -3,8 +3,8 @@
   (interactive)
   (defvar force-server t)
   (defvar force-root-dir "/Volumes/Main/Users/akatovda/Documents/Stuff/force")
-  (dz-defservice force-server "python"
-                 :args ("app.py")
+  (dz-defservice force-server "/Volumes/Main/Users/akatovda/Documents/Stuff/force/forcenv/bin/python"
+                 :args ("manage.py" "runserver")
                  :cd force-root-dir)
   (elscreen-create)
   (force-server-start)
