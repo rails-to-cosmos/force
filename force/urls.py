@@ -1,4 +1,5 @@
-"""force URL Configuration
+"""
+force URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -16,6 +17,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from menu import views as menu_views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', menu_views.view_menu, name='view_menu'),
+    url(r'^load/$', menu_views.load_menu, name='load_menu')
 ]
