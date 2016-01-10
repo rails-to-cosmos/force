@@ -1,0 +1,17 @@
+<div class="w">
+    <div class="content">
+        {% if success %}
+        <h3><font color="green">File successfully uploaded</font></h3>
+        <a href="{% url 'menuview' %}">View menu</a>
+        {% elif error %}
+        <h3><font color="red">File was not uploaded</font></h3>
+        {% else %}
+        <h3>Welcome, friend</h3>
+        {% endif %}
+        <p>Please, load menu using this form:</p>
+        <form action="{% url 'menuload' %}" method="POST" enctype="multipart/form-data">
+            <input name="menu" type="file" value=""/>
+            <input name="" type="submit" value="Submit"/>
+        </form>
+    </div>
+</div>

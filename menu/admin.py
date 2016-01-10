@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from models import (Menu, Category, Product, Document, Order)
+
+modules = (Menu, Category, Product, Document, Order)
+
+[admin.site.register(module) for module in modules]
