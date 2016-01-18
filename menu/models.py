@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 
 from django.db import models
@@ -6,9 +8,16 @@ from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, blank=False, unique=True)
+    name = models.CharField(max_length=255, unique=True)
+
+    def __repr__(self):
+        return '<Category: {name}>'.format(name=self.name.encode('utf-8'))
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
+        verbose_name = 'Category'
         verbose_name_plural = 'Categories'
 
 
@@ -17,8 +26,14 @@ class Product(models.Model):
     weight = models.CharField(max_length=255)
     compound = models.CharField(max_length=255)
     cost = models.PositiveIntegerField(default=0)
-    name = models.CharField(max_length=255, blank=False)
-    popularity = models.PositiveIntegerField(default=0)
+    name = models.CharField(max_length=255)
+    popularity = models.PositiveIntegerField(default=0, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def category_name(self):
+        return self.category.name
 
     class Meta:
         unique_together = ('name', 'cost')
@@ -28,25 +43,27 @@ class Menu(models.Model):
     date = models.DateTimeField('menu date')
     products = models.ManyToManyField(Product)
 
-    def load(self):
-        pass
+    def __unicode__(self):
+        return self.date.strftime('%d.%m.%Y')
 
-    def view(self):
-        pass
+    def date_fmt(self):
+        return self.date.strftime('%d.%m.%Y')
 
 
 class Document(models.Model):
-    date = models.DateTimeField('upload date', blank=False, unique=True)
+    date = models.DateTimeField('upload date', unique=True)
     contents = models.FileField()
 
 
-class ProductPositionsInXLS(models.Model):
+class XLStructure(models.Model):
     menu = models.ForeignKey(Menu)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    row_in_xls = models.PositiveIntegerField(blank=False)
+    position = models.PositiveIntegerField()
 
     class Meta:
-        unique_together = ('product', 'menu', 'row_in_xls')
+        unique_together = ('product', 'menu', 'position')
+        verbose_name = 'XLStructure'
+        verbose_name_plural = 'XLStructures'
 
 
 class Order(models.Model):

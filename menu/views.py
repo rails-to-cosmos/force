@@ -1,21 +1,38 @@
 from django.http import HttpResponse
-from django.template import loader
+from django.contrib.auth.decorators import login_required
+
+from models import Menu, Category, Product, XLStructure
+from lib.menumanager import MenuManager
 
 
+@login_required
 def load_menu(request):
-    template = loader.get_template('menu/load.html')
+    # if request.method == 'POST':
+    #     menu_file = request.files['menu']
+    #     load_menu_from_file(menu_file)
+    load_menu_from_file('/Volumes/Main/Users/akatovda/Documents/Stuff/force/lib/menu.xls')
+    return HttpResponse('OK')
 
-    def post(x): return request.POST.get(x, False)
 
-    context = {
-        'success': post('success'),
-        'error': post('error')
-    }
-
-    if request.method == 'POST':
-        pass
-
-    return HttpResponse(template.render(context, request))
+def load_menu_from_file(menu_file):
+    manager = MenuManager()
+    manager.add_menus_from_file(menu_file)
+    sheets = manager.menus
+    for sheet in sheets:
+        products = sheet.products
+        menu, created = Menu.objects.get_or_create(date=sheet.date)
+        [XLStructure.objects.get_or_create(
+            menu=menu,
+            product=Product.objects.get_or_create(
+                cost=x.cost,
+                name=x.name,
+                defaults=dict(
+                    category=Category.objects.get_or_create(name=x.category)[0],
+                    weight=x.weight,
+                    compound=x.compound
+                ))[0],
+            position=x.position)
+         for x in products]
 
 
 def view_menu(request):
