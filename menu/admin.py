@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import (Menu, Category, Product, Order, XLStructure)
+from models import (Menu, Category, Product, Order)
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -15,14 +15,9 @@ class MenuAdmin(admin.ModelAdmin):
     list_display = ('date_fmt',)
 
 
-class XLStructureAdmin(admin.ModelAdmin):
-    list_display = ('menu', 'product', 'position')
-
-
-modules = [(Menu, MenuAdmin),
+modules = ((Menu, MenuAdmin),
            (Category, CategoryAdmin),
            (Product, ProductAdmin),
-           (Order,),
-           (XLStructure, XLStructureAdmin)]
+           (Order,))
 
 [admin.site.register(*module) for module in modules]
