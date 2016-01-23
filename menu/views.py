@@ -1,3 +1,5 @@
+import os
+
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
@@ -7,10 +9,7 @@ from lib.menumanager import MenuManager
 
 @login_required
 def load_menu(request):
-    # if request.method == 'POST':
-    #     menu_file = request.files['menu']
-    #     load_menu_from_file(menu_file)
-    load_menu_from_file('/Volumes/Main/Users/akatovda/Documents/Stuff/force/lib/menu.xls')
+    load_menu_from_file(os.path.dirname(os.path.realpath(__file__)) + '/../lib/menu.xls')
     return HttpResponse('OK')
 
 
