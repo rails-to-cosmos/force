@@ -12,7 +12,9 @@
   (elscreen-create)
   (force-server-start)
   (delete-other-windows)
-  (spawn-shell "*force-shell*" force-root-dir)
+  (spawn-shell (concatenate 'string "*" *-project-name "-shell*") force-root-dir)
+  (find-file (concatenate 'string force-root-dir "/" *-project-name ".el"))
+  (find-file (concatenate 'string force-root-dir "/" *-project-name ".org"))
   (delete-other-windows))
 
 (provide 'force)
