@@ -50,11 +50,6 @@ class Menu(models.Model):
         return self.date.strftime('%d.%m.%Y')
 
 
-class Document(models.Model):
-    date = models.DateTimeField('upload date', unique=True)
-    contents = models.FileField()
-
-
 class XLStructure(models.Model):
     menu = models.ForeignKey(Menu)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

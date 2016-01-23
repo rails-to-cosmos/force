@@ -80,15 +80,14 @@ class MenuSheetMarking(object):
     def change_quotes(self, text):
         counter = 0
         text = list(text)
-        for i in range(len(text)):
-            if (text[i] == u'"'):
+        for i, c in enumerate(text):
+            if (c == u'"'):
                 counter += 1
                 if (counter % 2 == 1):
                     text[i] = u'«'
                 else:
                     text[i] = u'»'
         return ''.join(text)
-
 
     def cleanup_product_name(self, product_name):
         clean_product_name = product_name

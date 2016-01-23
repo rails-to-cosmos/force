@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import (Menu, Category, Product, Document, Order, XLStructure)
+from models import (Menu, Category, Product, Order, XLStructure)
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -22,7 +22,6 @@ class XLStructureAdmin(admin.ModelAdmin):
 modules = [(Menu, MenuAdmin),
            (Category, CategoryAdmin),
            (Product, ProductAdmin),
-           (Document, ),
            (Order,),
            (XLStructure, XLStructureAdmin)]
 
