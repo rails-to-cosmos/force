@@ -1,4 +1,3 @@
-import os
 import urllib
 from datetime import datetime
 
@@ -9,12 +8,14 @@ from lib.menumanager import MenuManager
 from w2p.classes.processor import WebPageProcessor
 from w2p.classes.actions.action import Action
 
+
 @login_required
 def load_menu(request):
     menu_files = download_menu_files()
     for menu_file in menu_files:
         load_menu_from_file(menu_file)
     return HttpResponse('Menus have been successfully loaded')
+
 
 def download_menu_files():
     menu_files = list()
@@ -42,6 +43,7 @@ def download_menu_files():
         urllib.urlretrieve(abs_url, fpath)
         menu_files.append(fpath)
     return menu_files
+
 
 def load_menu_from_file(menu_file):
     manager = MenuManager()
