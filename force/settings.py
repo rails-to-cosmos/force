@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pipeline',
     'menu',
-    'rest_framework'
+    'authorization',
+    'rest_framework',
 ]
 
 REST_FRAMEWORK = {
@@ -79,9 +80,22 @@ PIPELINE = {
             'source_filenames': (
                 'react/dist/react-with-addons.js',
                 'react-dom/dist/react-dom.js',
+                'react-bootstrap/dist/react-bootstrap.min.js',
                 'jquery/dist/jquery.min.js',
             ),
             'output_filename': 'site-packages.js',
+        },
+        'force': {
+            'source_filenames': (
+                'js/NavigationBar.jsx',
+            ),
+            'output_filename': 'force.js',
+        },
+        'authorization': {
+            'source_filenames': (
+                'AuthorizationForm.jsx',
+            ),
+            'output_filename': 'authorization.js'
         },
         'menu': {
             'source_filenames': (
@@ -104,6 +118,12 @@ PIPELINE = {
             ),
             'output_filename': 'force.css',
         },
+        'authorization': {
+            'source_filenames': (
+                'authorization.css',
+            ),
+            'output_filename': 'authorization.css',
+        },
         'menu': {
             'source_filenames': (
                 'css/menu.css',
@@ -113,6 +133,7 @@ PIPELINE = {
     },
     'COMPILERS': (
         'react.utils.pipeline.JSXCompiler',
+        # 'pipeline_browserify.compiler.BrowserifyCompiler'
     ),
 }
 

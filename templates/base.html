@@ -12,15 +12,19 @@
     <!-- styles -->
     {% stylesheet 'site-packages' %}
     {% stylesheet 'force' %}
+    {% stylesheet 'authorization' %}
 
   </head>
   <body>
 
-    {% block content %}{% endblock %}
+      {% block navigation %}{% endblock %}
+      {% block authorization %}{% endblock%}
+      {% block content %}{% endblock %}
 
     <!-- JavaScript scripts -->
-
       {% javascript 'site-packages' %}
+      {% javascript 'authorization' %}
+      {% javascript 'force' %}
       <!--       {% javascript 'menu' %} -->
   </body>
 </html>

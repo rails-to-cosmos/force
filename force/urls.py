@@ -40,6 +40,6 @@ urlpatterns = [url(r'^admin/', admin.site.urls),
                # url(r'^', views.index),
                url(r'^$', TemplateView.as_view(template_name='index.html')),
                url(r'^menu/', include('menu.urls')),
-               url(r'^auth/', include('auth.urls'))]
+               url(r'^authorization/', include('authorization.urls'))]
                # url(r'^api/', include(api.urls)),
                # url(r'^api/', include(router.urls))]
