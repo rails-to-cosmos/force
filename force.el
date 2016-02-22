@@ -5,10 +5,10 @@
       force-project-dir "~/Documents/Stuff/force/"
       force-elconf-buffer (project-buffer-name-by-feature
                            force-project-name
-                           "el-config")
+                           "elcnf")
       force-org-buffer (project-buffer-name-by-feature
                         force-project-name
-                        "organizer")
+                        "org")
       force-shell-buffer (project-buffer-name-by-feature
                           force-project-name
                           "shell")
@@ -33,7 +33,7 @@
               (bpr-spawn (concatenate 'string "fab push:cm=\'" cm "\'"))))
           (defun force-deploy ()
             (interactive)
-            (let* ((bpr-process-directory user-emacs-directory))
+            (let* ((bpr-process-directory force-project-dir))
               (bpr-spawn "fab deploy")))
           (venv-workon force-project-name)
           (spawn-shell force-shell-buffer force-project-dir)
