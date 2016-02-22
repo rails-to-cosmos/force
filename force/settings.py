@@ -63,6 +63,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = normpath(join(BASE_DIR, '.static'))
 STATICFILES_DIRS = (
     'static',
+    'node_modules',
 )
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 STATICFILES_FINDERS = (
@@ -74,30 +75,44 @@ STATICFILES_FINDERS = (
 PIPELINE = {
     'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
     'JAVASCRIPT': {
-        'scripts': {
+        'site-packages': {
             'source_filenames': (
-                'js/bower_components/react/react-with-addons.js',
-                'js/bower_components/react/react-dom.js',
-
-                'js/bower_components/jquery/dist/jquery.min.js',
-
+                'react/dist/react-with-addons.js',
+                'react-dom/dist/react-dom.js',
+                'jquery/dist/jquery.min.js',
+            ),
+            'output_filename': 'site-packages.js',
+        },
+        'menu': {
+            'source_filenames': (
                 'js/ProductList.jsx',
             ),
-            'output_filename': 'build/force.js',
-        },
+            'output_filename': 'menu.js'
+        }
     },
     'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
     'STYLESHEETS': {
-        'styles': {
+        'site-packages': {
             'source_filenames': (
-                'css/style.css',
+                'bootstrap/dist/css/bootstrap.min.css',
             ),
-            'output_filename': 'build/force.css',
+            'output_filename': 'force.css',
+        },
+        'force': {
+            'source_filenames': (
+                'css/app.css',
+            ),
+            'output_filename': 'force.css',
+        },
+        'menu': {
+            'source_filenames': (
+                'css/menu.css',
+            ),
+            'output_filename': 'menu.css',
         },
     },
     'COMPILERS': (
         'react.utils.pipeline.JSXCompiler',
-        'pipeline.compilers.es6.ES6Compiler',
     ),
 }
 
