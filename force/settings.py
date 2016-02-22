@@ -76,11 +76,12 @@ PIPELINE = {
     'JAVASCRIPT': {
         'scripts': {
             'source_filenames': (
-                'js/bower_components/jquery/dist/jquery.min.js',
                 'js/bower_components/react/react-with-addons.js',
-                'js/bower_components/angular/angular.js',
-                'js/main.js',
-                'js/app.browserify.js',
+                'js/bower_components/react/react-dom.js',
+
+                'js/bower_components/jquery/dist/jquery.min.js',
+
+                'js/ProductList.jsx',
             ),
             'output_filename': 'build/force.js',
         },
@@ -96,6 +97,7 @@ PIPELINE = {
     },
     'COMPILERS': (
         'react.utils.pipeline.JSXCompiler',
+        'pipeline.compilers.es6.ES6Compiler',
     ),
 }
 
