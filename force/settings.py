@@ -11,11 +11,17 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from os.path import abspath, basename, dirname, join, normpath
+
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+# SITE_ROOT = dirname(DJANGO_ROOT)
+# SITE_NAME = basename(DJANGO_ROOT)
+PROJECT_PATH = os.path.realpath(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -25,7 +31,6 @@ SECRET_KEY = 'jsw!n15v(o^s3r+12%1==rof^#e-v1tq5g%=qvctkcs0+)j&&i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -38,8 +43,62 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'menu'
+    'pipeline',
+    'menu',
+    'rest_framework'
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = normpath(join(BASE_DIR, '.static'))
+STATICFILES_DIRS = (
+    'static',
+    'build'
+)
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
+PIPELINE = {
+    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'JAVASCRIPT': {
+        'scripts': {
+            'source_filenames': (
+                'js/bower_components/jquery/dist/jquery.min.js',
+                'js/bower_components/react/react-with-addons.js',
+                'js/bower_components/angular/angular.js',
+                'js/main.js',
+                'js/app.browserify.js',
+            ),
+            'output_filename': 'build/force.js',
+        },
+    },
+    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'STYLESHEETS': {
+        'styles': {
+            'source_filenames': (
+                'css/style.css',
+            ),
+            'output_filename': 'build/force.css',
+        },
+    },
+    'COMPILERS': (
+        'react.utils.pipeline.JSXCompiler',
+    ),
+}
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +109,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pipeline.middleware.MinifyHTMLMiddleware',
 ]
 
 ROOT_URLCONF = 'force.urls'
@@ -57,7 +117,7 @@ ROOT_URLCONF = 'force.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,15 +177,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
-
-STATIC_ROOT = 'staticfiles'
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] = dj_database_url.config()
 
@@ -134,6 +185,3 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
-
-# Static asset configuration
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))

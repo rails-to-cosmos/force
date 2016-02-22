@@ -1,20 +1,30 @@
+import os
 import urllib
-from datetime import datetime
-
+from django.utils import timezone
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
 from models import Menu, Category, Product, XLStructure
-from lib.menumanager import MenuManager
+from classes.manager import MenuManager
 from w2p.classes.processor import WebPageProcessor
 from w2p.classes.actions.action import Action
 
 
 @login_required
 def load_menu(request):
+    if fetch_menu():
+        result = HttpResponse(u'Menu successfully loaded')
+    else:
+        result = HttpResponse(u'Unable to load menu')
+    return result
+
+
+def fetch_menu():
     menu_files = download_menu_files()
     for menu_file in menu_files:
         load_menu_from_file(menu_file)
-    return HttpResponse('Menus have been successfully loaded')
+    return True
 
 
 def download_menu_files():
@@ -38,33 +48,40 @@ def download_menu_files():
     for lind, link in enumerate(links):
         rel_url = link.get('link')
         abs_url = site_url + rel_url
-        fpath = 'staticfiles/uploads/{dt}-{di}.xls'.format(dt=str(datetime.now()),
-                                                           di=lind)
-        urllib.urlretrieve(abs_url, fpath)
-        menu_files.append(fpath)
+        upload_dir = 'static/uploads/'  # TODO move to settings
+        os.path.exists(upload_dir) or os.makedirs(upload_dir)
+        filename = u'{dt}-{di}.xls'.format(dt=unicode(timezone.now()),
+                                           di=lind)
+        urllib.urlretrieve(abs_url, upload_dir+filename)
+        menu_files.append(upload_dir+filename)
     return menu_files
 
 
 def load_menu_from_file(menu_file):
     manager = MenuManager()
     manager.add_menus_from_file(menu_file)
-    sheets = manager.menus
-    for sheet in sheets:
-        products = sheet.products
-        menu, created = Menu.objects.get_or_create(date=sheet.date)
-        [XLStructure.objects.get_or_create(
-            menu=menu,
-            product=Product.objects.get_or_create(
-                cost=x.cost,
-                name=x.name,
+    menus = manager.menus
+    for menu in menus:
+        menu.obj, created = Menu.objects.get_or_create(date=menu.date)
+        for product in menu.products:
+            category_obj, created = Category.objects.get_or_create(
+                name=product.category)
+            product.obj, created = Product.objects.get_or_create(
+                cost=product.cost,
+                name=product.name,
                 defaults=dict(
-                    category=Category.objects.get_or_create(name=x.category)[0],
-                    weight=x.weight,
-                    compound=x.compound
-                ))[0],
-            position=x.position)
-         for x in products]
-
+                    category=category_obj,
+                    weight=product.weight,
+                    compound=product.compound
+                ))
+            xls, created = XLStructure.objects.get_or_create(
+                menu=menu.obj,
+                product=product.obj,
+                position=product.position)
+        menu.obj.products = [product.obj for product in menu.products]
+        menu.obj.save()
 
 def view_menu(request):
-    return HttpResponse('Menu view page')
+    return render(request,
+                  'menu/view.html',
+                  {'param': '123'})

@@ -1,0 +1,26 @@
+{
+  "name": "force",
+  "homepage": "https://github.com/rails-to-cosmos/force",
+  "authors": [
+    "Rails to Cosmos <akatovda@yandex.com>"
+  ],
+  "description": "food ordering system",
+  "main": "manage.py",
+  "moduleType": [],
+  "keywords": [
+    "force"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "^0.14.7",
+    "jquery": "^2.2.0"
+  }
+}

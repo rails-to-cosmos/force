@@ -1,0 +1,24 @@
+{% load pipeline %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The owls are not what they seem">
+    <meta name="author" content="Rails to Cosmos">
+
+    <!-- styles -->
+    {% stylesheet 'styles' %}
+
+  </head>
+  <body>
+
+    {% block content %}{% endblock %}
+
+    <!-- JavaScript scripts -->
+
+    {% javascript 'scripts' %}
+  </body>
+</html>

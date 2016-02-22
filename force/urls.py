@@ -15,17 +15,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
+from django.views.generic import TemplateView
+from django.contrib.auth.models import User
 from django.contrib import admin
-from tastypie.api import Api
-from api.resources import ProductResource
+from rest_framework import routers, serializers, viewsets
+import views
 
 
-v1_api = Api(api_name='v1')
-v1_api.register(ProductResource())
+# ViewSets define the view behavior.
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('menu.urls')),
-    url(r'^menu/', include('menu.urls')),
-    url(r'^api/', include(v1_api.urls)),
-]
+# Routers provide an easy way of automatically determining the URL conf.
+# router = routers.DefaultRouter()
+# router.register(r'users', UserViewSet)
+
+
+# api = Api(api_name='v1')
+# api.register(ProductResource())
+# api.register(MenuResource())
+
+urlpatterns = [url(r'^admin/', admin.site.urls),
+               # url(r'^', views.index),
+               url(r'^$', TemplateView.as_view(template_name='index.html')),
+               url(r'^menu/', include('menu.urls')),
+               url(r'^auth/', include('auth.urls'))]
+               # url(r'^api/', include(api.urls)),
+               # url(r'^api/', include(router.urls))]
