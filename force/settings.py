@@ -62,7 +62,7 @@ REST_FRAMEWORK = {
 STATIC_URL = '/static/'
 STATIC_ROOT = normpath(join(BASE_DIR, '.static'))
 STATICFILES_DIRS = (
-    'static'
+    'static',
 )
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 STATICFILES_FINDERS = (
