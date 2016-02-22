@@ -1,3 +1,5 @@
+* Deploy
+** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features
 ** TODO Verbose output on force fetch
 ** TODO force menu cleanup, force menu fetch --from hlebsol

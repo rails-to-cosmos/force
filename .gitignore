@@ -58,4 +58,6 @@ docs/_build/
 target/
 
 # uploads
-/.static/uploads/*
+static/uploads/*
+node_modules
+.static
