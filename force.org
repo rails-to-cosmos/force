@@ -1,3 +1,7 @@
+* Frontend
+** DONE Smooth background
+CLOSED: [2016-02-23 Tue 16:15]
+- State "DONE"       from ""           [2016-02-23 Tue 16:15]
 * Deploy
 ** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features

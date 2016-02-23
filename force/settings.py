@@ -76,7 +76,7 @@ STATICFILES_FINDERS = (
 )
 
 PIPELINE = {
-    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'JS_COMPRESSOR': 'pipeline.compressors.uglifyjs.UglifyJSCompressor',
     'JAVASCRIPT': {
         'site-packages': {
             'source_filenames': (
@@ -106,14 +106,14 @@ PIPELINE = {
             'output_filename': 'menu.js'
         }
     },
-    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'CSS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
     'STYLESHEETS': {
         'site-packages': {
             'source_filenames': (
                 'bootstrap/dist/css/bootstrap.css',
                 # 'bootstrap-less/bootstrap/forms.less'
             ),
-            'output_filename': 'force.css',
+            'output_filename': 'site-packages.css',
         },
         'force': {
             'source_filenames': (

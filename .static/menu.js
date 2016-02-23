@@ -1,1 +1,0 @@
-(function(){var e=React.createClass({displayName:"ProductList",render:function(){return React.createElement("div",{className:"productList"},"Hello there. I'm a React component.")}});ReactDOM.render(React.createElement(e,null),document.getElementById("content"))}).call(this);
