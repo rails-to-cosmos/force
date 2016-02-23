@@ -7,11 +7,6 @@
     "node": "5.6.x"
   },
   "dependencies": {
-    "bootstrap": "^3.3.6",
-    "jquery": "^2.2.1",
-    "react": "^0.14.7",
-    "react-bootstrap": "^0.28.3",
-    "react-dom": "^0.14.7",
     "yuglify": "^0.1.4"
   },
   "scripts": {

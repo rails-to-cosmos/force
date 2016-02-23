@@ -63,7 +63,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = normpath(join(BASE_DIR, '.static'))
 STATICFILES_DIRS = (
     'static',
-    'node_modules',
+    'bower_components',
 )
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
@@ -75,13 +75,12 @@ STATICFILES_FINDERS = (
 )
 
 PIPELINE = {
-    'JS_COMPRESSOR': 'pipeline.compressors.uglifyjs.UglifyJSCompressor',
     'JAVASCRIPT': {
         'site-packages': {
             'source_filenames': (
-                'react/dist/react-with-addons.js',
-                'react-dom/dist/react-dom.js',
-                'react-bootstrap/dist/react-bootstrap.min.js',
+                'react/react-with-addons.min.js',
+                'react/react-dom.min.js',
+                'react-bootstrap/react-bootstrap.min.js',
                 'jquery/dist/jquery.min.js',
             ),
             'output_filename': 'site-packages.js',
@@ -105,12 +104,10 @@ PIPELINE = {
             'output_filename': 'menu.js'
         }
     },
-    'CSS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
     'STYLESHEETS': {
         'site-packages': {
             'source_filenames': (
                 'bootstrap/dist/css/bootstrap.css',
-                # 'bootstrap-less/bootstrap/forms.less'
             ),
             'output_filename': 'site-packages.css',
         },
@@ -135,7 +132,7 @@ PIPELINE = {
     },
     'COMPILERS': (
         'react.utils.pipeline.JSXCompiler',
-        'pipeline.compilers.less.LessCompiler',
+        # 'pipeline.compilers.less.LessCompiler',
         # 'pipeline_browserify.compiler.BrowserifyCompiler'
     ),
 }
