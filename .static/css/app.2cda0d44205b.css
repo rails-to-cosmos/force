@@ -1,0 +1,19 @@
+body {
+  background: url("/static/img/background_gf.308a322efa68.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.myBackground.jpg', sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='myBackground.jpg', sizingMethod='scale')";
+}
+
+div#navigation {
+    /* position: fixed; */
+    width: 100%;
+}
+
+.navbar {
+    background-color: #000000;
+    border-radius: 0px;
+}
