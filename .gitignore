@@ -57,6 +57,7 @@ docs/_build/
 # PyBuilder
 target/
 
-# uploads
+# static files
 static/uploads/*
 node_modules
+.static
