@@ -111,6 +111,7 @@ PIPELINE = {
         'site-packages': {
             'source_filenames': (
                 'bootstrap/dist/css/bootstrap.css',
+                # 'bootstrap-less/bootstrap/forms.less'
             ),
             'output_filename': 'force.css',
         },
@@ -135,6 +136,7 @@ PIPELINE = {
     },
     'COMPILERS': (
         'react.utils.pipeline.JSXCompiler',
+        'pipeline.compilers.less.LessCompiler',
         # 'pipeline_browserify.compiler.BrowserifyCompiler'
     ),
 }
