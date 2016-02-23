@@ -66,8 +66,9 @@ STATICFILES_DIRS = (
     'static',
     'node_modules',
 )
-# STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-STATICFILES_STORAGE = 'django_pipeline_forgiving.storages.PipelineForgivingStorage'
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -109,7 +110,7 @@ PIPELINE = {
     'STYLESHEETS': {
         'site-packages': {
             'source_filenames': (
-                'bootstrap/dist/css/bootstrap.min.css',
+                'bootstrap/dist/css/bootstrap.css',
             ),
             'output_filename': 'force.css',
         },
