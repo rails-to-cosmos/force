@@ -12,7 +12,6 @@ env/
 forcenv/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
