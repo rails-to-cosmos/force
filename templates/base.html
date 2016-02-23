@@ -10,15 +10,22 @@
     <meta name="author" content="Rails to Cosmos">
 
     <!-- styles -->
-    {% stylesheet 'styles' %}
+    {% stylesheet 'site-packages' %}
+    {% stylesheet 'force' %}
+    {% stylesheet 'authorization' %}
 
   </head>
   <body>
-
-    {% block content %}{% endblock %}
+      <!-- <div class="behind-image"></div> -->
+      <div class="background-image"></div>
+      {% block navigation %}{% endblock %}
+      {% block authorization %}{% endblock%}
+      {% block content %}{% endblock %}
 
     <!-- JavaScript scripts -->
-
-    {% javascript 'scripts' %}
+      {% javascript 'site-packages' %}
+      {% javascript 'authorization' %}
+      {% javascript 'force' %}
+      <!--       {% javascript 'menu' %} -->
   </body>
 </html>

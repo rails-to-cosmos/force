@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pipeline',
     'menu',
-    'rest_framework'
+    'authorization',
+    'rest_framework',
 ]
 
 REST_FRAMEWORK = {
@@ -63,8 +64,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = normpath(join(BASE_DIR, '.static'))
 STATICFILES_DIRS = (
     'static',
+    'node_modules',
 )
+
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -72,32 +76,68 @@ STATICFILES_FINDERS = (
 )
 
 PIPELINE = {
-    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'JS_COMPRESSOR': 'pipeline.compressors.uglifyjs.UglifyJSCompressor',
     'JAVASCRIPT': {
-        'scripts': {
+        'site-packages': {
             'source_filenames': (
-                'js/bower_components/react/react-with-addons.js',
-                'js/bower_components/react/react-dom.js',
-
-                'js/bower_components/jquery/dist/jquery.min.js',
-
+                'react/dist/react-with-addons.js',
+                'react-dom/dist/react-dom.js',
+                'react-bootstrap/dist/react-bootstrap.min.js',
+                'jquery/dist/jquery.min.js',
+            ),
+            'output_filename': 'site-packages.js',
+        },
+        'force': {
+            'source_filenames': (
+                'js/NavigationBar.jsx',
+            ),
+            'output_filename': 'force.js',
+        },
+        'authorization': {
+            'source_filenames': (
+                'AuthorizationForm.jsx',
+            ),
+            'output_filename': 'authorization.js'
+        },
+        'menu': {
+            'source_filenames': (
                 'js/ProductList.jsx',
             ),
-            'output_filename': 'build/force.js',
-        },
+            'output_filename': 'menu.js'
+        }
     },
-    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'CSS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
     'STYLESHEETS': {
-        'styles': {
+        'site-packages': {
             'source_filenames': (
-                'css/style.css',
+                'bootstrap/dist/css/bootstrap.css',
+                # 'bootstrap-less/bootstrap/forms.less'
             ),
-            'output_filename': 'build/force.css',
+            'output_filename': 'site-packages.css',
+        },
+        'force': {
+            'source_filenames': (
+                'css/app.css',
+            ),
+            'output_filename': 'force.css',
+        },
+        'authorization': {
+            'source_filenames': (
+                'authorization.css',
+            ),
+            'output_filename': 'authorization.css',
+        },
+        'menu': {
+            'source_filenames': (
+                'css/menu.css',
+            ),
+            'output_filename': 'menu.css',
         },
     },
     'COMPILERS': (
         'react.utils.pipeline.JSXCompiler',
-        'pipeline.compilers.es6.ES6Compiler',
+        'pipeline.compilers.less.LessCompiler',
+        # 'pipeline_browserify.compiler.BrowserifyCompiler'
     ),
 }
 
