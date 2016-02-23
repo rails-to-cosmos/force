@@ -53,7 +53,8 @@
   :kill-signal 'sigkill
   :port 8000
   ;; (spawn-shell (project-buffer-name-by-feature force-project-name "heroku") force-project-dir "heroku run bash --app sizo")
-  :env '(("DATABASE_URL" "postgres://akatovda:qwadzv@localhost:5432/force"))
+  :env '(("DATABASE_URL" "postgres://akatovda:qwadzv@localhost:5432/force")
+         ("DEBUG" "1"))
   :kill-process-buffer-on-stop t)
 (provide 'force)
 ;;; force.el ends here

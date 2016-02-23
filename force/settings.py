@@ -30,9 +30,8 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'jsw!n15v(o^s3r+12%1==rof^#e-v1tq5g%=qvctkcs0+)j&&i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', False)
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
