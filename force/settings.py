@@ -77,7 +77,7 @@ STATICFILES_FINDERS = (
 
 PIPELINE = {
     'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
-    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'CSS_COMPRESSOR': 'pipeline.compressors.cssmin.CSSMinCompressor',
     'JAVASCRIPT': {
         'site-packages': {
             'source_filenames': (
@@ -135,7 +135,7 @@ PIPELINE = {
     },
     'COMPILERS': (
         'react.utils.pipeline.JSXCompiler',
-        # 'pipeline.compilers.less.LessCompiler',
+        'pipeline.compilers.less.LessCompiler',
         # 'pipeline_browserify.compiler.BrowserifyCompiler'
     ),
 }
