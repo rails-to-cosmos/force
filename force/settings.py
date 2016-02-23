@@ -30,8 +30,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'jsw!n15v(o^s3r+12%1==rof^#e-v1tq5g%=qvctkcs0+)j&&i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# os.environ.get('DEBUG', False)
+DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -77,7 +76,7 @@ STATICFILES_FINDERS = (
 
 PIPELINE = {
     'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
-    'CSS_COMPRESSOR': 'pipeline.compressors.cssmin.CSSMinCompressor',
+    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
     'JAVASCRIPT': {
         'site-packages': {
             'source_filenames': (
