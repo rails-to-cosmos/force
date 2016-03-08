@@ -60,3 +60,4 @@ target/
 uploads/*
 node_modules
 static
+.static

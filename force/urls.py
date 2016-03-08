@@ -18,7 +18,10 @@ from django.conf.urls import include, url
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib import admin
+
+import rest_framework
 from rest_framework import routers, serializers, viewsets
+from rest_framework.authtoken import views
 
 
 from authorization.viewsets import UserViewSet
@@ -40,4 +43,6 @@ urlpatterns = [
     url(r'^menu/', include('menu.urls')),
     url(r'^authorization/', include('authorization.urls')),
     url(r'^api/', include(router.urls)),
+    # url(r'^api/auth/', include('rest_framework.urls')),
+    url(r'^api/auth/', views.obtain_auth_token),
 ]
