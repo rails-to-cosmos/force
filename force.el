@@ -5,7 +5,7 @@
       force-project-dir "~/Documents/Stuff/force/"
       force-elconf-buffer (project-buffer-name-by-feature
                            force-project-name
-                           "elcnf")
+                           "elconf")
       force-org-buffer (project-buffer-name-by-feature
                         force-project-name
                         "org")
@@ -15,6 +15,9 @@
       force-prodigy-buffer (project-buffer-name-by-feature
                             "prodigy"
                             force-project-name))
+
+(defun buffer-exists (bufname)
+  (not (eq nil (get-buffer bufname))))
 
 (prodigy-define-service
   :name "Force"
@@ -36,16 +39,17 @@
             (let* ((bpr-process-directory force-project-dir))
               (bpr-spawn "fab deploy")))
           (venv-workon force-project-name)
-          (spawn-shell force-shell-buffer force-project-dir)
-          (find-file (concatenate 'string force-project-dir "/" force-project-name ".el"))
-          (rename-buffer force-elconf-buffer)
-          (find-file (concatenate 'string force-project-dir "/" force-project-name ".org"))
-          (rename-buffer force-org-buffer)
-          (switch-to-buffer force-prodigy-buffer)
-          ;; (delete-other-windows)
-          ;; (split-window-horizontally)
-          ;; (switch-to-buffer force-shell-buffer)
-          )
+          (if (not (buffer-exists force-shell-buffer))
+              (spawn-shell force-shell-buffer force-project-dir))
+          (if (not (buffer-exists force-elconf-buffer))
+              (progn
+                (find-file (concatenate 'string force-project-dir "/" force-project-name ".el"))
+                (rename-buffer force-elconf-buffer)))
+          (if (not (buffer-exists force-org-buffer))
+              (progn
+                (find-file (concatenate 'string force-project-dir "/" force-project-name ".org"))
+                (rename-buffer force-org-buffer)))
+          (switch-to-buffer force-prodigy-buffer))
   :cwd force-project-dir
   :url "http://localhost:8000/"
   :tags '(django react node)

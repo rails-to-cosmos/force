@@ -2,6 +2,12 @@
 ** DONE Smooth background
 CLOSED: [2016-02-23 Tue 16:15]
 - State "DONE"       from ""           [2016-02-23 Tue 16:15]
+** DONE Webpack!
+CLOSED: [2016-03-08 Tue 03:21]
+- State "DONE"       from "TODO"       [2016-03-08 Tue 03:21]
+** CANCELLED Use GULP
+CLOSED: [2016-03-08 Tue 03:20]
+- State "CANCELLED"  from ""           [2016-03-08 Tue 03:20]
 * Deploy
 ** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features

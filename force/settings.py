@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pipeline',
     'menu',
     'authorization',
     'rest_framework',
+    'webpack_loader',
 ]
 
 REST_FRAMEWORK = {
@@ -59,85 +59,27 @@ REST_FRAMEWORK = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
+
 STATIC_URL = '/static/'
-STATIC_ROOT = normpath(join(BASE_DIR, '.static'))
+STATIC_ROOT = normpath(join(BASE_DIR, 'static/build'))
 STATICFILES_DIRS = (
     'static',
     'bower_components',
 )
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
 )
-
-PIPELINE = {
-    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
-    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
-    'JAVASCRIPT': {
-        'site-packages': {
-            'source_filenames': (
-                'react/react-with-addons.min.js',
-                'react/react-dom.min.js',
-                'react-bootstrap/react-bootstrap.min.js',
-                'jquery/dist/jquery.min.js',
-            ),
-            'output_filename': 'site-packages.js',
-        },
-        'force': {
-            'source_filenames': (
-                'js/NavigationBar.jsx',
-            ),
-            'output_filename': 'force.js',
-        },
-        'authorization': {
-            'source_filenames': (
-                'AuthorizationForm.jsx',
-            ),
-            'output_filename': 'authorization.js'
-        },
-        'menu': {
-            'source_filenames': (
-                'js/ProductList.jsx',
-            ),
-            'output_filename': 'menu.js'
-        }
-    },
-    'STYLESHEETS': {
-        'site-packages': {
-            'source_filenames': (
-                'bootstrap/dist/css/bootstrap.css',
-            ),
-            'output_filename': 'site-packages.css',
-        },
-        'force': {
-            'source_filenames': (
-                'css/app.css',
-            ),
-            'output_filename': 'force.css',
-        },
-        'authorization': {
-            'source_filenames': (
-                'authorization.css',
-            ),
-            'output_filename': 'authorization.css',
-        },
-        'menu': {
-            'source_filenames': (
-                'css/menu.css',
-            ),
-            'output_filename': 'menu.css',
-        },
-    },
-    'COMPILERS': (
-        'react.utils.pipeline.JSXCompiler',
-        'pipeline.compilers.less.LessCompiler',
-        # 'pipeline_browserify.compiler.BrowserifyCompiler'
-    ),
-}
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -148,7 +90,6 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'pipeline.middleware.MinifyHTMLMiddleware',
 ]
 
 ROOT_URLCONF = 'force.urls'
