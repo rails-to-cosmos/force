@@ -43,6 +43,5 @@ urlpatterns = [
     url(r'^menu/', include('menu.urls')),
     url(r'^authorization/', include('authorization.urls')),
     url(r'^api/', include(router.urls)),
-    # url(r'^api/auth/', include('rest_framework.urls')),
     url(r'^api/auth/', views.obtain_auth_token),
 ]

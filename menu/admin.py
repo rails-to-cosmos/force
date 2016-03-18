@@ -8,7 +8,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('category_name', 'name', 'cost')
+    list_display = ('category_name', 'name', 'added_fmt', 'cost')
+    list_filter = ('category',)
 
 
 class MenuAdmin(admin.ModelAdmin):
@@ -19,5 +20,4 @@ modules = ((Menu, MenuAdmin),
            (Category, CategoryAdmin),
            (Product, ProductAdmin),
            (Order,))
-
 [admin.site.register(*module) for module in modules]

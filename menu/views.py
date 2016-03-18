@@ -72,7 +72,8 @@ def load_menu_from_file(menu_file):
                 defaults=dict(
                     category=category_obj,
                     weight=product.weight,
-                    compound=product.compound
+                    compound=product.compound,
+                    added=menu.date
                 ))
             xls, created = XLStructure.objects.get_or_create(
                 menu=menu.obj,
