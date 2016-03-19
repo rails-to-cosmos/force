@@ -21,7 +21,7 @@ def authByUsername(request):
         response = JsonResponse({
             'error': 'Specify username and password to continue'
         })
-        response.status_code = 403
+        response.status_code = 401
         return response
 
     user = authenticate(username=username, password=password)
@@ -31,7 +31,7 @@ def authByUsername(request):
             'user': username,
             'password': password
         })
-        response.status_code = 403
+        response.status_code = 401
         return response
 
     if user.is_active:
@@ -48,11 +48,10 @@ def authByUsername(request):
         response.status_code = 403
         return response
 
-def authByToken(request):
-    pass
-
 def logout_view(request):
     logout(request)
-    return JsonResponse({
+    response = JsonResponse({
         'success': 'Successfully logged out'
     })
+    response.status_code = 200
+    return response

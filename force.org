@@ -20,7 +20,9 @@ http://localhost:8000/?schema=N4IgLglmA2CmIC4QGED2A7AZhA5iANOAJ4AO8SqARgFawDGYBI
 CLOSED: [2016-03-19 Sat 15:41]
 - State "DONE"       from "TODO"       [2016-03-19 Sat 15:41]
 ** API
-* STARTED RestAPI
+* DONE RestAPI
+CLOSED: [2016-03-19 Sat 15:44]
+- State "DONE"       from "STARTED"    [2016-03-19 Sat 15:44]
 - State "STARTED"    from "DONE"       [2016-01-19 Tue 00:01]
 - State "DONE"       from "STARTED"    [2016-01-19 Tue 00:01]
 CLOCK: [2016-01-18 Mon 21:17]--[2016-01-19 Tue 00:01] =>  2:44

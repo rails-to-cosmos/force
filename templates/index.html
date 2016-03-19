@@ -1,16 +1,18 @@
+{% extends "base.html" %}
+
 {% load render_bundle from webpack_loader %}
 
+{% block title %}May the force be with you{% endblock %}
+{% block navigation %}<div id="navigation"></div>{% endblock %}
+{% block content %}<div id="menu"></div>{% endblock %}
+
+{% block js %}
 <script>
  var _appData = {
      userId: "{{ userId }}",
+     menuData: "{{ menuData | escapejs }}",
  };
 </script>
-
-{% block title %}May the force be with you{% endblock %}
-
-{% block navigation %}<div id="navigation"></div>{% endblock %}
-{% block authorization %}<div id="authorization"></div>{% endblock %}
-{% block content %}<div id="content"></div>{% endblock %}
-
 {% render_bundle 'main' 'js' %}
-{% render_bundle 'main' 'css' %}
+{% endblock %}
+{% block css %}{% render_bundle 'main' 'css' %}{% endblock %}

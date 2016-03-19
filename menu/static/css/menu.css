@@ -183,7 +183,7 @@ span.inorder-moved {
 
 .fill-it-with-dotes {
     overflow: hidden;
-    letter-spacing: 10px;
+    letter-spacing: 5px;
     direction: rtl;
     padding-right: 5px;
 }

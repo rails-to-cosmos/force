@@ -1,5 +1,3 @@
-{% load pipeline %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,25 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The owls are not what they seem">
     <meta name="author" content="Rails to Cosmos">
-
-    <!-- styles -->
-    {% stylesheet 'site-packages' %}
-    {% stylesheet 'authorization' %}
-    {% stylesheet 'force' %}
-
+    {% block css %}{% endblock %}
   </head>
   <body>
-      <!-- <div class="behind-image"></div> -->
-      <div class="background-image"></div>
       {% block navigation %}{% endblock %}
-      {% block authorization %}{% endblock%}
       {% block content %}{% endblock %}
-
-    <!-- JavaScript scripts -->
-      {% javascript 'site-packages' %}
-      {% javascript 'authorization' %}
-      {% javascript 'force' %}
-      {% javascript 'browserify' %}
-      <!--       {% javascript 'menu' %} -->
+      {% block js %}{% endblock %}
   </body>
 </html>
