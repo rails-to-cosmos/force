@@ -1,5 +1,11 @@
 {% load render_bundle from webpack_loader %}
 
+<script>
+ var _appData = {
+     userId: "{{ userId }}",
+ };
+</script>
+
 {% block title %}May the force be with you{% endblock %}
 
 {% block navigation %}<div id="navigation"></div>{% endblock %}
