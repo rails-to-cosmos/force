@@ -11,30 +11,42 @@ from classes.downloader import download_menu_files
 
 
 def view_menu(request):
+    # if now > 15:00, date__gte now
+    # if now < 15:00, date_gte tomorrow
     menu = Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
+    categories = Category.objects.all().order_by('id').values('id', 'name')
     products = menu.products.all()
 
-    categories_and_products = {}
+    products_grouped = {}
     for product in products:
         try:
-            categories_and_products[product.category.name][:0] = [{
+            # prepend
+            products_grouped[product.category.id][:0] = [{
+                u'id': product.id,
                 u'name': product.name,
                 u'description': product.compound,
                 u'cost': product.cost,
             }]
         except KeyError:
-            categories_and_products[product.category.name] = [{
+            products_grouped[product.category.id] = [{
+                u'id': product.id,
                 u'name': product.name,
                 u'description': product.compound,
                 u'cost': product.cost,
             }]
 
     response = {
+        u'menu': {
+            u'date': '',
+            u'weekday': '',
+        },
         u'products': []
     }
 
-    for category, products in categories_and_products.iteritems():
-        response[u'products'].append([category, products])
+    for category in categories:
+        response['products'].append((category.get('id'),
+                                  category.get('name'),
+                                  products_grouped.get(category.get('id'))))
 
     return JsonResponse(response)
 
