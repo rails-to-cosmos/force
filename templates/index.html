@@ -9,7 +9,10 @@
 {% block js %}
 <script>
  var _appData = {
-     userId: "{{ userId }}",
+     user: {
+         id: "{{ user.id }}",
+         fullname: "{{ user.fullname }}",
+     },
      menuData: "{{ menuData | escapejs }}",
  };
 </script>

@@ -46997,12 +46997,17 @@
 	    displayName: 'AuthorizationForm',
 
 	    getInitialState: function () {
-	        return {
-	            username: '',
-	            password: '',
-	            authorized: _appData.userId != 'None',
-	            passwordValidationState: undefined
+	        console.log(_appData);
+
+	        state = {
+	            authorized: _appData.user.id != 'None'
 	        };
+
+	        if (state.authorized) {
+	            state.fullname = _appData.user.fullname;
+	        }
+
+	        return state;
 	    },
 	    login: function () {
 	        $.ajax({
@@ -47019,6 +47024,7 @@
 	                    username: '',
 	                    password: '',
 	                    authorized: true,
+	                    fullname: data.fullname,
 	                    passwordValidationState: undefined
 	                });
 	            }.bind(this),
@@ -47070,12 +47076,22 @@
 	                'form',
 	                { className: 'authorizationFormContainer' },
 	                React.createElement(
+	                    'span',
+	                    { className: 'greetings' },
+	                    'Добро пожаловать, ',
+	                    React.createElement(
+	                        'a',
+	                        { href: '#' },
+	                        this.state.fullname
+	                    )
+	                ),
+	                React.createElement(
 	                    Button,
 	                    { onClick: this.logout,
 	                        type: 'button',
 	                        bsStyle: 'danger',
 	                        bsSize: 'small' },
-	                    'Exit'
+	                    'Выход'
 	                )
 	            );
 	        } else {
@@ -47085,7 +47101,7 @@
 	                React.createElement(Input, { ref: 'username',
 	                    type: 'text',
 	                    bsSize: 'small',
-	                    placeholder: 'Login',
+	                    placeholder: 'Имя пользователя',
 	                    defaultValue: this.state.username,
 	                    onChange: this.updateUsername,
 	                    autoFocus: 'True',
@@ -47095,7 +47111,7 @@
 	                    type: 'password',
 	                    bsStyle: this.state.passwordValidationState,
 	                    bsSize: 'small',
-	                    placeholder: 'Password',
+	                    placeholder: 'Пароль',
 	                    defaultValue: this.state.password,
 	                    onChange: this.updatePassword,
 	                    onKeyDown: this.maybeSendForm }),
@@ -47106,7 +47122,7 @@
 	                        type: 'button',
 	                        bsStyle: 'success',
 	                        bsSize: 'small' },
-	                    'Login'
+	                    'Вход'
 	                )
 	            );
 	        }
@@ -47303,7 +47319,7 @@
 
 
 	// module
-	exports.push([module.id, ".w {\n    position: relative;\n}\n\nh1 {\n    cursor: default;\n}\n\nh2.on-flow-panel {\n    font-size: 150%;\n    margin-bottom: 3pt;\n}\n\n.admin-gadgets {\n    margin-bottom: 5pt;\n}\n\n.admin-gadgets h2 {\n    margin-bottom: 0pt;\n}\n\n.admin-gadgets a {\n    margin: 0pt 5pt 5pt 0pt;\n}\n\n.content {\n    max-width: 800px;\n    min-width: 650px;\n    position: relative;\n}\n\n.menu-category {\n    cursor: default;\n    margin-top: 1.5em;\n    margin-bottom: 0.75em;\n    font-size: 100%;\n    height: 50px;\n}\n\n.menu-item {\n    position: relative;\n    margin-bottom: 1em;\n    cursor: pointer;\n    font-size: 80%;\n\n    height: 25px;\n\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    -ms-user-select:none;\n    user-select:none;\n    -o-user-select:none;\n}\n\nlabel.ordered {\n    display: none;\n    /* background-color: #FFFFCC; */\n    /* color: lightgreen; */\n    border-radius: 5px;\n    padding: 0px 5px;\n    position: absolute;\n    left: -20px;\n    top: -1px;\n    width: 15px;\n    height: 15px;\n}\n\n.menu-item.ordered {\n\n}\n\n.menu-item.ordered label.ordered{\n    display: inline;\n}\n\n\n.menu-item:hover {\n    color: #CC3333\n}\n\n.menu-item:active {\n    color: #660000\n}\n\n.product-weight {\n    color: #CC6633;\n    font-size: 100%;\n    display: none;\n}\n\n.product-cost {\n\n}\n\n.product-compound {\n    display: block;\n    font-size: 80%;\n    font-style: italic;\n    margin-left: 10pt;\n    position: relative;\n    top: -5px\n}\n\n.menu-item-container {\n    position: relative;\n}\n\n.product-cancel {\n    float: left;\n    padding: 4px 0px 0px 0px;\n    cursor: pointer;\n    position: absolute;\n    left: -25px;\n}\n\n.sales-receipt {\n    /* width: 320px; */\n    height: 400px;\n    position: absolute;\n    left: 825px;\n    top: 100px;\n    font-size: 70%;\n    padding: 0px 10px 0px 10px;\n}\n\n.sales-receipt.fixed {\n    position: fixed;\n    top: 0px;\n}\n\n#total-cost span, #prev-total-cost span {\n    border-top: 1px solid black;\n}\n\n#order-table, #prev-order-table {\n    max-width: 450px\n}\n\n#order-table tr, #prev-order-table tr {\n    margin: 5px;\n}\n\n.order-label {\n    /* margin-bottom: 5px; */\n}\n\n.prev-order-label {\n    margin-bottom: 5px;\n}\n\n.hidden {\n    display: none;\n}\n\ntable tr td {\n    line-height: 1.5;\n}\n\n.td-food-inner {\n    padding: 0px 10px 5px 0px;\n}\n\nspan.free-delivery {\n    background: #CCFFCC;\n}\n\nspan.expensive-delivery {\n    background: #FFCCCC;\n}\n\nspan.cheap-delivery {\n    background: #FFFFCC;\n}\n\nspan.inorder-highlighted {\n    padding: 2px 4px;\n}\n\nspan.inorder-moved {\n    position: relative;\n    left: -2px;\n}\n\n.fill-it-with-dotes {\n    overflow: hidden;\n    letter-spacing: 5px;\n    direction: rtl;\n    padding-right: 5px;\n}\n\n.product-name {\n    position: relative;\n}\n\ntable.menu-item-container {\n    max-width: 700px;\n    width: 700px;\n}\n\ntd.product-cost {\n    white-space: nowrap;\n}\n", ""]);
+	exports.push([module.id, "div.product {\n    width: 300px;\n    cursor: pointer;\n}\n\ndiv.productName {\n    font-weight: bold;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}", ""]);
 
 	// exports
 
@@ -47356,13 +47372,9 @@
 	    },
 	    render: function () {
 	        return React.createElement(
-	            'p',
+	            'div',
 	            { className: 'productName' },
-	            React.createElement(
-	                'strong',
-	                null,
-	                this.props.value
-	            )
+	            this.props.value
 	        );
 	    }
 	});

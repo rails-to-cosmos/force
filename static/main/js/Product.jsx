@@ -5,7 +5,7 @@ var Name = React.createClass({
         };
     },
     render: function() {
-        return (<p className="productName"><strong>{this.props.value}</strong></p>)
+        return (<div className="productName">{this.props.value}</div>)
     }
 });
 

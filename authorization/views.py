@@ -37,7 +37,10 @@ def authByUsername(request):
     if user.is_active:
         login(request, user)
         response = JsonResponse({
-            'success': 'Successfully authorized'
+            'success': 'Successfully authorized',
+            'fullname': u'{first_name} {last_name}'.format(
+                first_name=user.first_name,
+                last_name=user.last_name)
         })
         response.status_code = 200
         return response

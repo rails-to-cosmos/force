@@ -13,10 +13,19 @@ CLOSED: [2016-03-19 Sat 22:04]
 * Deploy
 ** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features
+** Цитаты: в тюрьме сейчас ужин, макороны.
+- украл, выпил, в тюрьму!
+- Дмитрий Андреевич, тут такое дело...
+- Дмитрий Андреевич, мы вот по какому вопросу...
+- Дмитрий Андреевич, у нас на вас кое-что есть...
+- Дмитрий Андреевич, люди разное говорят...
+- Что ты тут ищешь?
 ** [[http://react-components.com/component/react-socials][react-socials]]
 ** [[http://react-components.com/component/react-native-local-auth][react-native-local-auth]]
 ** from https://khan.github.io/react-components/#button-group:
 - tooltip/info-tip
+** TODO Override user model
+- https://docs.djangoproject.com/en/1.9/topics/auth/customizing/
 ** TODO product hash
 ** TODO Verbose output on force fetch
 ** TODO force menu cleanup, force menu fetch --from hlebsol

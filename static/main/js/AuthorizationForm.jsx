@@ -4,12 +4,17 @@ var Button = require('react-bootstrap').Button;
 var Input = require('react-bootstrap').Input;
 var AuthorizationForm = React.createClass({
     getInitialState: function() {
-        return {
-            username: '',
-            password: '',
-            authorized: _appData.userId != 'None',
-            passwordValidationState: undefined,
+        console.log(_appData);
+
+        state = {
+            authorized: _appData.user.id != 'None',
         }
+
+        if (state.authorized) {
+            state.fullname = _appData.user.fullname;
+        }
+
+        return state
     },
     login: function() {
         $.ajax({
@@ -26,6 +31,7 @@ var AuthorizationForm = React.createClass({
                     username: '',
                     password: '',
                     authorized: true,
+                    fullname: data.fullname,
                     passwordValidationState: undefined,
                 });
             }.bind(this),
@@ -75,10 +81,13 @@ var AuthorizationForm = React.createClass({
         if (this.state.authorized) {
             return (
                 <form className="authorizationFormContainer">
+                    <span className="greetings">
+                        Добро пожаловать, <a href="#">{this.state.fullname}</a>
+                    </span>
                     <Button onClick={this.logout}
                             type="button"
                             bsStyle="danger"
-                            bsSize="small">Exit</Button>
+                            bsSize="small">Выход</Button>
                 </form>
             );
         } else {
@@ -87,7 +96,7 @@ var AuthorizationForm = React.createClass({
                     <Input ref="username"
                            type="text"
                            bsSize="small"
-                           placeholder="Login"
+                           placeholder="Имя пользователя"
                            defaultValue={this.state.username}
                            onChange={this.updateUsername}
                            autoFocus="True"
@@ -97,7 +106,7 @@ var AuthorizationForm = React.createClass({
                            type="password"
                            bsStyle={this.state.passwordValidationState}
                            bsSize="small"
-                           placeholder="Password"
+                           placeholder="Пароль"
                            defaultValue={this.state.password}
                            onChange={this.updatePassword}
                            onKeyDown={this.maybeSendForm}/>
@@ -105,7 +114,7 @@ var AuthorizationForm = React.createClass({
                     <Button onClick={this.login}
                             type="button"
                             bsStyle="success"
-                            bsSize="small">Login</Button>
+                            bsSize="small">Вход</Button>
                 </form>
             );
         }
