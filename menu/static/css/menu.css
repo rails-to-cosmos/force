@@ -3,10 +3,18 @@ div.product {
     cursor: pointer;
 }
 
+div.product:hover {
+    background-color: #ccc;
+}
+
 div.productName {
     font-weight: bold;
 }
 
 span.greetings {
+    margin-right: 15px;
+}
+
+span.myorders {
     margin-right: 15px;
 }

@@ -1,5 +1,10 @@
 require('jquery.cookie');
 
+var Navbar = require('react-bootstrap').Navbar;
+var Nav = require('react-bootstrap').Nav;
+var NavItem = require('react-bootstrap').NavItem;
+
+
 var Button = require('react-bootstrap').Button;
 var Input = require('react-bootstrap').Input;
 var AuthorizationForm = React.createClass({
@@ -80,19 +85,21 @@ var AuthorizationForm = React.createClass({
     render: function() {
         if (this.state.authorized) {
             return (
-                <form className="authorizationFormContainer">
-                    <span className="greetings">
-                        Добро пожаловать, <a href="#">{this.state.fullname}</a>
-                    </span>
-                    <Button onClick={this.logout}
-                            type="button"
-                            bsStyle="danger"
-                            bsSize="small">Выход</Button>
-                </form>
+                <Navbar.Collapse>
+                    <Navbar.Form pullRight>
+                        <Button onClick={this.logout}
+                                type="button"
+                                bsStyle="danger"
+                                bsSize="small">Выход</Button>
+                    </Navbar.Form>
+                    <Navbar.Text pullRight>
+                        Добро пожаловать, <Navbar.Link href="#">{this.state.fullname}</Navbar.Link>
+                    </Navbar.Text>
+                </Navbar.Collapse>
             );
         } else {
             return (
-                <form className="authorizationFormContainer">
+                <Navbar.Form pullRight>
                     <Input ref="username"
                            type="text"
                            bsSize="small"
@@ -115,7 +122,7 @@ var AuthorizationForm = React.createClass({
                             type="button"
                             bsStyle="success"
                             bsSize="small">Вход</Button>
-                </form>
+                </Navbar.Form>
             );
         }
     }

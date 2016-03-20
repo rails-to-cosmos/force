@@ -29884,6 +29884,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Navbar = __webpack_require__(170).Navbar;
+	var Nav = __webpack_require__(170).Nav;
+	var NavItem = __webpack_require__(170).NavItem;
+	var NavDropdown = __webpack_require__(170).NavDropdown;
+	var MenuItem = __webpack_require__(170).MenuItem;
+
 	var AuthorizationForm = __webpack_require__(414);
 	var NavigationBar = React.createClass({
 	    displayName: 'NavigationBar',
@@ -29895,17 +29900,129 @@
 	            React.createElement(
 	                Navbar.Header,
 	                null,
-	                React.createElement(Navbar.Toggle, null)
+	                React.createElement(
+	                    Navbar.Brand,
+	                    null,
+	                    React.createElement(
+	                        'a',
+	                        { href: '#' },
+	                        'СИЗО ',
+	                        React.createElement(
+	                            'sup',
+	                            null,
+	                            'с тобой до конца'
+	                        )
+	                    )
+	                )
 	            ),
 	            React.createElement(
-	                Navbar.Collapse,
+	                Nav,
 	                null,
 	                React.createElement(
-	                    Navbar.Form,
-	                    { pullRight: true },
-	                    React.createElement(AuthorizationForm, null)
+	                    NavDropdown,
+	                    { eventKey: 1, title: 'Админские примочки', id: 'basic-nav-dropdown' },
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.6 },
+	                        'Оповещение: Привезли обеды'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.7 },
+	                        'Оповещение: Деньги за обеды'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.8 },
+	                        'Оповещение: Отправка через 10 минут'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.4 },
+	                        'Загрузить меню на следующую неделю'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отправить меню'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отправить меню через десять минут'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отложить отправку меню на пять минут'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.1 },
+	                        'Закрыть меню'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.2 },
+	                        'Заказы на сегодня'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.3 },
+	                        'Неоплаченные заказы (1)'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.4 },
+	                        'Поставщики'
+	                    )
+	                ),
+	                React.createElement(
+	                    NavItem,
+	                    { eventKey: 1, href: '#' },
+	                    'Мои заказы ',
+	                    React.createElement(
+	                        'sup',
+	                        null,
+	                        '(',
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            '1'
+	                        ),
+	                        ')'
+	                    )
+	                ),
+	                React.createElement(
+	                    NavDropdown,
+	                    { eventKey: 3, title: 'Чек', id: 'basic-nav-dropdown' },
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 3.1 },
+	                        'Макороны.........................5 руб'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 3.2 },
+	                        'Another action'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 3.3 },
+	                        'Something else here'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 3.3 },
+	                        'Итог: 350 рублей'
+	                    )
 	                )
-	            )
+	            ),
+	            React.createElement(AuthorizationForm, null)
 	        );
 	    }
 	});
@@ -46991,6 +47108,10 @@
 
 	__webpack_require__(415);
 
+	var Navbar = __webpack_require__(170).Navbar;
+	var Nav = __webpack_require__(170).Nav;
+	var NavItem = __webpack_require__(170).NavItem;
+
 	var Button = __webpack_require__(170).Button;
 	var Input = __webpack_require__(170).Input;
 	var AuthorizationForm = React.createClass({
@@ -47073,31 +47194,35 @@
 	    render: function () {
 	        if (this.state.authorized) {
 	            return React.createElement(
-	                'form',
-	                { className: 'authorizationFormContainer' },
+	                Navbar.Collapse,
+	                null,
 	                React.createElement(
-	                    'span',
-	                    { className: 'greetings' },
-	                    'Добро пожаловать, ',
+	                    Navbar.Form,
+	                    { pullRight: true },
 	                    React.createElement(
-	                        'a',
-	                        { href: '#' },
-	                        this.state.fullname
+	                        Button,
+	                        { onClick: this.logout,
+	                            type: 'button',
+	                            bsStyle: 'danger',
+	                            bsSize: 'small' },
+	                        'Выход'
 	                    )
 	                ),
 	                React.createElement(
-	                    Button,
-	                    { onClick: this.logout,
-	                        type: 'button',
-	                        bsStyle: 'danger',
-	                        bsSize: 'small' },
-	                    'Выход'
+	                    Navbar.Text,
+	                    { pullRight: true },
+	                    'Добро пожаловать, ',
+	                    React.createElement(
+	                        Navbar.Link,
+	                        { href: '#' },
+	                        this.state.fullname
+	                    )
 	                )
 	            );
 	        } else {
 	            return React.createElement(
-	                'form',
-	                { className: 'authorizationFormContainer' },
+	                Navbar.Form,
+	                { pullRight: true },
 	                React.createElement(Input, { ref: 'username',
 	                    type: 'text',
 	                    bsSize: 'small',
@@ -47260,6 +47385,8 @@
 
 	__webpack_require__(417);
 
+	var DropdownButton = __webpack_require__(170).DropdownButton;
+	var MenuItem = __webpack_require__(170).MenuItem;
 	var Category = __webpack_require__(419);
 	var Menu = React.createClass({
 	    displayName: 'Menu',
@@ -47268,10 +47395,30 @@
 	        return React.createElement(
 	            'div',
 	            { className: 'menu' },
+	            'Меню на ',
 	            React.createElement(
-	                'h3',
-	                null,
-	                'Меню на понедельник'
+	                DropdownButton,
+	                { bsStyle: 'link', title: 'понедельник' },
+	                React.createElement(
+	                    MenuItem,
+	                    { eventKey: '1' },
+	                    'вторник'
+	                ),
+	                React.createElement(
+	                    MenuItem,
+	                    { eventKey: '2' },
+	                    'среду'
+	                ),
+	                React.createElement(
+	                    MenuItem,
+	                    { eventKey: '3' },
+	                    'четверг'
+	                ),
+	                React.createElement(
+	                    MenuItem,
+	                    { eventKey: '4' },
+	                    'пятницу'
+	                )
 	            ),
 	            this.props.products.map(function (category) {
 	                return React.createElement(Category, { key: category[0],
@@ -47319,7 +47466,7 @@
 
 
 	// module
-	exports.push([module.id, "div.product {\n    width: 300px;\n    cursor: pointer;\n}\n\ndiv.productName {\n    font-weight: bold;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}", ""]);
+	exports.push([module.id, "div.product {\n    width: 300px;\n    cursor: pointer;\n}\n\ndiv.product:hover {\n    background-color: #ccc;\n}\n\ndiv.productName {\n    font-weight: bold;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}\n\nspan.myorders {\n    margin-right: 15px;\n}", ""]);
 
 	// exports
 

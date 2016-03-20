@@ -1,11 +1,18 @@
 require('menu.css');
 
+var DropdownButton = require('react-bootstrap').DropdownButton;
+var MenuItem = require('react-bootstrap').MenuItem;
 var Category = require('./Category');
 var Menu = React.createClass({
     render: function() {
         return (
             <div className="menu">
-                <h3>Меню на понедельник</h3>
+                Меню на <DropdownButton bsStyle="link" title="понедельник">
+                    <MenuItem eventKey="1">вторник</MenuItem>
+                    <MenuItem eventKey="2">среду</MenuItem>
+                    <MenuItem eventKey="3">четверг</MenuItem>
+                    <MenuItem eventKey="4">пятницу</MenuItem>
+                </DropdownButton>
                 {
                     this.props.products.map(function(category){
                         return (<Category key={category[0]}
