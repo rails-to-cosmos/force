@@ -28,9 +28,13 @@ class Product(models.Model):
     cost = models.PositiveIntegerField(default=0)
     name = models.CharField(max_length=255)
     popularity = models.PositiveIntegerField(default=0, blank=True)
+    added = models.DateTimeField('added')
 
     def __unicode__(self):
         return self.name
+
+    def added_fmt(self):
+        return self.added.strftime('%d.%m.%Y')
 
     def category_name(self):
         return self.category.name

@@ -1,6 +1,7 @@
 ;;; force.el -- food ordering system
 ;;; Commentary:
 ;;; Code:
+
 (setq force-project-name "force"
       force-project-dir "~/Documents/Stuff/force/"
       force-elconf-buffer (project-buffer-name-by-feature
@@ -24,6 +25,14 @@
   :command "~/.virtualenvs/force/bin/python"
   :args '("manage.py" "runserver")
   :init (lambda ()
+          (prodigy-define-service
+            :name "Force: Webpack Observer"
+            :command "node"
+            :args '("./node_modules/webpack/bin/webpack.js" "--watch")
+            :cwd (concat force-project-dir)
+            :stop-signal 'kill
+            :kill-signal 'sigkill
+            :kill-process-buffer-on-stop t)
           (defun force-menu-cleanup ()
             (interactive)
             (bpr-spawn "force cleanup"))
@@ -38,7 +47,7 @@
             (interactive)
             (let* ((bpr-process-directory force-project-dir))
               (bpr-spawn "fab deploy")))
-          (venv-workon force-project-name)
+          (pyvenv-workon force-project-name)
           (if (not (buffer-exists force-shell-buffer))
               (spawn-shell force-shell-buffer force-project-dir))
           (if (not (buffer-exists force-elconf-buffer))
@@ -56,7 +65,6 @@
   :stop-signal 'kill
   :kill-signal 'sigkill
   :port 8000
-  ;; (spawn-shell (project-buffer-name-by-feature force-project-name "heroku") force-project-dir "heroku run bash --app sizo")
   :env '(("DATABASE_URL" "postgres://akatovda:qwadzv@localhost:5432/force")
          ("DEBUG" "1"))
   :kill-process-buffer-on-stop t)

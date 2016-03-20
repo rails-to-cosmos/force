@@ -18,7 +18,12 @@ from django.conf.urls import include, url
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib import admin
+
+from views import index
+
+import rest_framework
 from rest_framework import routers, serializers, viewsets
+from rest_framework.authtoken import views
 
 
 from authorization.viewsets import UserViewSet
@@ -36,8 +41,9 @@ router.register(r'category', CategoryViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name='index.html')),
+    url(r'^$', index),
     url(r'^menu/', include('menu.urls')),
-    url(r'^authorization/', include('authorization.urls')),
+    url(r'^auth/', include('authorization.urls')),
     url(r'^api/', include(router.urls)),
+    url(r'^api/auth/', views.obtain_auth_token),
 ]

@@ -30,7 +30,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'jsw!n15v(o^s3r+12%1==rof^#e-v1tq5g%=qvctkcs0+)j&&i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False)
+DEBUG = os.environ.get('DEBUG', True)
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -45,16 +45,22 @@ INSTALLED_APPS = [
     'menu',
     'authorization',
     'rest_framework',
+    'rest_framework.authtoken',
     'webpack_loader',
 ]
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
 }
+
+# LOGIN_REDIRECT_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
@@ -158,6 +164,7 @@ USE_TZ = True
 
 
 # Parse database configuration from $DATABASE_URL
+os.environ['DATABASE_URL'] = 'postgres://akatovda:qwadzv@localhost:5432/force'
 DATABASES['default'] = dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
