@@ -44,9 +44,10 @@ def view_menu(request):
     }
 
     for category in categories:
+        category_products = products_grouped.get(category.get('id'), [])
         response['products'].append((category.get('id'),
-                                  category.get('name'),
-                                  products_grouped.get(category.get('id'))))
+                                     category.get('name'),
+                                     category_products))
 
     return JsonResponse(response)
 

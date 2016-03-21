@@ -7,7 +7,7 @@ var Menu = React.createClass({
     render: function() {
         return (
             <div className="menu">
-                Меню на <DropdownButton bsStyle="link" title="понедельник">
+                Меню на <DropdownButton bsStyle="link" title="понедельник" eventKey="1" id="1">
                     <MenuItem eventKey="1">вторник</MenuItem>
                     <MenuItem eventKey="2">среду</MenuItem>
                     <MenuItem eventKey="3">четверг</MenuItem>

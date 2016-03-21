@@ -47398,7 +47398,7 @@
 	            'Меню на ',
 	            React.createElement(
 	                DropdownButton,
-	                { bsStyle: 'link', title: 'понедельник' },
+	                { bsStyle: 'link', title: 'понедельник', eventKey: '1', id: '1' },
 	                React.createElement(
 	                    MenuItem,
 	                    { eventKey: '1' },
