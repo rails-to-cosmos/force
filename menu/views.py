@@ -10,6 +10,42 @@ from classes.manager import MenuManager
 from classes.downloader import download_menu_files
 
 
+def load_menu_from_file(menu_file):
+        manager = MenuManager()
+        manager.add_menus_from_file(menu_file)
+        menus = manager.menus
+        for menu in menus:
+            menu.obj, created = Menu.objects.get_or_create(date=menu.date)
+            for product in menu.products:
+                category_obj, created = Category.objects.get_or_create(
+                    name=product.category)
+                product.obj, created = Product.objects.get_or_create(
+                    cost=product.cost,
+                    name=product.name,
+                    hash=product.hash,
+                    defaults=dict(
+                        category=category_obj,
+                        weight=product.weight,
+                        compound=product.compound,
+                        added=menu.date
+                    ))
+                xls, created = XLStructure.objects.get_or_create(
+                    menu=menu.obj,
+                    product=product.obj,
+                    position=product.position)
+            menu.obj.products = [product.obj for product in menu.products]
+            menu.obj.save()
+
+
+def fetch_menu():
+        menu_files = download_menu_files()
+        for menu_file in menu_files:
+            load_menu_from_file(menu_file)
+
+        # TODO return not only boolean
+        return True
+
+
 def view_menu(request):
     # if now > 15:00, date__gte now
     # if now < 15:00, date_gte tomorrow
@@ -53,39 +89,6 @@ def view_menu(request):
 
 @login_required
 def load_menu(request):
-    def load_menu_from_file(menu_file):
-        manager = MenuManager()
-        manager.add_menus_from_file(menu_file)
-        menus = manager.menus
-        for menu in menus:
-            menu.obj, created = Menu.objects.get_or_create(date=menu.date)
-            for product in menu.products:
-                category_obj, created = Category.objects.get_or_create(
-                    name=product.category)
-                product.obj, created = Product.objects.get_or_create(
-                    cost=product.cost,
-                    name=product.name,
-                    defaults=dict(
-                        category=category_obj,
-                        weight=product.weight,
-                        compound=product.compound,
-                        added=menu.date
-                    ))
-                xls, created = XLStructure.objects.get_or_create(
-                    menu=menu.obj,
-                    product=product.obj,
-                    position=product.position)
-                menu.obj.products = [product.obj for product in menu.products]
-                menu.obj.save()
-
-    def fetch_menu():
-        menu_files = download_menu_files()
-        for menu_file in menu_files:
-            load_menu_from_file(menu_file)
-
-        # TODO return not only boolean
-        return True
-
     if fetch_menu():
         response = JsonResponse({
             'success': u'Menu successfully loaded'

@@ -3,6 +3,7 @@ var Nav = require('react-bootstrap').Nav;
 var NavItem = require('react-bootstrap').NavItem;
 var NavDropdown = require('react-bootstrap').NavDropdown;
 var MenuItem = require('react-bootstrap').MenuItem;
+var Badge = require('react-bootstrap').Badge;
 
 
 var AuthorizationForm = require('./AuthorizationForm')
@@ -32,7 +33,7 @@ var AuthorizationForm = require('./AuthorizationForm')
                             <MenuItem divider />
                             <MenuItem eventKey={1.4}>Поставщики</MenuItem>
                         </NavDropdown>
-                        <NavItem eventKey={1} href="#">Мои заказы <sup>(<b>1</b>)</sup></NavItem>
+                        <NavItem eventKey={1} href="#">Мои заказы <Badge>2</Badge></NavItem>
                         <NavDropdown eventKey={3} title="Чек" id="basic-nav-dropdown">
                             <MenuItem eventKey={3.1}>Макороны.........................5 руб</MenuItem>
                             <MenuItem eventKey={3.2}>Another action</MenuItem>

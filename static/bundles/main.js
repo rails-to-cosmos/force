@@ -29888,6 +29888,7 @@
 	var NavItem = __webpack_require__(170).NavItem;
 	var NavDropdown = __webpack_require__(170).NavDropdown;
 	var MenuItem = __webpack_require__(170).MenuItem;
+	var Badge = __webpack_require__(170).Badge;
 
 	var AuthorizationForm = __webpack_require__(414);
 	var NavigationBar = React.createClass({
@@ -29985,15 +29986,9 @@
 	                    { eventKey: 1, href: '#' },
 	                    'Мои заказы ',
 	                    React.createElement(
-	                        'sup',
+	                        Badge,
 	                        null,
-	                        '(',
-	                        React.createElement(
-	                            'b',
-	                            null,
-	                            '1'
-	                        ),
-	                        ')'
+	                        '2'
 	                    )
 	                ),
 	                React.createElement(

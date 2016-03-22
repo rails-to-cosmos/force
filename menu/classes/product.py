@@ -8,6 +8,7 @@ class Product(object):
         self.position = 0
         self.menu = None
         self.obj = None
+        self.hash = ''
 
     def __repr__(self):
         return self.name.encode('utf-8')

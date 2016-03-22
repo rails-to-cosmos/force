@@ -29,6 +29,9 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     popularity = models.PositiveIntegerField(default=0, blank=True)
     added = models.DateTimeField('added')
+    hash = models.CharField(max_length=255, unique=True)
+    description = models.CharField(max_length=1024, default='', blank=True)
+    tags = models.CharField(max_length=1024, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -38,9 +41,6 @@ class Product(models.Model):
 
     def category_name(self):
         return self.category.name
-
-    class Meta:
-        unique_together = ('name', 'cost')
 
 
 class Menu(models.Model):

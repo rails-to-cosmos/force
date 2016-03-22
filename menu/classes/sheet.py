@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
+import mmh3
+
 from django.utils import timezone
 from datetime import datetime
 from product import Product
@@ -41,6 +43,9 @@ class Sheet(object):
         product.name = product.name.strip()
         product.cost = self.parse_product_cost(row)
         product.name = re.sub(' +', ' ', product.name)
+        product.hash = mmh3.hash(product.name.encode('utf-8') +
+                                 product.compound.encode('utf-8') +
+                                 product.weight.encode('utf-8'))
         return product
 
     def parse_category(self, row):

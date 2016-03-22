@@ -8,8 +8,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('category_name', 'name', 'added_fmt', 'cost')
+    list_display = ('category_name', 'name', 'compound', 'description', 'cost')
     list_filter = ('category',)
+    search_fields = ('name', 'description', 'compound')
 
 
 class MenuAdmin(admin.ModelAdmin):

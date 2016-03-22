@@ -2,6 +2,11 @@
 
 * Menu designs
 http://www.creativebloq.com/design/creative-menu-designs-1131620
+** Вёрстку таблицы взять отсюда: http://elemental-ui.com/css
+** Или отсюда: http://www.material-ui.com/#/components/table
+** Fuzzy-поиск отсюда: http://www.material-ui.com/#/components/auto-complete
+** Бейджи тоже отсюда: http://www.material-ui.com/#/components/badge
+** Поповеры отсюда: http://www.material-ui.com/#/components/popover
 * Deploy
 ** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features
@@ -18,7 +23,10 @@ http://www.creativebloq.com/design/creative-menu-designs-1131620
 - tooltip/info-tip
 ** TODO Override user model
 - https://docs.djangoproject.com/en/1.9/topics/auth/customizing/
-** TODO product hash
+** DONE product hash
+CLOSED: [2016-03-22 Tue 23:06]
+- State "DONE"       from "STARTED"    [2016-03-22 Tue 23:06]
+CLOCK: [2016-03-22 Tue 22:25]--[2016-03-22 Tue 23:06] =>  0:41
 ** TODO Verbose output on force fetch
 ** TODO force menu cleanup, force menu fetch --from hlebsol
 ** TODO force menu list-providers
@@ -28,3 +36,6 @@ http://localhost:8000/?schema=N4IgLglmA2CmIC4QGED2A7AZhA5iANOAJ4AO8SqARgFawDGYBI
 ** http://lunch-time.ru/menu/print-current
 ** http://netgoloda.ru/zakazat-obed.html?date=22-01-2016
 ** http://www.obed-v-ofis.ru/menu-goryachie-obedy.php
+* Раскрутка
+** Офисы
+** Отели

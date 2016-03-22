@@ -47,7 +47,7 @@
             (interactive)
             (let* ((bpr-process-directory force-project-dir))
               (bpr-spawn "fab deploy")))
-          (pyvenv-workon force-project-name)
+          (venv-workon force-project-name)
           (if (not (buffer-exists force-shell-buffer))
               (spawn-shell force-shell-buffer force-project-dir))
           (if (not (buffer-exists force-elconf-buffer))
