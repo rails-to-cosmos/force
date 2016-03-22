@@ -10,6 +10,7 @@ from django.utils import timezone
 def download_menu_files():
     menu_files = list()
     site_url = "http://hleb-sol.biz"
+
     wpp = WebPageProcessor()
     wpp.add_action(
         _type=Action.AT_FAST_DOWNLOAD,
@@ -25,6 +26,7 @@ def download_menu_files():
     )
     wpp.run()
     links = wpp.get_result()
+
     for lind, link in enumerate(links):
         rel_url = link.get('link')
         abs_url = site_url + rel_url
@@ -34,4 +36,5 @@ def download_menu_files():
                                            di=lind)
         urllib.urlretrieve(abs_url, upload_dir+filename)
         menu_files.append(upload_dir+filename)
+
     return menu_files

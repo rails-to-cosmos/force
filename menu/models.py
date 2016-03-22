@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals
 
+import mmh3
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
@@ -41,6 +43,12 @@ class Product(models.Model):
 
     def category_name(self):
         return self.category.name
+
+    @staticmethod
+    def calculate_hash(name, compound, weight):
+        return mmh3.hash(name.encode('utf-8') +
+                         compound.encode('utf-8') +
+                         weight.encode('utf-8'))
 
 
 class Menu(models.Model):

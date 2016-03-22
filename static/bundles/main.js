@@ -47113,8 +47113,6 @@
 	    displayName: 'AuthorizationForm',
 
 	    getInitialState: function () {
-	        console.log(_appData);
-
 	        state = {
 	            authorized: _appData.user.id != 'None'
 	        };

@@ -9,8 +9,6 @@ var Button = require('react-bootstrap').Button;
 var Input = require('react-bootstrap').Input;
 var AuthorizationForm = React.createClass({
     getInitialState: function() {
-        console.log(_appData);
-
         state = {
             authorized: _appData.user.id != 'None',
         }

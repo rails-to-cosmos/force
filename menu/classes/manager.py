@@ -1,18 +1,18 @@
 import xlrd
-from menu import Menu
-from sheet import Sheet
+from menu.classes.sheet import Sheet
 
 
 class MenuManager(object):
     def __init__(self):
-        self.menus = list()
+        self.menus = {}
 
     def add_menus_from_file(self, filename):
         read_xls = xlrd.open_workbook(filename, formatting_info=True)
-
         for sheet_index in xrange(read_xls._all_sheets_count):
-            menu = Menu()
             sheet = Sheet(read_xls.sheet_by_index(sheet_index))
-            menu.date = sheet.parse_date()
-            menu.products = sheet.parse_products()
-            self.menus.append(menu)
+            try:
+                date = sheet.get_menu_date()
+                products = sheet.get_products()
+            except IndexError:
+                raise Exception('Invalid menu format!')
+            self.menus[date] = products

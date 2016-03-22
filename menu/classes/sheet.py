@@ -1,52 +1,54 @@
 # -*- coding: utf-8 -*-
 import re
-import mmh3
 
 from django.utils import timezone
 from datetime import datetime
-from product import Product
 
 
 class Sheet(object):
     def __init__(self, xlsheet):
         self.xlsheet = xlsheet
 
-    def parse_date(self):
+    def get_menu_date(self):
         menu_date = re.findall(r'\d{2}.\d{2}.\d{2}',
                                self.xlsheet.cell_value(0, 1)).pop()
         current_tz = timezone.get_current_timezone()
-        result_date = datetime.strptime(menu_date, '%d.%m.%y')
-        result_date = current_tz.localize(result_date)
-        return result_date
+        unlocalized_date = datetime.strptime(menu_date, '%d.%m.%y')
+        return current_tz.localize(unlocalized_date)
 
-    def parse_products(self):
+    def get_products(self):
         category = ''
-        products = list()
+        products = []
+
         for current_row_num in xrange(self.xlsheet.nrows):
             current_row = self.xlsheet.row_slice(current_row_num)
+
             if self.is_food_row(current_row):
                 product = self.parse_product(current_row)
-                product.category = category
-                product.position = current_row_num
+                product['category'] = category
+                product['row'] = current_row_num
                 products.append(product)
             else:
                 category = self.parse_category(current_row)
                 category = self.cleanup_category(category)
+
         return products
 
     def parse_product(self, row):
-        product = Product()
-        product.name, product.weight = self.parse_product_weight(row)
-        product.name = self.change_quotes(product.name)
-        product.name = self.cleanup_product_name(product.name)
-        product.name, product.compound = self.parse_product_compound(product.name)
-        product.name = product.name.strip()
-        product.cost = self.parse_product_cost(row)
-        product.name = re.sub(' +', ' ', product.name)
-        product.hash = mmh3.hash(product.name.encode('utf-8') +
-                                 product.compound.encode('utf-8') +
-                                 product.weight.encode('utf-8'))
-        return product
+        name, weight = self.parse_weight(row)
+        name = self.change_quotes(name)
+        name = self.cleanup_product_name(name)
+        name, compound = self.parse_product_compound(name)
+        name = name.strip()
+        product_cost = self.parse_product_cost(row)
+        name = re.sub(' +', ' ', name)
+
+        return {
+            'name': name,
+            'compound': compound,
+            'weight': weight,
+            'cost': product_cost
+        }
 
     def parse_category(self, row):
         return row[0].value
@@ -103,7 +105,7 @@ class Sheet(object):
 
         return clean_product_name
 
-    def parse_product_weight(self, row):
+    def parse_weight(self, row):
         product_name = self.parse_product_name(row)
         weight = unicode(row[2].value).replace('.0', '').strip('-')
         if weight:

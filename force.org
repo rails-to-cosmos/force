@@ -27,6 +27,7 @@ http://www.creativebloq.com/design/creative-menu-designs-1131620
 CLOSED: [2016-03-22 Tue 23:06]
 - State "DONE"       from "STARTED"    [2016-03-22 Tue 23:06]
 CLOCK: [2016-03-22 Tue 22:25]--[2016-03-22 Tue 23:06] =>  0:41
+** TODO product history
 ** TODO Verbose output on force fetch
 ** TODO force menu cleanup, force menu fetch --from hlebsol
 ** TODO force menu list-providers
