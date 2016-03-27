@@ -1,14 +1,22 @@
-div.product {
-    width: 300px;
+.product {
     cursor: pointer;
+    width: 1024px;
 }
 
-div.product:hover {
-    background-color: #ccc;
+.product:hover {
+    text-decoration: underline;
 }
 
-div.productName {
-    font-weight: bold;
+.productDescription {
+    font-size: 75%;
+}
+
+.productName {
+
+}
+
+.productCost {
+    float: right;
 }
 
 span.greetings {

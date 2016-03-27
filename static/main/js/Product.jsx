@@ -5,7 +5,7 @@ var Name = React.createClass({
         };
     },
     render: function() {
-        return (<div className="productName">{this.props.value}</div>)
+        return (<span className="productName">{this.props.value}</span>)
     }
 });
 
@@ -43,10 +43,7 @@ var Product = React.createClass({
     render: function() {
         return (
             <div key={this.props.key} className="product">
-                <Name value={this.props.name}/>
-                <p>
-                    <Description value={this.props.description}/> <Cost value={this.props.cost}/>
-                </p>
+                <Name value={this.props.name}/> <Description value={this.props.description}/> <Cost value={this.props.cost}/>
             </div>
         )
     }

@@ -1,5 +1,6 @@
 СИЗО -- с тобой до конца!
 
+* TODO Categories must have hash
 * Menu designs
 http://www.creativebloq.com/design/creative-menu-designs-1131620
 ** Вёрстку таблицы взять отсюда: http://elemental-ui.com/css

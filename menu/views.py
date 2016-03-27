@@ -11,48 +11,44 @@ from classes.downloader import download_menu_files
 
 
 def load_menu_from_file(menu_file):
-        manager = MenuManager()
-        manager.add_menus_from_file(menu_file)
+    manager = MenuManager()
+    manager.add_menus_from_file(menu_file)
 
-        menus = manager.menus
-        for date, products_json in menus.iteritems():
-            menu, menu_created = Menu.objects.get_or_create(date=date)
+    menus = manager.menus
+    for date, products_json in menus.iteritems():
+        menu, menu_created = Menu.objects.get_or_create(date=date)
 
-            products = []
-            at_least_one_product_created = False
-            for product_json in products_json:
-                category, created = Category.objects.get_or_create(
-                    name=product_json.get('category', 'default_category'))
+        products = []
+        for product_json in products_json:
+            category, category_created = Category.objects.get_or_create(
+                name=product_json.get('category', 'default_category'))
 
-                product, product_created = Product.objects.get_or_create(
-                    cost=product_json.get('cost', ''),
-                    name=product_json.get('name', ''),
-                    hash=Product.calculate_hash(
-                        product_json.get('name', ''),
-                        product_json.get('compound', ''),
-                        product_json.get('weight', '')
-                    ),
-                    defaults={
-                        'category': category,
-                        'weight': product_json.get('weight'),
-                        'compound': product_json.get('compound'),
-                        'added': date
-                    }
-                )
+            product, product_created = Product.objects.get_or_create(
+                hash=Product.calculate_hash(
+                    product_json.get('name', ''),
+                    product_json.get('compound', ''),
+                    product_json.get('weight', '')
+                ),
+                defaults={
+                    'cost': product_json.get('cost', ''),
+                    'name': product_json.get('name', ''),
+                    'category': category,
+                    'weight': product_json.get('weight'),
+                    'compound': product_json.get('compound'),
+                    'added': date
+                }
+            )
 
-                xls, created = XLStructure.objects.get_or_create(
-                    menu=menu,
-                    product=product,
-                    position=product_json.get('row')
-                )
+            xls, xls_created = XLStructure.objects.get_or_create(
+                menu=menu,
+                product=product,
+                position=product_json.get('row')
+            )
 
-                if product_created:
-                    at_least_one_product_created = True
-                    products.append(product)
+            products.append(product)
 
-            if menu_created or at_least_one_product_created:
-                menu.products = products
-                menu.save()
+        menu.products = products
+        menu.save()
 
 
 def fetch_menu():
@@ -68,8 +64,14 @@ def fetch_menu():
 def view_menu(request):
     # if now > 15:00, date__gte now
     # if now < 15:00, date_gte tomorrow
-    menu = Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
-    categories = Category.objects.all().order_by('id').values('id', 'name')
+    import ipdb; ipdb.set_trace()
+    try:
+        menu = Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
+    except IndexError:
+        fetch_menu()
+        menu = Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
+
+    categories = Category.objects.all().order_by('order').values('id', 'name')
     products = menu.products.all()
 
     products_grouped = {}
@@ -92,8 +94,8 @@ def view_menu(request):
 
     response = {
         u'menu': {
-            u'date': '',
-            u'weekday': '',
+            u'date': unicode(menu.date),
+            u'weekday': menu.date.weekday(),
         },
         u'products': []
     }

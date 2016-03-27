@@ -11,6 +11,7 @@ from django.core.validators import MinValueValidator
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    order = models.IntegerField()
 
     def __repr__(self):
         return '<Category: {name}>'.format(name=self.name.encode('utf-8'))
@@ -26,7 +27,7 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category)
     weight = models.CharField(max_length=255)
-    compound = models.CharField(max_length=255)
+    compound = models.CharField(max_length=255, blank=True)
     cost = models.PositiveIntegerField(default=0)
     name = models.CharField(max_length=255)
     popularity = models.PositiveIntegerField(default=0, blank=True)

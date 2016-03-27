@@ -47459,7 +47459,7 @@
 
 
 	// module
-	exports.push([module.id, "div.product {\n    width: 300px;\n    cursor: pointer;\n}\n\ndiv.product:hover {\n    background-color: #ccc;\n}\n\ndiv.productName {\n    font-weight: bold;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}\n\nspan.myorders {\n    margin-right: 15px;\n}", ""]);
+	exports.push([module.id, ".product {\n    cursor: pointer;\n    width: 1024px;\n}\n\n.product:hover {\n    text-decoration: underline;\n}\n\n.productDescription {\n    font-size: 75%;\n}\n\n.productName {\n\n}\n\n.productCost {\n    float: right;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}\n\nspan.myorders {\n    margin-right: 15px;\n}", ""]);
 
 	// exports
 
@@ -47512,7 +47512,7 @@
 	    },
 	    render: function () {
 	        return React.createElement(
-	            'div',
+	            'span',
 	            { className: 'productName' },
 	            this.props.value
 	        );
@@ -47570,13 +47570,10 @@
 	            'div',
 	            { key: this.props.key, className: 'product' },
 	            React.createElement(Name, { value: this.props.name }),
-	            React.createElement(
-	                'p',
-	                null,
-	                React.createElement(Description, { value: this.props.description }),
-	                ' ',
-	                React.createElement(Cost, { value: this.props.cost })
-	            )
+	            ' ',
+	            React.createElement(Description, { value: this.props.description }),
+	            ' ',
+	            React.createElement(Cost, { value: this.props.cost })
 	        );
 	    }
 	});
