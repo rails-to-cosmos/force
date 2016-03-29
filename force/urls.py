@@ -27,13 +27,13 @@ from rest_framework.authtoken import views
 
 
 from authorization.viewsets import UserViewSet
-from menu.viewsets import MenuViewSet, ProductViewSet, CategoryViewSet
+from menu.viewsets import MenuViewSet, ProductViewSet, CategoryViewSet, OrderViewSet
 
 
 router = routers.DefaultRouter()
 
 router.register(r'users', UserViewSet)
-
+router.register(r'orders', OrderViewSet)
 router.register(r'menu', MenuViewSet)
 router.register(r'product', ProductViewSet)
 router.register(r'category', CategoryViewSet)

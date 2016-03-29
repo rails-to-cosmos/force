@@ -26,3 +26,7 @@ span.greetings {
 span.myorders {
     margin-right: 15px;
 }
+
+.badge-nobold {
+    font-weight: normal !important;
+}

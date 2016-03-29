@@ -1,8 +1,11 @@
 СИЗО -- с тобой до конца!
 
-* TODO Categories must have hash
+* Monday sprint
+** STARTED Ordering via API
+CLOCK: [2016-03-28 Mon 17:04]--[2016-03-28 Mon 17:07] =>  0:03
+** TODO Categories must have hash
 * Menu designs
-http://www.creativebloq.com/design/creative-menu-designs-1131620
+** Всяка: http://www.creativebloq.com/design/creative-menu-designs-1131620
 ** Вёрстку таблицы взять отсюда: http://elemental-ui.com/css
 ** Или отсюда: http://www.material-ui.com/#/components/table
 ** Fuzzy-поиск отсюда: http://www.material-ui.com/#/components/auto-complete

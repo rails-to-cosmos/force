@@ -29992,28 +29992,13 @@
 	                    )
 	                ),
 	                React.createElement(
-	                    NavDropdown,
-	                    { eventKey: 3, title: 'Чек', id: 'basic-nav-dropdown' },
+	                    NavItem,
+	                    { eventKey: 1, href: '#' },
+	                    'Чек ',
 	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 3.1 },
-	                        'Макороны.........................5 руб'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 3.2 },
-	                        'Another action'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 3.3 },
-	                        'Something else here'
-	                    ),
-	                    React.createElement(MenuItem, { divider: true }),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 3.3 },
-	                        'Итог: 350 рублей'
+	                        Badge,
+	                        { className: 'badge-nobold' },
+	                        '200 ₽'
 	                    )
 	                )
 	            ),
@@ -47381,6 +47366,7 @@
 	var DropdownButton = __webpack_require__(170).DropdownButton;
 	var MenuItem = __webpack_require__(170).MenuItem;
 	var Category = __webpack_require__(419);
+	var Input = __webpack_require__(170).Input;
 	var Menu = React.createClass({
 	    displayName: 'Menu',
 
@@ -47391,26 +47377,41 @@
 	            'Меню на ',
 	            React.createElement(
 	                DropdownButton,
-	                { bsStyle: 'link', title: 'понедельник', eventKey: '1', id: '1' },
+	                { bsStyle: 'link', title: 'понедельник', eventKey: 1, id: '0' },
 	                React.createElement(
 	                    MenuItem,
-	                    { eventKey: '1' },
+	                    { eventKey: 0 },
+	                    'понедельник'
+	                ),
+	                React.createElement(
+	                    MenuItem,
+	                    { eventKey: 1 },
 	                    'вторник'
 	                ),
 	                React.createElement(
 	                    MenuItem,
-	                    { eventKey: '2' },
+	                    { eventKey: 2 },
 	                    'среду'
 	                ),
 	                React.createElement(
 	                    MenuItem,
-	                    { eventKey: '3' },
+	                    { eventKey: 3 },
 	                    'четверг'
 	                ),
 	                React.createElement(
 	                    MenuItem,
-	                    { eventKey: '4' },
+	                    { eventKey: 4 },
 	                    'пятницу'
+	                ),
+	                React.createElement(
+	                    MenuItem,
+	                    { eventKey: 5 },
+	                    'субботу'
+	                ),
+	                React.createElement(
+	                    MenuItem,
+	                    { eventKey: 6 },
+	                    'воскресенье'
 	                )
 	            ),
 	            this.props.products.map(function (category) {
@@ -47459,7 +47460,7 @@
 
 
 	// module
-	exports.push([module.id, ".product {\n    cursor: pointer;\n    width: 1024px;\n}\n\n.product:hover {\n    text-decoration: underline;\n}\n\n.productDescription {\n    font-size: 75%;\n}\n\n.productName {\n\n}\n\n.productCost {\n    float: right;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}\n\nspan.myorders {\n    margin-right: 15px;\n}", ""]);
+	exports.push([module.id, ".product {\n    cursor: pointer;\n    width: 1024px;\n}\n\n.product:hover {\n    text-decoration: underline;\n}\n\n.productDescription {\n    font-size: 75%;\n}\n\n.productName {\n\n}\n\n.productCost {\n    float: right;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}\n\nspan.myorders {\n    margin-right: 15px;\n}\n\n.badge-nobold {\n    font-weight: normal !important;\n}", ""]);
 
 	// exports
 

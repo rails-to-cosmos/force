@@ -78,5 +78,4 @@ class Order(models.Model):
     menu = models.ForeignKey(Menu)
     product = models.ForeignKey(Product)
     user = models.ForeignKey(User)
-    count = models.PositiveIntegerField(validators=[MinValueValidator(1)],
-                                        default=1)
+    count = models.PositiveIntegerField(validators=[MinValueValidator(1)], default=1)

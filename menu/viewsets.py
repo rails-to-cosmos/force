@@ -1,6 +1,6 @@
 from django.utils import timezone
-from models import Menu, Product, Category
-from serializers import MenuSerializer, ProductSerializer, CategorySerializer
+from models import Menu, Product, Category, Order
+from serializers import MenuSerializer, ProductSerializer, CategorySerializer, OrderSerializer
 from rest_framework import viewsets
 
 
@@ -17,3 +17,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer

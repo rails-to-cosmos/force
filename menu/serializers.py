@@ -1,5 +1,6 @@
-from models import Menu, Product, Category
+from models import Menu, Product, Category, Order
 from rest_framework import serializers
+from menu.permissions import IsOwnerOrAdmin
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,3 +21,9 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
         fields = ('name', )
+
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Order
+        fields = ('menu', 'product', 'user', 'count')
