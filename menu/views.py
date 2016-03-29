@@ -64,7 +64,6 @@ def fetch_menu():
 def view_menu(request):
     # if now > 15:00, date__gte now
     # if now < 15:00, date_gte tomorrow
-    import ipdb; ipdb.set_trace()
     try:
         menu = Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
     except IndexError:
