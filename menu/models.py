@@ -11,7 +11,7 @@ from django.core.validators import MinValueValidator
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    order = models.IntegerField()
+    order = models.IntegerField(default=0)
 
     def __repr__(self):
         return '<Category: {name}>'.format(name=self.name.encode('utf-8'))
