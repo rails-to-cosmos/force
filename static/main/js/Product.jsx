@@ -5,7 +5,7 @@ var Name = React.createClass({
         };
     },
     render: function() {
-        return (<span className="productName">{this.props.value}</span>)
+        return (<dt className="productName"><span className="productNameInner">{this.props.value}</span></dt>)
     }
 });
 
@@ -16,7 +16,7 @@ var Cost = React.createClass({
         };
     },
     render: function() {
-        return (<span className="productCost">{this.props.value} ₽</span>)
+        return (<dd className="productCost"><span className="productCostInner">{this.props.value}&nbsp;₽</span></dd>)
     }
 });
 
@@ -41,10 +41,11 @@ var Product = React.createClass({
         }
     },
     render: function() {
+        {/* <Description value={this.props.description}/> */}
         return (
-            <div key={this.props.key} className="product">
-                <Name value={this.props.name}/> <Description value={this.props.description}/> <Cost value={this.props.cost}/>
-            </div>
+            <dl key={this.props.key} className="product">
+                <Name value={this.props.name}/><Cost value={this.props.cost}/>
+            </dl>
         )
     }
 });
