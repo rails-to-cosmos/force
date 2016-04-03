@@ -15,23 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
-from django.views.generic import TemplateView
-from django.contrib.auth.models import User
 from django.contrib import admin
 
 from views import index
 
-import rest_framework
-from rest_framework import routers, serializers, viewsets
-from rest_framework.authtoken import views
-
+from rest_framework import routers
 
 from authorization.viewsets import UserViewSet
-from menu.viewsets import MenuViewSet, ProductViewSet, CategoryViewSet, OrderViewSet
+from menu.viewsets import (MenuViewSet,
+                           ProductViewSet,
+                           CategoryViewSet,
+                           OrderViewSet)
 
 
 router = routers.DefaultRouter()
-
 router.register(r'users', UserViewSet)
 router.register(r'orders', OrderViewSet)
 router.register(r'menu', MenuViewSet)
@@ -45,5 +42,4 @@ urlpatterns = [
     url(r'^menu/', include('menu.urls')),
     url(r'^auth/', include('authorization.urls')),
     url(r'^api/', include(router.urls)),
-    url(r'^api/auth/', views.obtain_auth_token),
 ]

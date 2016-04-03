@@ -13,8 +13,13 @@
 }
 
 .product:hover .productName, .product:hover .productCost {
-    color: brown;
+    color: #CC3333;
 }
+
+.product:active .productName, .product:active .productCost {
+    color: #660000;
+}
+
 
 .productName {
     display: inline-block;
@@ -69,6 +74,6 @@ span.myorders {
     margin-right: 15px;
 }
 
-.badge-nobold {
+.force-nobold {
     font-weight: normal !important;
 }

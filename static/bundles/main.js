@@ -29984,12 +29984,7 @@
 	                React.createElement(
 	                    NavItem,
 	                    { eventKey: 1, href: '#' },
-	                    'Мои заказы ',
-	                    React.createElement(
-	                        Badge,
-	                        null,
-	                        '2'
-	                    )
+	                    'Мои заказы'
 	                ),
 	                React.createElement(
 	                    NavItem,
@@ -29997,7 +29992,7 @@
 	                    'Чек ',
 	                    React.createElement(
 	                        Badge,
-	                        { className: 'badge-nobold' },
+	                        { className: 'force-nobold' },
 	                        '200 ₽'
 	                    )
 	                )
@@ -47112,7 +47107,7 @@
 	        $.ajax({
 	            type: "POST",
 	            dataType: 'json',
-	            url: '/auth/',
+	            url: '/auth/login/',
 	            data: {
 	                username: this.state.username,
 	                password: this.state.password,
@@ -47141,7 +47136,7 @@
 	        $.ajax({
 	            type: "POST",
 	            dataType: 'json',
-	            url: '/auth/logout',
+	            url: '/auth/logout/',
 	            data: {
 	                csrfmiddlewaretoken: $.cookie('csrftoken')
 	            },
@@ -47460,7 +47455,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box;\n}\n\n.product {\n    cursor: pointer;\n    position: relative;\n    color: #404040;\n    background: white;\n    margin: 0;\n}\n\n.product:hover .productName, .product:hover .productCost {\n    color: brown;\n}\n\n.productName {\n    display: inline-block;\n    width: 48%;\n    margin: 0 0 7px;\n    vertical-align: top;\n    background: inherit;\n}\n\n.productName:after {\n    position: absolute;\n    right: 52%;\n    left: 0;\n    height: 1px;\n    margin: .85em 0 0;\n    content: '';\n    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAAAAAA+i0toAAAAAnRSTlMA/1uRIrUAAAAMSURBVHheY7j1/z8ABY8C2UtBe8oAAAAASUVORK5CYII=') 0 0 repeat-x;\n}\n\n.productNameInner {\n    position: relative;\n    background: inherit;\n    padding: 0 10px 0 0;\n    z-index: 2;\n    font-weight: normal;\n}\n\n.productCost {\n    display: inline-block;\n    width: 52%;\n    margin: 0 0 7px;\n    vertical-align: bottom;\n    background: inherit;\n}\n\n.productCostInner {\n    position: relative;\n    padding: 0 0 0 10px;\n    background: inherit;\n    z-index: 2;\n}\n\n.productDescription {\n    font-size: 75%;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}\n\nspan.myorders {\n    margin-right: 15px;\n}\n\n.badge-nobold {\n    font-weight: normal !important;\n}", ""]);
+	exports.push([module.id, "* {\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box;\n}\n\n.product {\n    cursor: pointer;\n    position: relative;\n    color: #404040;\n    background: white;\n    margin: 0;\n}\n\n.product:hover .productName, .product:hover .productCost {\n    color: #CC3333;\n}\n\n.product:active .productName, .product:active .productCost {\n    color: #660000;\n}\n\n\n.productName {\n    display: inline-block;\n    width: 48%;\n    margin: 0 0 7px;\n    vertical-align: top;\n    background: inherit;\n}\n\n.productName:after {\n    position: absolute;\n    right: 52%;\n    left: 0;\n    height: 1px;\n    margin: .85em 0 0;\n    content: '';\n    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAAAAAA+i0toAAAAAnRSTlMA/1uRIrUAAAAMSURBVHheY7j1/z8ABY8C2UtBe8oAAAAASUVORK5CYII=') 0 0 repeat-x;\n}\n\n.productNameInner {\n    position: relative;\n    background: inherit;\n    padding: 0 10px 0 0;\n    z-index: 2;\n    font-weight: normal;\n}\n\n.productCost {\n    display: inline-block;\n    width: 52%;\n    margin: 0 0 7px;\n    vertical-align: bottom;\n    background: inherit;\n}\n\n.productCostInner {\n    position: relative;\n    padding: 0 0 0 10px;\n    background: inherit;\n    z-index: 2;\n}\n\n.productDescription {\n    font-size: 75%;\n}\n\nspan.greetings {\n    margin-right: 15px;\n}\n\nspan.myorders {\n    margin-right: 15px;\n}\n\n.force-nobold {\n    font-weight: normal !important;\n}", ""]);
 
 	// exports
 

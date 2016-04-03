@@ -4,7 +4,10 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-from models import Menu, Category, Product, XLStructure
+from models import Menu
+from models import Category
+from models import Product
+from models import XLStructure
 
 from classes.manager import MenuManager
 from classes.downloader import download_menu_files

@@ -1,8 +1,9 @@
-from django.conf.urls import url, include
 import views
+
+from django.conf.urls import url
 
 
 urlpatterns = [
-    url(r'^view/$', views.view_menu, name='menuview'),
-    url(r'^load/', views.load_menu, name='menuload'),
+    url(r'^view/$', views.view_menu),
+    url(r'^load/', views.load_menu),
 ]

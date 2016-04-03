@@ -6,13 +6,13 @@
       force-project-dir "~/Documents/Stuff/force/"
       force-elconf-buffer (project-buffer-name-by-feature
                            force-project-name
-                           "elconf")
+                           "emacs-config")
       force-org-buffer (project-buffer-name-by-feature
                         force-project-name
-                        "org")
+                        "organizer")
       force-shell-buffer (project-buffer-name-by-feature
                           force-project-name
-                          "shell")
+                          "main-shell")
       force-prodigy-buffer (project-buffer-name-by-feature
                             "prodigy"
                             force-project-name))

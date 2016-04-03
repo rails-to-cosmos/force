@@ -1,12 +1,12 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth import authenticate as django_authenticate
+from django.contrib.auth import login as django_login
+from django.contrib.auth import logout as django_logout
+
 from django.utils.datastructures import MultiValueDictKeyError
 from django.http import JsonResponse
 
-# Create your views here.
 
-def authByUsername(request):
+def login(request):
     if request.user.is_authenticated():
         response = JsonResponse({
             'error': 'Already authenticated'
@@ -24,7 +24,7 @@ def authByUsername(request):
         response.status_code = 401
         return response
 
-    user = authenticate(username=username, password=password)
+    user = django_authenticate(username=username, password=password)
     if not user:
         response = JsonResponse({
             'error': 'Bad credentials',
@@ -35,7 +35,7 @@ def authByUsername(request):
         return response
 
     if user.is_active:
-        login(request, user)
+        django_login(request, user)
         response = JsonResponse({
             'success': 'Successfully authorized',
             'fullname': u'{first_name} {last_name}'.format(
@@ -51,8 +51,9 @@ def authByUsername(request):
         response.status_code = 403
         return response
 
-def logout_view(request):
-    logout(request)
+
+def logout(request):
+    django_logout(request)
     response = JsonResponse({
         'success': 'Successfully logged out'
     })

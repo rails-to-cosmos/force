@@ -23,7 +23,7 @@ var AuthorizationForm = React.createClass({
         $.ajax({
             type: "POST",
             dataType: 'json',
-            url: '/auth/',
+            url: '/auth/login/',
             data: {
                 username: this.state.username,
                 password: this.state.password,
@@ -52,7 +52,7 @@ var AuthorizationForm = React.createClass({
         $.ajax({
             type: "POST",
             dataType: 'json',
-            url: '/auth/logout',
+            url: '/auth/logout/',
             data: {
                 csrfmiddlewaretoken: $.cookie('csrftoken')
             },
