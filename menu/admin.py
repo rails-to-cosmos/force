@@ -11,7 +11,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('category_name', 'name', 'compound',
                     'weight', 'description', 'tags',
-                    'cost')
+                    'added', 'cost')
     list_filter = ('category',)
     search_fields = ('name', 'description', 'compound')
 
@@ -24,4 +24,6 @@ modules = ((Menu, MenuAdmin),
            (Category, CategoryAdmin),
            (Product, ProductAdmin),
            (Order,))
-[admin.site.register(*module) for module in modules]
+
+for module in modules:
+    admin.site.register(*module)
