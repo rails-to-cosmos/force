@@ -33,32 +33,31 @@
             :stop-signal 'kill
             :kill-signal 'sigkill
             :kill-process-buffer-on-stop t)
+
           (defun force-menu-cleanup ()
             (interactive)
             (bpr-spawn "force cleanup"))
+
           (defun force-menu-fetch ()
             (interactive)
             (bpr-spawn "force fetch"))
+
           (defun force-push (cm)
             (interactive "MCommit message: ")
             (let* ((bpr-process-directory force-project-dir))
               (bpr-spawn (concatenate 'string "fab push:cm=\'" cm "\'"))))
+
           (defun force-deploy ()
             (interactive)
             (let* ((bpr-process-directory force-project-dir))
               (bpr-spawn "fab deploy")))
+
           (venv-workon force-project-name)
-          (if (not (buffer-exists force-shell-buffer))
-              (spawn-shell force-shell-buffer force-project-dir))
-          (if (not (buffer-exists force-elconf-buffer))
-              (progn
-                (find-file (concatenate 'string force-project-dir "/" force-project-name ".el"))
-                (rename-buffer force-elconf-buffer)))
-          (if (not (buffer-exists force-org-buffer))
-              (progn
-                (find-file (concatenate 'string force-project-dir "/" force-project-name ".org"))
-                (rename-buffer force-org-buffer)))
-          (switch-to-buffer force-prodigy-buffer))
+          (spawn-shell force-shell-buffer force-project-dir)
+          (with-current-buffer (find-file-noselect (concatenate 'string force-project-dir "/" force-project-name ".el"))
+            (rename-buffer force-elconf-buffer))
+          (with-current-buffer (find-file-noselect (concatenate 'string force-project-dir "/" force-project-name ".org"))
+            (rename-buffer force-org-buffer)))
   :cwd force-project-dir
   :url "http://localhost:8000/"
   :tags '(django react node)
