@@ -11,7 +11,9 @@ from serializers import OrderSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from rest_framework.serializers import ValidationError
+from rest_framework.decorators import list_route
 
 
 class MenuViewSet(viewsets.ModelViewSet):
@@ -54,3 +56,13 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         serializer.save(user=self.request.user,
                         date=timezone.now())
+
+    @list_route(url_path='all', permission_classes=[IsAdminUser])
+    def all(self, request):
+        queryset = Order.objects.all()
+        serializer = OrderSerializer(
+            queryset,
+            many=True,
+            context={'request': request}
+        )
+        return Response(serializer.data)
