@@ -4,7 +4,10 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-from models import Menu, Category, Product, XLStructure
+from models import Menu
+from models import Category
+from models import Product
+from models import XLStructure
 
 from classes.manager import MenuManager
 from classes.downloader import download_menu_files
@@ -64,6 +67,7 @@ def fetch_menu():
 def view_menu(request):
     # if now > 15:00, date__gte now
     # if now < 15:00, date_gte tomorrow
+
     try:
         menu = Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
     except IndexError:
@@ -76,7 +80,6 @@ def view_menu(request):
     products_grouped = {}
     for product in products:
         try:
-            # prepend
             products_grouped[product.category.id][:0] = [{
                 u'id': product.id,
                 u'name': product.name,

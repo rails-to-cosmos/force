@@ -1,3 +1,6 @@
+* Brainstorm garbage
+https://github.com/kadirahq/react-storybook
+
 СИЗО -- с тобой до конца!
 
 Параша справа внизу, а выше рейтинг заказывающих чуваков.
@@ -6,10 +9,6 @@
 
 Ачивки: качер, диетолог, штрудель
 Ачивка за получение всех ачивок!
-
-https://github.com/kadirahq/react-storybook
-
-
 * TODO Categories must have hash
 * Menu designs
 http://www.creativebloq.com/design/creative-menu-designs-1131620
@@ -28,26 +27,53 @@ http://www.creativebloq.com/design/creative-menu-designs-1131620
 - Дмитрий Андреевич, у нас на вас кое-что есть...
 - Дмитрий Андреевич, люди разное говорят...
 - Что ты тут ищешь?
-** [[http://react-components.com/component/react-socials][react-socials]]
-** [[http://react-components.com/component/react-native-local-auth][react-native-local-auth]]
-** from https://khan.github.io/react-components/#button-group:
-- tooltip/info-tip
-** TODO Override user model
-- https://docs.djangoproject.com/en/1.9/topics/auth/customizing/
-** DONE product hash
+* Features
+** API
+*** TODO Menu API
+**** TODO Fetching
+***** TODO Categories must have hash
+***** TODO Verbose output on force fetch
+*** DONE Orders API
+CLOSED: [2016-04-03 Sun 21:56]
+- State "DONE"       from "STARTED"    [2016-04-03 Sun 21:56]
+CLOCK: [2016-04-03 Sun 15:11]--[2016-04-03 Sun 21:56] =>  6:45
+**** DONE List all orders
+CLOSED: [2016-04-03 Sun 22:07]
+- State "DONE"       from "STARTED"    [2016-04-03 Sun 22:07]
+CLOCK: [2016-04-03 Sun 21:58]--[2016-04-03 Sun 22:07] =>  0:09
+*** DONE Category API: admin or readonly
+CLOSED: [2016-04-03 Sun 22:33]
+- State "DONE"       from "TODO"       [2016-04-03 Sun 22:33]
+*** TODO Product API
+**** DONE product hash
 CLOSED: [2016-03-22 Tue 23:06]
 - State "DONE"       from "STARTED"    [2016-03-22 Tue 23:06]
 CLOCK: [2016-03-22 Tue 22:25]--[2016-03-22 Tue 23:06] =>  0:41
-** TODO product history
-** TODO Verbose output on force fetch
-** TODO force menu cleanup, force menu fetch --from hlebsol
-** TODO force menu list-providers
+**** TODO product history
+** Authentication
+*** TODO [[https://github.com/GetBlimp/django-rest-framework-jwt/tree/master/rest_framework_jwt][Upgrade authentication]]
+*** [[http://react-components.com/component/react-socials][react-socials]]
+*** [[http://react-components.com/component/react-native-local-auth][react-native-local-auth]]
+*** Override user model
+- https://docs.djangoproject.com/en/1.9/topics/auth/customizing/
+* Menu designs
+** http://www.wired.co.uk/magazine/archive/2010/04/start/the-hidden-psychology-of-menu-design
+** Всяка: http://www.creativebloq.com/design/creative-menu-designs-1131620
+** Вёрстку таблицы взять отсюда: http://elemental-ui.com/css
+** Или отсюда: http://www.material-ui.com/#/components/table
+** Fuzzy-поиск отсюда: http://www.material-ui.com/#/components/auto-complete
+** Бейджи тоже отсюда: http://www.material-ui.com/#/components/badge
+** Поповеры отсюда: http://www.material-ui.com/#/components/popover
+** https://khan.github.io/react-components/#button-group:
+- tooltip/info-tip
+* Deploy
+** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * w3p config
 http://localhost:8000/?schema=N4IgLglmA2CmIC4QGED2A7AZhA5iANOAJ4AO8SqARgFawDGYBIJATqmS5LAM6KgCGDCBl4JQYUuRD8WLfkSaZULALb9GSMP0pwmkGFICCQkUwCu6CAEczsAJJhYK0WBa3CUJ6PGTEIKrQMelC6SMaQGEys7LCcEDx8xGSJEslI3K4Q6HiEsOhmKogA2iAAJqgA7ujQqPylTHTQEHQA1orlVTV1UTLc8IRqYHQAFkwZyvAAuoSlsJj8ZtAazL3wAL6E6Pwq5D5pIBksWXgb4DI4sBp7UofHIKfcZjT0V0k3mdn3hABuENwQOl2bz8lFQqDg/HQimUgz8I3oLVBAA97mtTrN5osNEVrn4OtVavVNtspBVYJQSPwLmMnoFlsMwGASAgAPQs+jDVAAOmcLS5bhZ6FgFW4LIAjAA2ADMAFYACwAdgAHABaDnchkqaBMX7/QGIVy2NaTNFrIAA&value=N4IghgxgLglg9gOwM4gFwG1RQJ4AcCmaIAZgCZwDuCANnGKSADQgJgC2hqIF+ARrmADmhZlDAAnYVCJMQSAK68AVvmhEAFlCi5UAel3rqfALRI41AHS8YAL1kA3GEhi8jaYmGpJ8AX0ZY8ThABcW9ZVg4iamjZMUl8aS4efiEROUUVNS4LDgR5AEkofDYAIRhBAAIoUgqwdHVxfGIAXQcnFzdUKHF5X2afIAAA==&object_layout=grid&theme=bootstrap2&disable_collapse&disable_properties&disable_edit_json
 * Providers
 ** http://lunch-time.ru/menu/print-current
 ** http://netgoloda.ru/zakazat-obed.html?date=22-01-2016
 ** http://www.obed-v-ofis.ru/menu-goryachie-obedy.php
-* Раскрутка
+* PR
 ** Офисы
 ** Отели

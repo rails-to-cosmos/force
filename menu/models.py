@@ -6,7 +6,7 @@ import mmh3
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -31,7 +31,7 @@ class Product(models.Model):
     cost = models.PositiveIntegerField(default=0)
     name = models.CharField(max_length=255)
     popularity = models.PositiveIntegerField(default=0, blank=True)
-    added = models.DateTimeField('added')
+    added = models.DateTimeField(default=timezone.now)
     hash = models.CharField(max_length=255, unique=True)
     description = models.CharField(max_length=1024, default='', blank=True)
     tags = models.CharField(max_length=1024, blank=True)
@@ -53,7 +53,7 @@ class Product(models.Model):
 
 
 class Menu(models.Model):
-    date = models.DateTimeField('menu date')
+    date = models.DateTimeField(default=timezone.now)
     products = models.ManyToManyField(Product)
 
     def __unicode__(self):
@@ -77,6 +77,6 @@ class XLStructure(models.Model):
 class Order(models.Model):
     menu = models.ForeignKey(Menu)
     product = models.ForeignKey(Product)
-    user = models.ForeignKey(User)
-    count = models.PositiveIntegerField(validators=[MinValueValidator(1)],
-                                        default=1)
+    user = models.ForeignKey(User, related_name='orders')
+    count = models.PositiveIntegerField(default=1)
+    date = models.DateTimeField(default=timezone.now)

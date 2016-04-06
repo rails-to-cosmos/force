@@ -10,12 +10,21 @@
     color: #404040;
     background: white;
     margin: 0;
-    width: 1024px;
+    width: 70%;
 }
+
+.product:hover .productName, .product:hover .productCost {
+    color: #CC3333;
+}
+
+.product:active .productName, .product:active .productCost {
+    color: #660000;
+}
+
 
 .productName {
     display: inline-block;
-    width: 48%;
+    width: 90%;
     margin: 0 0 7px;
     vertical-align: top;
     background: inherit;
@@ -23,7 +32,7 @@
 
 .productName:after {
     position: absolute;
-    right: 5px;
+    right: 10%;
     left: 0;
     height: 1px;
     margin: .85em 0 0;
@@ -33,13 +42,15 @@
 
 .productNameInner {
     position: relative;
+    background: inherit;
     padding: 0 10px 0 0;
     z-index: 2;
+    font-weight: normal;
 }
 
 .productCost {
     display: inline-block;
-    width: 52%;
+    width: 10%;
     margin: 0 0 7px;
     vertical-align: bottom;
     background: inherit;
@@ -62,4 +73,8 @@ span.greetings {
 
 span.myorders {
     margin-right: 15px;
+}
+
+.force-nobold {
+    font-weight: normal !important;
 }

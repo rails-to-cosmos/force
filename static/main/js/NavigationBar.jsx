@@ -33,14 +33,8 @@ var AuthorizationForm = require('./AuthorizationForm')
                             <MenuItem divider />
                             <MenuItem eventKey={1.4}>Поставщики</MenuItem>
                         </NavDropdown>
-                        <NavItem eventKey={1} href="#">Мои заказы <Badge>2</Badge></NavItem>
-                        <NavDropdown eventKey={3} title="Чек" id="basic-nav-dropdown">
-                            <MenuItem eventKey={3.1}>Макороны.........................5 руб</MenuItem>
-                            <MenuItem eventKey={3.2}>Another action</MenuItem>
-                            <MenuItem eventKey={3.3}>Something else here</MenuItem>
-                            <MenuItem divider />
-                            <MenuItem eventKey={3.3}>Итог: 350 рублей</MenuItem>
-                        </NavDropdown>
+                        <NavItem eventKey={1} href="#">Мои заказы</NavItem>
+                        <NavItem eventKey={1} href="#">Чек <Badge className="force-nobold">200 &#8381;</Badge></NavItem>
                     </Nav>
                     <AuthorizationForm />
                 </Navbar>
