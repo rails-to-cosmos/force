@@ -32,18 +32,26 @@ var Description = React.createClass({
 });
 
 var Product = React.createClass({
-    getDefaultProps: function() {
-        return {
-            key: '',
-            name: '',
-            description: '',
-            cost: '',
-        }
+    order: function() {
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '/api/orders/',
+            data: {
+                product: this.props.id,
+                csrfmiddlewaretoken: $.cookie('csrftoken')
+            },
+            success: function(data) {
+
+            }.bind(this),
+            error: function(xhr, status, err) {
+
+            }.bind(this)
+        });
     },
     render: function() {
-        {/* <Description value={this.props.description}/> */}
         return (
-            <dl key={this.props.key} className="product">
+            <dl key={this.props.key} className="product" id={this.props.id} onClick={this.order}>
                 <Name value={this.props.name}/><Cost value={this.props.cost}/>
             </dl>
         )

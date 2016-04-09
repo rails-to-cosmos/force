@@ -56,10 +56,8 @@
 	var NavigationBar = __webpack_require__(169);
 	var Menu = __webpack_require__(416);
 
-	ReactDOM.render(React.createElement(NavigationBar, null), document.getElementById('navigation'));
-
-	const MenuData = JSON.parse(_appData.menuData);
-	ReactDOM.render(React.createElement(Menu, { products: MenuData.products }), document.getElementById('menu'));
+	/* ReactDOM.render(<NavigationBar/>, document.getElementById('navigation')); */
+	ReactDOM.render(React.createElement(Menu, { source: '/api/menus/?format=json' }), document.getElementById('menu'));
 
 /***/ },
 /* 1 */
@@ -47086,7 +47084,6 @@
 	var Navbar = __webpack_require__(170).Navbar;
 	var Nav = __webpack_require__(170).Nav;
 	var NavItem = __webpack_require__(170).NavItem;
-
 	var Button = __webpack_require__(170).Button;
 	var Input = __webpack_require__(170).Input;
 	var AuthorizationForm = React.createClass({
@@ -47365,10 +47362,65 @@
 	var Menu = React.createClass({
 	    displayName: 'Menu',
 
+	    getInitialState: function () {
+	        return {
+	            'id': '',
+	            'date': '',
+	            'products': {}
+	        };
+	    },
+	    componentDidMount: function () {
+	        this.serverRequest = $.get(this.props.source, function (result) {
+	            mbw = {}; // menus grouped by weekday
+	            cats = {};
+
+	            for (menu in result) {
+	                if (typeof mbw[result[menu]['weekday']] == 'undefined') {
+	                    mbw[result[menu]['weekday']] = [];
+	                }
+
+	                pbc = {}; // products grouped by category
+	                for (pi in result[menu]['products']) {
+	                    if (typeof pbc[result[menu]['products'][pi]['category']] == 'undefined') {
+	                        pbc[result[menu]['products'][pi]['category']] = [];
+	                        cats[result[menu]['products'][pi]['category']] = result[menu]['products'][pi]['category_name'];
+	                    }
+	                    pbc[result[menu]['products'][pi]['category']].push({
+	                        id: result[menu]['products'][pi]['id'],
+	                        compound: result[menu]['products'][pi]['compound'],
+	                        cost: result[menu]['products'][pi]['cost'],
+	                        name: result[menu]['products'][pi]['name'],
+	                        weight: result[menu]['products'][pi]['weight']
+	                    });
+	                }
+
+	                mbw[result[menu]['weekday']] = {
+	                    id: result[menu]['id'],
+	                    date: result[menu]['date'],
+	                    products: pbc,
+	                    categories: cats
+	                };
+	            }
+
+	            defaultMenu = mbw[0];
+	            this.setState({
+	                id: defaultMenu['id'],
+	                date: defaultMenu['date'],
+	                weekday: defaultMenu['weekday'],
+	                products: pbc,
+	                categories: cats
+	            });
+
+	            console.log(defaultMenu);
+	        }.bind(this));
+	    },
+	    componentWillUnmount: function () {
+	        this.serverRequest.abort();
+	    },
 	    render: function () {
 	        return React.createElement(
 	            'div',
-	            { className: 'menu' },
+	            { className: 'menu', 'data-forceid': this.state.id, 'data-forcedate': this.state.date },
 	            'Меню на ',
 	            React.createElement(
 	                DropdownButton,
@@ -47409,11 +47461,11 @@
 	                    'воскресенье'
 	                )
 	            ),
-	            this.props.products.map(function (category) {
-	                return React.createElement(Category, { key: category[0],
-	                    value: category[1],
-	                    products: category[2] });
-	            })
+	            Object.keys(this.state.products).map(function (category) {
+	                return React.createElement(Category, { key: category,
+	                    value: this.state.categories[category],
+	                    products: this.state.products[category] });
+	            }.bind(this))
 	        );
 	    }
 	});
@@ -47479,11 +47531,12 @@
 	            { key: this.props.key, className: 'category' },
 	            React.createElement(
 	                'h4',
-	                null,
+	                { key: this.props.key },
 	                this.props.value
 	            ),
 	            this.props.products.map(function (product) {
 	                return React.createElement(Product, { key: product.id,
+	                    id: product.id,
 	                    name: product.name,
 	                    description: product.description,
 	                    cost: product.cost });
@@ -47561,19 +47614,23 @@
 	var Product = React.createClass({
 	    displayName: "Product",
 
-	    getDefaultProps: function () {
-	        return {
-	            key: '',
-	            name: '',
-	            description: '',
-	            cost: ''
-	        };
+	    order: function () {
+	        $.ajax({
+	            type: "POST",
+	            dataType: 'json',
+	            url: '/api/orders/',
+	            data: {
+	                product: this.props.id,
+	                csrfmiddlewaretoken: $.cookie('csrftoken')
+	            },
+	            success: function (data) {}.bind(this),
+	            error: function (xhr, status, err) {}.bind(this)
+	        });
 	    },
 	    render: function () {
-	        {/* <Description value={this.props.description}/> */}
 	        return React.createElement(
 	            "dl",
-	            { key: this.props.key, className: "product" },
+	            { key: this.props.key, className: "product", id: this.props.id, onClick: this.order },
 	            React.createElement(Name, { value: this.props.name }),
 	            React.createElement(Cost, { value: this.props.cost })
 	        );

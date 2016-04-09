@@ -3,8 +3,6 @@ require('jquery.cookie');
 var Navbar = require('react-bootstrap').Navbar;
 var Nav = require('react-bootstrap').Nav;
 var NavItem = require('react-bootstrap').NavItem;
-
-
 var Button = require('react-bootstrap').Button;
 var Input = require('react-bootstrap').Input;
 var AuthorizationForm = React.createClass({

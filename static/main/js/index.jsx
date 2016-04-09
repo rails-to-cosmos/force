@@ -10,8 +10,5 @@ var ReactDOM = require('react-dom');
 var NavigationBar = require('./NavigationBar');
 var Menu = require('./Menu');
 
-ReactDOM.render(<NavigationBar/>, document.getElementById('navigation'));
-
-const MenuData = JSON.parse(_appData.menuData);
-ReactDOM.render(<Menu products={MenuData.products}/>,
-                document.getElementById('menu'));
+/* ReactDOM.render(<NavigationBar/>, document.getElementById('navigation')); */
+ReactDOM.render(<Menu source="/api/menus/?format=json"/>, document.getElementById('menu'));

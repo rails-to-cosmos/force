@@ -1,21 +1,9 @@
 {% extends "base.html" %}
-
 {% load render_bundle from webpack_loader %}
-
 {% block title %}May the force be with you{% endblock %}
 {% block navigation %}<div id="navigation"></div>{% endblock %}
 {% block content %}<div id="menu"></div>{% endblock %}
-
 {% block js %}
-<script>
- var _appData = {
-     user: {
-         id: "{{ user.id }}",
-         fullname: "{{ user.fullname }}",
-     },
-     menuData: "{{ menuData | escapejs }}",
- };
-</script>
 {% render_bundle 'main' 'js' %}
 {% endblock %}
 {% block css %}{% render_bundle 'main' 'css' %}{% endblock %}
