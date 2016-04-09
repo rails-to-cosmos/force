@@ -1,4 +1,6 @@
 * Brainstorm garbage
+https://github.com/kadirahq/react-storybook
+
 СИЗО -- с тобой до конца!
 
 Параша справа внизу, а выше рейтинг заказывающих чуваков.
@@ -7,6 +9,17 @@
 
 Ачивки: качер, диетолог, штрудель
 Ачивка за получение всех ачивок!
+* TODO Categories must have hash
+* Menu designs
+http://www.creativebloq.com/design/creative-menu-designs-1131620
+** Вёрстку таблицы взять отсюда: http://elemental-ui.com/css
+** Или отсюда: http://www.material-ui.com/#/components/table
+** Fuzzy-поиск отсюда: http://www.material-ui.com/#/components/auto-complete
+** Бейджи тоже отсюда: http://www.material-ui.com/#/components/badge
+** Поповеры отсюда: http://www.material-ui.com/#/components/popover
+* Deploy
+** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
+* Features
 ** Цитаты: в тюрьме сейчас ужин, макороны.
 - украл, выпил, в тюрьму!
 - Дмитрий Андреевич, тут такое дело...
