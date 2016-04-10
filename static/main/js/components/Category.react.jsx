@@ -1,10 +1,5 @@
-var Product = require('./Product');
+var Product = require('./Product.react');
 var Category = React.createClass({
-    getDefaultProps: function() {
-        return {
-            value: 'default category'
-        };
-    },
     render: function() {
         return (
             <div key={this.props.key} className="category">
@@ -22,6 +17,5 @@ var Category = React.createClass({
         )
     }
 });
-
 
 module.exports = Category;

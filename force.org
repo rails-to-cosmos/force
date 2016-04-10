@@ -9,17 +9,7 @@ https://github.com/kadirahq/react-storybook
 
 Ачивки: качер, диетолог, штрудель
 Ачивка за получение всех ачивок!
-* TODO Categories must have hash
-* Menu designs
-http://www.creativebloq.com/design/creative-menu-designs-1131620
-** Вёрстку таблицы взять отсюда: http://elemental-ui.com/css
-** Или отсюда: http://www.material-ui.com/#/components/table
-** Fuzzy-поиск отсюда: http://www.material-ui.com/#/components/auto-complete
-** Бейджи тоже отсюда: http://www.material-ui.com/#/components/badge
-** Поповеры отсюда: http://www.material-ui.com/#/components/popover
-* Deploy
-** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
-* Features
+
 ** Цитаты: в тюрьме сейчас ужин, макороны.
 - украл, выпил, в тюрьму!
 - Дмитрий Андреевич, тут такое дело...
@@ -27,8 +17,15 @@ http://www.creativebloq.com/design/creative-menu-designs-1131620
 - Дмитрий Андреевич, у нас на вас кое-что есть...
 - Дмитрий Андреевич, люди разное говорят...
 - Что ты тут ищешь?
+* TODO Categories must have hash
+* Deploy
+** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features
 ** API
+*** TODO User
+**** DONE Get current user
+CLOSED: [2016-04-10 Sun 17:45]
+- State "DONE"       from "TODO"       [2016-04-10 Sun 17:45]
 *** TODO Menu API
 **** DONE View to DRF
 CLOSED: [2016-04-10 Sun 02:05]
@@ -49,8 +46,8 @@ CLOSED: [2016-04-09 Sat 20:42]
 - State "DONE"       from "TODO"       [2016-04-09 Sat 20:42]
 **** TODO Front-end
 ***** TODO Add order on click
-***** STARTED Check
-****** STARTED Make check component output actual order cost
+***** TODO Check
+****** TODO Make check component output actual order cost
 CLOCK: [2016-04-09 Sat 23:45]--[2016-04-10 Sun 00:05] =>  0:20
 ****** TODO Modal
 *** DONE Category API: admin or readonly
@@ -68,6 +65,14 @@ CLOCK: [2016-03-22 Tue 22:25]--[2016-03-22 Tue 23:06] =>  0:41
 *** [[http://react-components.com/component/react-native-local-auth][react-native-local-auth]]
 *** Override user model
 - https://docs.djangoproject.com/en/1.9/topics/auth/customizing/
+** DONE Flux communication
+CLOSED: [2016-04-10 Sun 23:32]
+- State "DONE"       from ""           [2016-04-10 Sun 23:32]
+*** DONE Research
+CLOSED: [2016-04-10 Sun 23:32]
+- State "DONE"       from "STARTED"    [2016-04-10 Sun 23:32]
+CLOCK: [2016-04-10 Sun 20:15]--[2016-04-10 Sun 23:32] =>  3:17
+CLOCK: [2016-04-10 Sun 19:02]--[2016-04-10 Sun 20:13] =>  1:11
 * Menu designs
 ** http://www.wired.co.uk/magazine/archive/2010/04/start/the-hidden-psychology-of-menu-design
 ** Всяка: http://www.creativebloq.com/design/creative-menu-designs-1131620

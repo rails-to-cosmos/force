@@ -1,33 +1,28 @@
-var Name = React.createClass({
-    getDefaultProps: function() {
-        return {
-            value: ''
-        };
-    },
+var ProductName = React.createClass({
     render: function() {
-        return (<dt className="productName"><span className="productNameInner">{this.props.value}</span></dt>)
+        return (
+            <dt className="productName">
+                <span className="productNameInner">{this.props.value}</span>
+            </dt>
+        )
     }
 });
 
-var Cost = React.createClass({
-    getDefaultProps: function() {
-        return {
-            value: ''
-        };
-    },
+var ProductCost = React.createClass({
     render: function() {
-        return (<dd className="productCost"><span className="productCostInner">{this.props.value}&nbsp;₽</span></dd>)
+        return (
+            <dd className="productCost">
+                <span className="productCostInner">{this.props.value}&nbsp;₽</span>
+            </dd>
+        )
     }
 });
 
-var Description = React.createClass({
-    getDefaultProps: function() {
-        return {
-            value: ''
-        };
-    },
+var ProductDescription = React.createClass({
     render: function() {
-        return (<span className="productDescription">{this.props.value}</span>)
+        return (
+            <span className="productDescription">{this.props.value}</span>
+        )
     }
 });
 
@@ -42,21 +37,20 @@ var Product = React.createClass({
                 csrfmiddlewaretoken: $.cookie('csrftoken')
             },
             success: function(data) {
-
+                MenuStore.getOrders();
             }.bind(this),
             error: function(xhr, status, err) {
-
+                MenuStore.getOrders();
             }.bind(this)
         });
     },
     render: function() {
         return (
             <dl key={this.props.key} className="product" id={this.props.id} onClick={this.order}>
-                <Name value={this.props.name}/><Cost value={this.props.cost}/>
+                <ProductName value={this.props.name}/><ProductCost value={this.props.cost}/>
             </dl>
         )
     }
 });
-
 
 module.exports = Product;

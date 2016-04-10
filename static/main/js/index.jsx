@@ -8,7 +8,10 @@ React = require('react');
 
 var ReactDOM = require('react-dom');
 var NavigationBar = require('./NavigationBar');
-var Menu = require('./Menu');
+var Menu = require('./components/Menu.react');
 
-/* ReactDOM.render(<NavigationBar/>, document.getElementById('navigation')); */
-ReactDOM.render(<Menu source="/api/menus/?format=json"/>, document.getElementById('menu'));
+ReactDOM.render(<NavigationBar />,
+                document.getElementById('navigation'));
+
+ReactDOM.render(<Menu source="/api/menus.json"/>,
+                document.getElementById('menu'));
