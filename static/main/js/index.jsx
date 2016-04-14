@@ -8,10 +8,10 @@ React = require('react');
 
 var ReactDOM = require('react-dom');
 var NavigationBar = require('./NavigationBar');
-var Menu = require('./Menu');
+var Menu = require('./components/Menu.react');
 
-ReactDOM.render(<NavigationBar/>, document.getElementById('navigation'));
+ReactDOM.render(<NavigationBar />,
+                document.getElementById('navigation'));
 
-const MenuData = JSON.parse(_appData.menuData);
-ReactDOM.render(<Menu products={MenuData.products}/>,
+ReactDOM.render(<Menu source="/api/menus.json"/>,
                 document.getElementById('menu'));

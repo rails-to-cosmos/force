@@ -11,8 +11,9 @@ from serializers import OrderSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+# from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.permissions import IsAdminUser
-from rest_framework.permissions import DjangoObjectPermissions
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.serializers import ValidationError
 from rest_framework.decorators import list_route
 
@@ -20,25 +21,25 @@ from rest_framework.decorators import list_route
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.filter(date__gte=timezone.now())
     serializer_class = MenuSerializer
-    permission_classes = (IsAuthenticated, DjangoObjectPermissions)
+    permission_classes = (DjangoModelPermissionsOrAnonReadOnly, )
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = (IsAuthenticated, DjangoObjectPermissions)
+    permission_classes = (DjangoModelPermissionsOrAnonReadOnly, )
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (IsAuthenticated, DjangoObjectPermissions)
+    permission_classes = (DjangoModelPermissionsOrAnonReadOnly, )
 
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, )
 
     def list(self, request):
         queryset = request.user.orders.all()

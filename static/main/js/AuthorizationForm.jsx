@@ -3,21 +3,29 @@ require('jquery.cookie');
 var Navbar = require('react-bootstrap').Navbar;
 var Nav = require('react-bootstrap').Nav;
 var NavItem = require('react-bootstrap').NavItem;
-
-
 var Button = require('react-bootstrap').Button;
 var Input = require('react-bootstrap').Input;
 var AuthorizationForm = React.createClass({
     getInitialState: function() {
         state = {
-            authorized: _appData.user.id != 'None',
-        }
-
-        if (state.authorized) {
-            state.fullname = _appData.user.fullname;
+            authorized: true,
+            fullname: ''
         }
 
         return state
+    },
+    componentDidMount: function() {
+        this.serverRequest = $.get(this.props.source, function(result) {
+            this.setState({
+                fullname: result[0].first_name + ' ' + result[0].last_name,
+                authorized: true
+            });
+        }.bind(this)).fail(function() {
+            this.setState({
+                fullname: '',
+                authorized: false
+            });
+        }.bind(this));
     },
     login: function() {
         $.ajax({

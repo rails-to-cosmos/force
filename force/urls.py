@@ -8,8 +8,6 @@ from rest_framework import routers
 from authorization.viewsets import UserViewSet
 
 from menu.viewsets import (MenuViewSet,
-                           ProductViewSet,
-                           CategoryViewSet,
                            OrderViewSet)
 
 
@@ -17,8 +15,6 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'orders', OrderViewSet)
 router.register(r'menus', MenuViewSet)
-router.register(r'products', ProductViewSet)
-router.register(r'categories', CategoryViewSet)
 
 
 urlpatterns = [

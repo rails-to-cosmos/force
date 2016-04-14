@@ -64,52 +64,6 @@ def fetch_menu():
     return True
 
 
-def view_menu(request):
-    # if now > 15:00, date__gte now
-    # if now < 15:00, date_gte tomorrow
-
-    try:
-        menu = Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
-    except IndexError:
-        fetch_menu()
-        menu = Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
-
-    categories = Category.objects.all().order_by('order').values('id', 'name')
-    products = menu.products.all()
-
-    products_grouped = {}
-    for product in products:
-        try:
-            products_grouped[product.category.id][:0] = [{
-                u'id': product.id,
-                u'name': product.name,
-                u'description': product.compound,
-                u'cost': product.cost,
-            }]
-        except KeyError:
-            products_grouped[product.category.id] = [{
-                u'id': product.id,
-                u'name': product.name,
-                u'description': product.compound,
-                u'cost': product.cost,
-            }]
-
-    response = {
-        u'menu': {
-            u'date': unicode(menu.date),
-            u'weekday': menu.date.weekday(),
-        },
-        u'products': []
-    }
-
-    for category in categories:
-        category_products = products_grouped.get(category.get('id'), [])
-        response['products'].append((category.get('id'),
-                                     category.get('name'),
-                                     category_products))
-
-    return JsonResponse(response)
-
 @login_required
 def load_menu(request):
     if fetch_menu():
