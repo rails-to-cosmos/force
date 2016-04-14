@@ -1,5 +1,6 @@
 * Brainstorm garbage
-https://github.com/kadirahq/react-storybook
+- https://github.com/kadirahq/react-storybook
+- https://github.com/firehol/netdata
 
 СИЗО -- с тобой до конца!
 
@@ -27,7 +28,7 @@ http://www.creativebloq.com/design/creative-menu-designs-1131620
 - Дмитрий Андреевич, у нас на вас кое-что есть...
 - Дмитрий Андреевич, люди разное говорят...
 - Что ты тут ищешь?
-* Features
+** [[https://developers.google.com/web/fundamentals/getting-started/push-notifications/?hl%3Den][Notifications]]
 ** API
 *** TODO Menu API
 **** TODO Fetching
