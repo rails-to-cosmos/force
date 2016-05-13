@@ -1,5 +1,6 @@
 * Brainstorm garbage
-https://github.com/kadirahq/react-storybook
+- https://github.com/kadirahq/react-storybook
+- https://github.com/firehol/netdata
 
 СИЗО -- с тобой до конца!
 
@@ -17,6 +18,7 @@ https://github.com/kadirahq/react-storybook
 - Дмитрий Андреевич, у нас на вас кое-что есть...
 - Дмитрий Андреевич, люди разное говорят...
 - Что ты тут ищешь?
+** [[https://developers.google.com/web/fundamentals/getting-started/push-notifications/?hl%3Den][Notifications]]
 * TODO Categories must have hash
 * Deploy
 ** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
@@ -83,8 +85,6 @@ CLOCK: [2016-04-10 Sun 19:02]--[2016-04-10 Sun 20:13] =>  1:11
 ** Поповеры отсюда: http://www.material-ui.com/#/components/popover
 ** https://khan.github.io/react-components/#button-group:
 - tooltip/info-tip
-* Deploy
-** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * w3p config
 http://localhost:8000/?schema=N4IgLglmA2CmIC4QGED2A7AZhA5iANOAJ4AO8SqARgFawDGYBIJATqmS5LAM6KgCGDCBl4JQYUuRD8WLfkSaZULALb9GSMP0pwmkGFICCQkUwCu6CAEczsAJJhYK0WBa3CUJ6PGTEIKrQMelC6SMaQGEys7LCcEDx8xGSJEslI3K4Q6HiEsOhmKogA2iAAJqgA7ujQqPylTHTQEHQA1orlVTV1UTLc8IRqYHQAFkwZyvAAuoSlsJj8ZtAazL3wAL6E6Pwq5D5pIBksWXgb4DI4sBp7UofHIKfcZjT0V0k3mdn3hABuENwQOl2bz8lFQqDg/HQimUgz8I3oLVBAA97mtTrN5osNEVrn4OtVavVNtspBVYJQSPwLmMnoFlsMwGASAgAPQs+jDVAAOmcLS5bhZ6FgFW4LIAjAA2ADMAFYACwAdgAHABaDnchkqaBMX7/QGIVy2NaTNFrIAA&value=N4IghgxgLglg9gOwM4gFwG1RQJ4AcCmaIAZgCZwDuCANnGKSADQgJgC2hqIF+ARrmADmhZlDAAnYVCJMQSAK68AVvmhEAFlCi5UAel3rqfALRI41AHS8YAL1kA3GEhi8jaYmGpJ8AX0ZY8ThABcW9ZVg4iamjZMUl8aS4efiEROUUVNS4LDgR5AEkofDYAIRhBAAIoUgqwdHVxfGIAXQcnFzdUKHF5X2afIAAA==&object_layout=grid&theme=bootstrap2&disable_collapse&disable_properties&disable_edit_json
 * Providers
