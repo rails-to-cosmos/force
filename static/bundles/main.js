@@ -54,7 +54,7 @@
 
 	var ReactDOM = __webpack_require__(168);
 	var NavigationBar = __webpack_require__(169);
-	var Menu = __webpack_require__(429);
+	var Menu = __webpack_require__(416);
 
 	ReactDOM.render(React.createElement(NavigationBar, null), document.getElementById('navigation'));
 
@@ -47361,7 +47361,60 @@
 
 
 /***/ },
-/* 416 */,
+/* 416 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var DropdownButton = __webpack_require__(170).DropdownButton;
+	var MenuItem = __webpack_require__(170).MenuItem;
+	var Input = __webpack_require__(170).Input;
+
+	__webpack_require__(417);
+	var Category = __webpack_require__(419);
+
+	var MenuActions = __webpack_require__(421);
+	var MenuStore = __webpack_require__(436);
+
+	function getMenuState() {
+	    var menuData = MenuStore.getMenuData();
+	    var currentMenu = menuData.menus[menuData.current_menu];
+
+	    var menuState = {
+	        id: currentMenu.id,
+	        date: currentMenu.date,
+	        orders: currentMenu.orders,
+	        products: currentMenu.products
+	    };
+
+	    // TODO 3 times here on initialize. WTF?
+	    return menuState;
+	}
+
+	var Menu = React.createClass({
+	    displayName: 'Menu',
+
+	    getInitialState: function () {
+	        return getMenuState();
+	    },
+	    componentDidMount: function () {
+	        MenuActions.getMenuData();
+	        MenuStore.addChangeListener(this._onChange);
+	    },
+	    componentWillUnmount: function () {
+	        this.serverRequest.abort();
+	    },
+	    render: function () {
+	        return React.createElement('div', { className: 'menu',
+	            'data-forceid': this.state.id,
+	            'data-forcedate': this.state.date });
+	    },
+	    _onChange: function () {
+	        this.setState(getMenuState);
+	    }
+	});
+
+	module.exports = Menu;
+
+/***/ },
 /* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -47405,9 +47458,120 @@
 /* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var AppDispatcher = __webpack_require__(420);
-	var MenuConstants = __webpack_require__(424);
-	var MenuAPI = __webpack_require__(432);
+	var Product = __webpack_require__(420);
+	var Category = React.createClass({
+	    displayName: "Category",
+
+	    render: function () {
+	        return React.createElement(
+	            "div",
+	            { key: this.props.key, className: "category" },
+	            React.createElement(
+	                "h4",
+	                { key: this.props.key },
+	                this.props.value
+	            ),
+	            this.props.products.map(function (product) {
+	                return React.createElement(Product, { key: product.id,
+	                    id: product.id,
+	                    name: product.name,
+	                    description: product.description,
+	                    cost: product.cost });
+	            })
+	        );
+	    }
+	});
+
+	module.exports = Category;
+
+/***/ },
+/* 420 */
+/***/ function(module, exports) {
+
+	var ProductName = React.createClass({
+	    displayName: "ProductName",
+
+	    render: function () {
+	        return React.createElement(
+	            "dt",
+	            { className: "productName" },
+	            React.createElement(
+	                "span",
+	                { className: "productNameInner" },
+	                this.props.value
+	            )
+	        );
+	    }
+	});
+
+	var ProductCost = React.createClass({
+	    displayName: "ProductCost",
+
+	    render: function () {
+	        return React.createElement(
+	            "dd",
+	            { className: "productCost" },
+	            React.createElement(
+	                "span",
+	                { className: "productCostInner" },
+	                this.props.value,
+	                " ₽"
+	            )
+	        );
+	    }
+	});
+
+	var ProductDescription = React.createClass({
+	    displayName: "ProductDescription",
+
+	    render: function () {
+	        return React.createElement(
+	            "span",
+	            { className: "productDescription" },
+	            this.props.value
+	        );
+	    }
+	});
+
+	var Product = React.createClass({
+	    displayName: "Product",
+
+	    order: function () {
+	        $.ajax({
+	            type: "POST",
+	            dataType: 'json',
+	            url: '/api/orders/',
+	            data: {
+	                product: this.props.id,
+	                csrfmiddlewaretoken: $.cookie('csrftoken')
+	            },
+	            success: function (data) {
+	                MenuStore.getOrders();
+	            }.bind(this),
+	            error: function (xhr, status, err) {
+	                MenuStore.getOrders();
+	            }.bind(this)
+	        });
+	    },
+	    render: function () {
+	        return React.createElement(
+	            "dl",
+	            { key: this.props.key, className: "product", id: this.props.id, onClick: this.order },
+	            React.createElement(ProductName, { value: this.props.name }),
+	            React.createElement(ProductCost, { value: this.props.cost })
+	        );
+	    }
+	});
+
+	module.exports = Product;
+
+/***/ },
+/* 421 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(422);
+	var MenuConstants = __webpack_require__(426);
+	var MenuAPI = __webpack_require__(428);
 
 	var MenuActions = {
 	    getMenuData: function () {
@@ -47442,10 +47606,10 @@
 	module.exports = MenuActions;
 
 /***/ },
-/* 420 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Dispatcher = __webpack_require__(421).Dispatcher;
+	var Dispatcher = __webpack_require__(423).Dispatcher;
 	var AppDispatcher = new Dispatcher();
 
 	AppDispatcher.handleViewAction = function (action) {
@@ -47465,7 +47629,7 @@
 	module.exports = AppDispatcher;
 
 /***/ },
-/* 421 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -47477,11 +47641,11 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 
-	module.exports.Dispatcher = __webpack_require__(422);
+	module.exports.Dispatcher = __webpack_require__(424);
 
 
 /***/ },
-/* 422 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -47503,7 +47667,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var invariant = __webpack_require__(423);
+	var invariant = __webpack_require__(425);
 
 	var _prefix = 'ID_';
 
@@ -47718,7 +47882,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ },
-/* 423 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -47773,10 +47937,10 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ },
-/* 424 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var keyMirror = __webpack_require__(425);
+	var keyMirror = __webpack_require__(427);
 
 	module.exports = keyMirror({
 	    MENU_ORDER: null,
@@ -47787,7 +47951,7 @@
 	});
 
 /***/ },
-/* 425 */
+/* 427 */
 /***/ function(module, exports) {
 
 	/**
@@ -47846,611 +48010,11 @@
 
 
 /***/ },
-/* 426 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(420);
-	var MenuConstants = __webpack_require__(424);
-	var assign = __webpack_require__(428);
-	var EventEmitter = __webpack_require__(427).EventEmitter;
-
-	var _store = {
-	    menus: [{
-	        id: 0,
-	        date: '',
-	        orders: [],
-	        products: []
-	    }],
-	    orders: [],
-	    current_menu: 0
-	};
-
-	var CHANGE_EVENT = 'change';
-
-	function makeOrder(menu, product, count) {
-	    var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
-	    _orders[id] = {
-	        id: id,
-	        product: product,
-	        menu: menu,
-	        count: count
-	    };
-	}
-
-	function cancelOrder(id) {
-	    delete _store.orders[id];
-	}
-
-	var MenuStore = assign({}, EventEmitter.prototype, {
-	    getMenuData: function () {
-	        return _store;
-	    },
-
-	    emitChange: function () {
-	        this.emit(CHANGE_EVENT);
-	    },
-
-	    addChangeListener: function (callback) {
-	        this.on(CHANGE_EVENT, callback);
-	    },
-
-	    removeChangeListener: function (callback) {
-	        this.removeListener(CHANGE_EVENT, callback);
-	    }
-	});
-
-	// Register callback to handle all updates
-	AppDispatcher.register(function (payload) {
-	    var action = payload.action;
-
-	    switch (action.actionType) {
-	        case MenuConstants.MENU_GET_DATA_RESPONSE:
-	            var response = action.response;
-	            _store.menus = response;
-	            _store.current_menu = 0;
-	            MenuStore.emitChange();
-	            break;
-
-	        case MenuConstants.MENU_ORDER:
-	            makeOrder(action.menu, action.product, count);
-	            MenuStore.emitChange();
-	            break;
-
-	        case MenuConstants.MENU_CANCEL:
-	            cancelOrder(action.menu, action.product);
-	            MenuStore.emitChange();
-	            break;
-
-	        case MenuConstants.MENU_SEND:
-	            break;
-
-	        default:
-	        // no op
-	    }
-	});
-
-	module.exports = MenuStore;
-
-/***/ },
-/* 427 */
-/***/ function(module, exports) {
-
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
-
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
-
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
-
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
-
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
-
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      }
-	      throw TypeError('Uncaught, unspecified "error" event.');
-	    }
-	  }
-
-	  handler = this._events[type];
-
-	  if (isUndefined(handler))
-	    return false;
-
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        args = Array.prototype.slice.call(arguments, 1);
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    args = Array.prototype.slice.call(arguments, 1);
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
-
-	  return true;
-	};
-
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  var fired = false;
-
-	  function g() {
-	    this.removeListener(type, g);
-
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-
-	  g.listener = listener;
-	  this.on(type, g);
-
-	  return this;
-	};
-
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events || !this._events[type])
-	    return this;
-
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-
-	    if (position < 0)
-	      return this;
-
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-
-	  if (!this._events)
-	    return this;
-
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-
-	  listeners = this._events[type];
-
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else if (listeners) {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-
-	  return this;
-	};
-
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-
-	EventEmitter.prototype.listenerCount = function(type) {
-	  if (this._events) {
-	    var evlistener = this._events[type];
-
-	    if (isFunction(evlistener))
-	      return 1;
-	    else if (evlistener)
-	      return evlistener.length;
-	  }
-	  return 0;
-	};
-
-	EventEmitter.listenerCount = function(emitter, type) {
-	  return emitter.listenerCount(type);
-	};
-
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
-
-/***/ },
 /* 428 */
-/***/ function(module, exports) {
-
-	/* eslint-disable no-unused-vars */
-	'use strict';
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-	function toObject(val) {
-		if (val === null || val === undefined) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-
-		return Object(val);
-	}
-
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var to = toObject(target);
-		var symbols;
-
-		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
-
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
-			}
-		}
-
-		return to;
-	};
-
-
-/***/ },
-/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DropdownButton = __webpack_require__(170).DropdownButton;
-	var MenuItem = __webpack_require__(170).MenuItem;
-	var Input = __webpack_require__(170).Input;
-
-	__webpack_require__(417);
-	var Category = __webpack_require__(431);
-
-	var MenuActions = __webpack_require__(419);
-	var MenuStore = __webpack_require__(426);
-
-	function getMenuState() {
-	    var menuData = MenuStore.getMenuData();
-	    var currentMenu = menuData.menus[menuData.current_menu];
-
-	    var menuState = {
-	        id: currentMenu.id,
-	        date: currentMenu.date,
-	        orders: currentMenu.orders,
-	        products: currentMenu.products
-	    };
-
-	    // TODO 3 times here on initialize. WTF?
-	    return menuState;
-	}
-
-	var Menu = React.createClass({
-	    displayName: 'Menu',
-
-	    getInitialState: function () {
-	        return getMenuState();
-	    },
-	    componentDidMount: function () {
-	        MenuActions.getMenuData();
-	        MenuStore.addChangeListener(this._onChange);
-	    },
-	    componentWillUnmount: function () {
-	        this.serverRequest.abort();
-	    },
-	    render: function () {
-	        return React.createElement('div', { className: 'menu',
-	            'data-forceid': this.state.id,
-	            'data-forcedate': this.state.date });
-	    },
-	    _onChange: function () {
-	        this.setState(getMenuState);
-	    }
-	});
-
-	module.exports = Menu;
-
-/***/ },
-/* 430 */
-/***/ function(module, exports) {
-
-	var ProductName = React.createClass({
-	    displayName: "ProductName",
-
-	    render: function () {
-	        return React.createElement(
-	            "dt",
-	            { className: "productName" },
-	            React.createElement(
-	                "span",
-	                { className: "productNameInner" },
-	                this.props.value
-	            )
-	        );
-	    }
-	});
-
-	var ProductCost = React.createClass({
-	    displayName: "ProductCost",
-
-	    render: function () {
-	        return React.createElement(
-	            "dd",
-	            { className: "productCost" },
-	            React.createElement(
-	                "span",
-	                { className: "productCostInner" },
-	                this.props.value,
-	                " ₽"
-	            )
-	        );
-	    }
-	});
-
-	var ProductDescription = React.createClass({
-	    displayName: "ProductDescription",
-
-	    render: function () {
-	        return React.createElement(
-	            "span",
-	            { className: "productDescription" },
-	            this.props.value
-	        );
-	    }
-	});
-
-	var Product = React.createClass({
-	    displayName: "Product",
-
-	    order: function () {
-	        $.ajax({
-	            type: "POST",
-	            dataType: 'json',
-	            url: '/api/orders/',
-	            data: {
-	                product: this.props.id,
-	                csrfmiddlewaretoken: $.cookie('csrftoken')
-	            },
-	            success: function (data) {
-	                MenuStore.getOrders();
-	            }.bind(this),
-	            error: function (xhr, status, err) {
-	                MenuStore.getOrders();
-	            }.bind(this)
-	        });
-	    },
-	    render: function () {
-	        return React.createElement(
-	            "dl",
-	            { key: this.props.key, className: "product", id: this.props.id, onClick: this.order },
-	            React.createElement(ProductName, { value: this.props.name }),
-	            React.createElement(ProductCost, { value: this.props.cost })
-	        );
-	    }
-	});
-
-	module.exports = Product;
-
-/***/ },
-/* 431 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Product = __webpack_require__(430);
-	var Category = React.createClass({
-	    displayName: "Category",
-
-	    render: function () {
-	        return React.createElement(
-	            "div",
-	            { key: this.props.key, className: "category" },
-	            React.createElement(
-	                "h4",
-	                { key: this.props.key },
-	                this.props.value
-	            ),
-	            this.props.products.map(function (product) {
-	                return React.createElement(Product, { key: product.id,
-	                    id: product.id,
-	                    name: product.name,
-	                    description: product.description,
-	                    cost: product.cost });
-	            })
-	        );
-	    }
-	});
-
-	module.exports = Category;
-
-/***/ },
-/* 432 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var MenuServerActions = __webpack_require__(433);
-	var request = __webpack_require__(434);
+	var MenuServerActions = __webpack_require__(429);
+	var request = __webpack_require__(430);
 
 	module.exports = {
 	  get: function () {
@@ -48463,11 +48027,11 @@
 	};
 
 /***/ },
-/* 433 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var AppDispatcher = __webpack_require__(420);
-	var MenuConstants = __webpack_require__(424);
+	var AppDispatcher = __webpack_require__(422);
+	var MenuConstants = __webpack_require__(426);
 
 	var MenuServerActions = {
 	    receiveMenuData: function (response) {
@@ -48481,17 +48045,17 @@
 	module.exports = MenuServerActions;
 
 /***/ },
-/* 434 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 
-	var Emitter = __webpack_require__(435);
-	var reduce = __webpack_require__(436);
-	var requestBase = __webpack_require__(437);
-	var isObject = __webpack_require__(438);
+	var Emitter = __webpack_require__(431);
+	var reduce = __webpack_require__(432);
+	var requestBase = __webpack_require__(433);
+	var isObject = __webpack_require__(434);
 
 	/**
 	 * Root reference for iframes.
@@ -48540,7 +48104,7 @@
 	 * Expose `request`.
 	 */
 
-	var request = module.exports = __webpack_require__(439).bind(null, Request);
+	var request = module.exports = __webpack_require__(435).bind(null, Request);
 
 	/**
 	 * Determine XHR.
@@ -49564,7 +49128,7 @@
 
 
 /***/ },
-/* 435 */
+/* 431 */
 /***/ function(module, exports) {
 
 	
@@ -49731,7 +49295,7 @@
 
 
 /***/ },
-/* 436 */
+/* 432 */
 /***/ function(module, exports) {
 
 	
@@ -49760,13 +49324,13 @@
 	};
 
 /***/ },
-/* 437 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module of mixed-in functions shared between node and client code
 	 */
-	var isObject = __webpack_require__(438);
+	var isObject = __webpack_require__(434);
 
 	/**
 	 * Clear previous timeout.
@@ -49932,7 +49496,7 @@
 
 
 /***/ },
-/* 438 */
+/* 434 */
 /***/ function(module, exports) {
 
 	/**
@@ -49951,7 +49515,7 @@
 
 
 /***/ },
-/* 439 */
+/* 435 */
 /***/ function(module, exports) {
 
 	// The node and browser modules expose versions of this with the
@@ -49986,6 +49550,441 @@
 	}
 
 	module.exports = request;
+
+
+/***/ },
+/* 436 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(422);
+	var MenuConstants = __webpack_require__(426);
+	var assign = __webpack_require__(437);
+	var EventEmitter = __webpack_require__(438).EventEmitter;
+
+	var _store = {
+	    menus: [{
+	        id: 0,
+	        date: '',
+	        orders: [],
+	        products: []
+	    }],
+	    orders: [],
+	    current_menu: 0
+	};
+
+	var CHANGE_EVENT = 'change';
+
+	function makeOrder(menu, product, count) {
+	    var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+	    _orders[id] = {
+	        id: id,
+	        product: product,
+	        menu: menu,
+	        count: count
+	    };
+	}
+
+	function cancelOrder(id) {
+	    delete _store.orders[id];
+	}
+
+	var MenuStore = assign({}, EventEmitter.prototype, {
+	    getMenuData: function () {
+	        return _store;
+	    },
+
+	    emitChange: function () {
+	        this.emit(CHANGE_EVENT);
+	    },
+
+	    addChangeListener: function (callback) {
+	        this.on(CHANGE_EVENT, callback);
+	    },
+
+	    removeChangeListener: function (callback) {
+	        this.removeListener(CHANGE_EVENT, callback);
+	    }
+	});
+
+	// Register callback to handle all updates
+	AppDispatcher.register(function (payload) {
+	    var action = payload.action;
+
+	    switch (action.actionType) {
+	        case MenuConstants.MENU_GET_DATA_RESPONSE:
+	            var response = action.response;
+	            _store.menus = response;
+	            _store.current_menu = 0;
+	            MenuStore.emitChange();
+	            break;
+
+	        case MenuConstants.MENU_ORDER:
+	            makeOrder(action.menu, action.product, count);
+	            MenuStore.emitChange();
+	            break;
+
+	        case MenuConstants.MENU_CANCEL:
+	            cancelOrder(action.menu, action.product);
+	            MenuStore.emitChange();
+	            break;
+
+	        case MenuConstants.MENU_SEND:
+	            break;
+
+	        default:
+	        // no op
+	    }
+	});
+
+	module.exports = MenuStore;
+
+/***/ },
+/* 437 */
+/***/ function(module, exports) {
+
+	/* eslint-disable no-unused-vars */
+	'use strict';
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+
+		return Object(val);
+	}
+
+	module.exports = Object.assign || function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
+
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
+				}
+			}
+
+			if (Object.getOwnPropertySymbols) {
+				symbols = Object.getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
+
+		return to;
+	};
+
+
+/***/ },
+/* 438 */
+/***/ function(module, exports) {
+
+	// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+	function EventEmitter() {
+	  this._events = this._events || {};
+	  this._maxListeners = this._maxListeners || undefined;
+	}
+	module.exports = EventEmitter;
+
+	// Backwards-compat with node 0.10.x
+	EventEmitter.EventEmitter = EventEmitter;
+
+	EventEmitter.prototype._events = undefined;
+	EventEmitter.prototype._maxListeners = undefined;
+
+	// By default EventEmitters will print a warning if more than 10 listeners are
+	// added to it. This is a useful default which helps finding memory leaks.
+	EventEmitter.defaultMaxListeners = 10;
+
+	// Obviously not all Emitters should be limited to 10. This function allows
+	// that to be increased. Set to zero for unlimited.
+	EventEmitter.prototype.setMaxListeners = function(n) {
+	  if (!isNumber(n) || n < 0 || isNaN(n))
+	    throw TypeError('n must be a positive number');
+	  this._maxListeners = n;
+	  return this;
+	};
+
+	EventEmitter.prototype.emit = function(type) {
+	  var er, handler, len, args, i, listeners;
+
+	  if (!this._events)
+	    this._events = {};
+
+	  // If there is no 'error' event listener then throw.
+	  if (type === 'error') {
+	    if (!this._events.error ||
+	        (isObject(this._events.error) && !this._events.error.length)) {
+	      er = arguments[1];
+	      if (er instanceof Error) {
+	        throw er; // Unhandled 'error' event
+	      }
+	      throw TypeError('Uncaught, unspecified "error" event.');
+	    }
+	  }
+
+	  handler = this._events[type];
+
+	  if (isUndefined(handler))
+	    return false;
+
+	  if (isFunction(handler)) {
+	    switch (arguments.length) {
+	      // fast cases
+	      case 1:
+	        handler.call(this);
+	        break;
+	      case 2:
+	        handler.call(this, arguments[1]);
+	        break;
+	      case 3:
+	        handler.call(this, arguments[1], arguments[2]);
+	        break;
+	      // slower
+	      default:
+	        args = Array.prototype.slice.call(arguments, 1);
+	        handler.apply(this, args);
+	    }
+	  } else if (isObject(handler)) {
+	    args = Array.prototype.slice.call(arguments, 1);
+	    listeners = handler.slice();
+	    len = listeners.length;
+	    for (i = 0; i < len; i++)
+	      listeners[i].apply(this, args);
+	  }
+
+	  return true;
+	};
+
+	EventEmitter.prototype.addListener = function(type, listener) {
+	  var m;
+
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  if (!this._events)
+	    this._events = {};
+
+	  // To avoid recursion in the case that type === "newListener"! Before
+	  // adding it to the listeners, first emit "newListener".
+	  if (this._events.newListener)
+	    this.emit('newListener', type,
+	              isFunction(listener.listener) ?
+	              listener.listener : listener);
+
+	  if (!this._events[type])
+	    // Optimize the case of one listener. Don't need the extra array object.
+	    this._events[type] = listener;
+	  else if (isObject(this._events[type]))
+	    // If we've already got an array, just append.
+	    this._events[type].push(listener);
+	  else
+	    // Adding the second element, need to change to array.
+	    this._events[type] = [this._events[type], listener];
+
+	  // Check for listener leak
+	  if (isObject(this._events[type]) && !this._events[type].warned) {
+	    if (!isUndefined(this._maxListeners)) {
+	      m = this._maxListeners;
+	    } else {
+	      m = EventEmitter.defaultMaxListeners;
+	    }
+
+	    if (m && m > 0 && this._events[type].length > m) {
+	      this._events[type].warned = true;
+	      console.error('(node) warning: possible EventEmitter memory ' +
+	                    'leak detected. %d listeners added. ' +
+	                    'Use emitter.setMaxListeners() to increase limit.',
+	                    this._events[type].length);
+	      if (typeof console.trace === 'function') {
+	        // not supported in IE 10
+	        console.trace();
+	      }
+	    }
+	  }
+
+	  return this;
+	};
+
+	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+	EventEmitter.prototype.once = function(type, listener) {
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  var fired = false;
+
+	  function g() {
+	    this.removeListener(type, g);
+
+	    if (!fired) {
+	      fired = true;
+	      listener.apply(this, arguments);
+	    }
+	  }
+
+	  g.listener = listener;
+	  this.on(type, g);
+
+	  return this;
+	};
+
+	// emits a 'removeListener' event iff the listener was removed
+	EventEmitter.prototype.removeListener = function(type, listener) {
+	  var list, position, length, i;
+
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  if (!this._events || !this._events[type])
+	    return this;
+
+	  list = this._events[type];
+	  length = list.length;
+	  position = -1;
+
+	  if (list === listener ||
+	      (isFunction(list.listener) && list.listener === listener)) {
+	    delete this._events[type];
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+
+	  } else if (isObject(list)) {
+	    for (i = length; i-- > 0;) {
+	      if (list[i] === listener ||
+	          (list[i].listener && list[i].listener === listener)) {
+	        position = i;
+	        break;
+	      }
+	    }
+
+	    if (position < 0)
+	      return this;
+
+	    if (list.length === 1) {
+	      list.length = 0;
+	      delete this._events[type];
+	    } else {
+	      list.splice(position, 1);
+	    }
+
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	  }
+
+	  return this;
+	};
+
+	EventEmitter.prototype.removeAllListeners = function(type) {
+	  var key, listeners;
+
+	  if (!this._events)
+	    return this;
+
+	  // not listening for removeListener, no need to emit
+	  if (!this._events.removeListener) {
+	    if (arguments.length === 0)
+	      this._events = {};
+	    else if (this._events[type])
+	      delete this._events[type];
+	    return this;
+	  }
+
+	  // emit removeListener for all listeners on all events
+	  if (arguments.length === 0) {
+	    for (key in this._events) {
+	      if (key === 'removeListener') continue;
+	      this.removeAllListeners(key);
+	    }
+	    this.removeAllListeners('removeListener');
+	    this._events = {};
+	    return this;
+	  }
+
+	  listeners = this._events[type];
+
+	  if (isFunction(listeners)) {
+	    this.removeListener(type, listeners);
+	  } else if (listeners) {
+	    // LIFO order
+	    while (listeners.length)
+	      this.removeListener(type, listeners[listeners.length - 1]);
+	  }
+	  delete this._events[type];
+
+	  return this;
+	};
+
+	EventEmitter.prototype.listeners = function(type) {
+	  var ret;
+	  if (!this._events || !this._events[type])
+	    ret = [];
+	  else if (isFunction(this._events[type]))
+	    ret = [this._events[type]];
+	  else
+	    ret = this._events[type].slice();
+	  return ret;
+	};
+
+	EventEmitter.prototype.listenerCount = function(type) {
+	  if (this._events) {
+	    var evlistener = this._events[type];
+
+	    if (isFunction(evlistener))
+	      return 1;
+	    else if (evlistener)
+	      return evlistener.length;
+	  }
+	  return 0;
+	};
+
+	EventEmitter.listenerCount = function(emitter, type) {
+	  return emitter.listenerCount(type);
+	};
+
+	function isFunction(arg) {
+	  return typeof arg === 'function';
+	}
+
+	function isNumber(arg) {
+	  return typeof arg === 'number';
+	}
+
+	function isObject(arg) {
+	  return typeof arg === 'object' && arg !== null;
+	}
+
+	function isUndefined(arg) {
+	  return arg === void 0;
+	}
 
 
 /***/ }

@@ -1,13 +1,15 @@
 from django.contrib import admin
 
-from models import (Menu, Category, Product, Order)
+from models import Menu, Category, Product
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'order')
     ordering = ['order']
 
 
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('category_name', 'name', 'compound',
                     'weight', 'description', 'tags',
@@ -16,14 +18,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description', 'compound')
 
 
+@admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
     list_display = ('date_fmt',)
-
-
-modules = ((Menu, MenuAdmin),
-           (Category, CategoryAdmin),
-           (Product, ProductAdmin),
-           (Order,))
-
-for module in modules:
-    admin.site.register(*module)
