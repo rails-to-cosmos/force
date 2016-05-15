@@ -19,12 +19,13 @@
 - Дмитрий Андреевич, люди разное говорят...
 - Что ты тут ищешь?
 ** [[https://developers.google.com/web/fundamentals/getting-started/push-notifications/?hl%3Den][Notifications]]
-* TODO Categories must have hash
 * Deploy
 ** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features
 ** API
-*** TODO User
+*** DONE User
+CLOSED: [2016-05-15 Sun 14:03]
+- State "DONE"       from "TODO"       [2016-05-15 Sun 14:03]
 **** DONE Get current user
 CLOSED: [2016-04-10 Sun 17:45]
 - State "DONE"       from "TODO"       [2016-04-10 Sun 17:45]
