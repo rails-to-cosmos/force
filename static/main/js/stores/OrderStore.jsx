@@ -1,19 +1,16 @@
 var assign = require('object-assign');
-
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var MenuConstants = require('../constants/MenuConstants');
 var EventEmitter = require('events').EventEmitter;
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+
 
 var _store = {
-    metaData: {
-
-    }
+    orders: [],
 }
 
-var MenuStore = assign({}, EventEmitter.prototype, {
+var OrderStore = assign({}, EventEmitter.prototype, {
     CHANGE_EVENT: 'change',
 
-    getState: function() {
+    getOrderData: function() {
         return _store;
     },
 
@@ -30,6 +27,20 @@ var MenuStore = assign({}, EventEmitter.prototype, {
     },
 });
 
+function makeOrder(menu, product, count) {
+    var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+    _orders[id] = {
+        id: id,
+        product: product,
+        menu: menu,
+        count: count,
+    }
+}
+
+function cancelOrder(id) {
+    delete _store.orders[id];
+}
+
 // Register callback to handle all updates
 AppDispatcher.register(function(payload) {
     var action = payload.action;
@@ -37,8 +48,8 @@ AppDispatcher.register(function(payload) {
     switch(action.actionType) {
         case MenuConstants.MENU_GET_DATA_RESPONSE:
             var response = action.response;
-            _store.metaData.menus = response;
-            _store.metaData.id = 0;
+            _store.menus = response;
+            _store.current_menu = 0;
             MenuStore.emitChange();
             break;
 
@@ -60,4 +71,4 @@ AppDispatcher.register(function(payload) {
     }
 });
 
-module.exports = MenuStore;
+module.exports = OrderStore

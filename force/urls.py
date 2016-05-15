@@ -8,18 +8,22 @@ from rest_framework import routers
 from authorization.viewsets import UserViewSet
 
 from menu.viewsets import (MenuViewSet,
-                           OrderViewSet)
+                           OrderViewSet,
+                           ProductViewSet)
 
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'orders', OrderViewSet)
-router.register(r'menus', MenuViewSet)
+viewsets = ((r'users', UserViewSet),
+            (r'orders', OrderViewSet),
+            (r'menus', MenuViewSet),
+            (r'products', ProductViewSet))
+for viewset in viewsets:
+    router.register(*viewset)
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
     url(r'^$', index),
+    url(r'^admin/', admin.site.urls),
     url(r'^menu/', include('menu.urls')),
     url(r'^auth/', include('authorization.urls')),
     url(r'^api/', include(router.urls)),

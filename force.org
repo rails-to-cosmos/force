@@ -23,13 +23,13 @@
 ** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features
 ** API
-*** DONE User
-CLOSED: [2016-05-15 Sun 14:03]
-- State "DONE"       from "TODO"       [2016-05-15 Sun 14:03]
-**** DONE Get current user
-CLOSED: [2016-04-10 Sun 17:45]
-- State "DONE"       from "TODO"       [2016-04-10 Sun 17:45]
-*** TODO Menu API
+*** TODO Menu
+**** DONE Group by categories
+CLOSED: [2016-05-15 Sun 17:57]
+- State "DONE"       from "STARTED"    [2016-05-15 Sun 17:57]
+CLOCK: [2016-05-15 Sun 14:16]--[2016-05-15 Sun 17:57] =>  3:41
+**** STARTED Menu info
+CLOCK: [2016-05-15 Sun 17:57]
 **** DONE View to DRF
 CLOSED: [2016-04-10 Sun 02:05]
 - State "DONE"       from "STARTED"    [2016-04-10 Sun 02:05]
@@ -53,9 +53,6 @@ CLOSED: [2016-04-09 Sat 20:42]
 ****** TODO Make check component output actual order cost
 CLOCK: [2016-04-09 Sat 23:45]--[2016-04-10 Sun 00:05] =>  0:20
 ****** TODO Modal
-*** DONE Category API: admin or readonly
-CLOSED: [2016-04-03 Sun 22:33]
-- State "DONE"       from "TODO"       [2016-04-03 Sun 22:33]
 *** TODO Product API
 **** DONE product hash
 CLOSED: [2016-03-22 Tue 23:06]
@@ -64,18 +61,11 @@ CLOCK: [2016-03-22 Tue 22:25]--[2016-03-22 Tue 23:06] =>  0:41
 **** TODO product cost history
 ** Authentication
 *** TODO [[https://github.com/GetBlimp/django-rest-framework-jwt/tree/master/rest_framework_jwt][Upgrade authentication]]
+*** TODO Bad credentials returns password via GET, fix it
 *** [[http://react-components.com/component/react-socials][react-socials]]
 *** [[http://react-components.com/component/react-native-local-auth][react-native-local-auth]]
 *** Override user model
 - https://docs.djangoproject.com/en/1.9/topics/auth/customizing/
-** DONE Flux communication
-CLOSED: [2016-04-10 Sun 23:32]
-- State "DONE"       from ""           [2016-04-10 Sun 23:32]
-*** DONE Research
-CLOSED: [2016-04-10 Sun 23:32]
-- State "DONE"       from "STARTED"    [2016-04-10 Sun 23:32]
-CLOCK: [2016-04-10 Sun 20:15]--[2016-04-10 Sun 23:32] =>  3:17
-CLOCK: [2016-04-10 Sun 19:02]--[2016-04-10 Sun 20:13] =>  1:11
 * Menu designs
 ** http://www.wired.co.uk/magazine/archive/2010/04/start/the-hidden-psychology-of-menu-design
 ** Всяка: http://www.creativebloq.com/design/creative-menu-designs-1131620

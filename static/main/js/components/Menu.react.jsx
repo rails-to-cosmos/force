@@ -1,58 +1,77 @@
+// styles
+require('menu.css');
+
+// components
 var DropdownButton = require('react-bootstrap').DropdownButton;
 var MenuItem = require('react-bootstrap').MenuItem;
 var Input = require('react-bootstrap').Input;
 
-require('menu.css');
-var Category = require('./Category.react');
+/* var Category = require('./Category.react');*/
+var ProductList = require('./ProductList.react');
 
+// actions
 var MenuActions = require('../actions/MenuActions');
+var ProductActions = require('../actions/ProductActions');
+
+// stores
 var MenuStore = require('../stores/MenuStore');
 
-
-function getMenuState() {
-    var menuData = MenuStore.getMenuData();
-    var currentMenu = menuData.menus[menuData.current_menu]
-
-    var menuState = {
-        id: currentMenu.id,
-        date: currentMenu.date,
-        orders: currentMenu.orders,
-        products: currentMenu.products,
-    }
-
-    // TODO 3 times here on initialize. WTF?
-    return menuState;
-}
+weekdays_accusative = ['понедельник',
+                       'вторник',
+                       'среду',
+                       'четверг',
+                       'пятницу',
+                       'субботу',
+                       'воскресение'];
 
 var Menu = React.createClass({
+    getMenuDataIfNeeded: function(props) {
+        var meta = MenuStore.getState().metaData;
+
+        if (props.activeMenu && props.activeMenu !== meta.id) {
+            MenuActions.getMenuData();
+        }
+    },
     getInitialState: function() {
-        return getMenuState();
+        return MenuStore.getState();
+    },
+    componentWillMount: function() {
+        this.getMenuDataIfNeeded(this.props);
     },
     componentDidMount: function() {
-        MenuActions.getMenuData();
         MenuStore.addChangeListener(this._onChange);
+    },
+    componentWillReceiveProps: function(nextProps) {
+        this.getMenuDataIfNeeded(nextProps);
     },
     componentWillUnmount: function() {
         this.serverRequest.abort();
+        MenuStore.removeChangeListener(this._onChange);
     },
     render: function() {
+        if (typeof this.state.metaData.id == 'undefined') {
+            return (
+                <div className="menu">
+                    <h1>Menu is loading...</h1>
+                </div>
+            )
+        }
+
+        var menu_id = this.state.metaData.id;
+        var menu_data = this.state.metaData.menus[menu_id];
+        var menu_pk = menu_data.id
+        var menu_date = menu_data.date;
+        var menu_weekday = menu_data.weekday;
+
         return (
-            <div className="menu"
-                 data-forceid={this.state.id}
-                 data-forcedate={this.state.date}>
-                {/* {
-                Object.keys(this.state.products).map(function(category){
-                return (<Category key={category}
-                value={this.state.categories[category]}
-                products={this.state.products[category]}/>);
-                }.bind(this))
-                } */}
+            <div className="menu" data-forceid={menu_id}
+                 data-forcedate={menu_date}>
+                <h1>Меню на {weekdays_accusative[menu_weekday]}</h1>
+                <ProductList activeMenu={menu_pk} />
             </div>
         )
     },
-    _onChange: function() {
-        this.setState(getMenuState);
-    },
+    _onChange: function() { this.setState(MenuStore.getState()); },
 });
 
 module.exports = Menu;

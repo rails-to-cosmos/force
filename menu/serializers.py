@@ -11,17 +11,16 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('category', 'category_name',
+        fields = ('category_name',
                   'id', 'weight', 'compound', 'cost', 'name')
 
 
 class MenuSerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True, read_only=True)
     weekday = serializers.SerializerMethodField('current_weekday')
 
     class Meta:
         model = Menu
-        fields = ('id', 'date', 'products', 'weekday')
+        fields = ('id', 'date', 'weekday')
 
     def current_weekday(self, obj):
         return obj.date.weekday()

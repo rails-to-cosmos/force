@@ -1,17 +1,25 @@
 from django.contrib.auth import authenticate as django_authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
+from django.contrib.auth.models import User
 
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.datastructures import MultiValueDictKeyError
 from django.http import JsonResponse
 
+from rest_framework import status
 
+
+ERROR_KEY = 'error'
+SUCCESS_KEY = 'success'
+
+
+@ensure_csrf_cookie
 def login(request):
     if request.user.is_authenticated():
         response = JsonResponse({
-            'error': 'Already authenticated'
+            ERROR_KEY: 'Already authenticated'
         })
-        response.status_code = 200
         return response
 
     try:
@@ -19,43 +27,56 @@ def login(request):
         password = request.POST['password']
     except MultiValueDictKeyError:
         response = JsonResponse({
-            'error': 'Specify username and password to continue'
-        })
-        response.status_code = 401
+            ERROR_KEY: 'Specify username and password to continue'
+        }, status=status.HTTP_401_UNAUTHORIZED)
         return response
 
     user = django_authenticate(username=username, password=password)
     if not user:
         response = JsonResponse({
-            'error': 'Bad credentials',
+            ERROR_KEY: 'Bad credentials',
             'user': username,
             'password': password
-        })
-        response.status_code = 401
+        }, status=status.HTTP_401_UNAUTHORIZED)
         return response
 
     if user.is_active:
         django_login(request, user)
         response = JsonResponse({
-            'success': 'Successfully authorized',
+            SUCCESS_KEY: 'Successfully authorized',
             'fullname': u'{first_name} {last_name}'.format(
                 first_name=user.first_name,
                 last_name=user.last_name)
         })
-        response.status_code = 200
         return response
     else:
         response = JsonResponse({
-            'error': 'User is not active'
-        })
-        response.status_code = 403
+            ERROR_KEY: 'User is not active'
+        }, status=status.HTTP_403_FORBIDDEN)
         return response
 
 
+@ensure_csrf_cookie
 def logout(request):
     django_logout(request)
     response = JsonResponse({
-        'success': 'Successfully logged out'
+        SUCCESS_KEY: 'Successfully logged out'
     })
-    response.status_code = 200
+    return response
+
+
+def current_user(request):
+    try:
+        user = User.objects.filter(id=request.user.id)[0]
+        response = JsonResponse({
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email
+        })
+    except IndexError:
+        response = JsonResponse({
+            'unauthorized': True
+        })
+
     return response

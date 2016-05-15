@@ -6,7 +6,7 @@ var MenuItem = require('react-bootstrap').MenuItem;
 var Badge = require('react-bootstrap').Badge;
 
 
-var AuthorizationForm = require('./AuthorizationForm')
+var AuthorizationForm = require('./AuthorizationForm.react')
 var NavigationBar = React.createClass({
     render: function() {
         return (
@@ -36,7 +36,7 @@ var NavigationBar = React.createClass({
                     <NavItem eventKey={1} href="#">Мои заказы</NavItem>
                     <NavItem eventKey={1} href="#">Чек <Badge className="force-nobold">200 &#8381;</Badge></NavItem>
                 </Nav>
-                <AuthorizationForm source="/api/users/current.json"/>
+                <AuthorizationForm source="/auth/current_user"/>
             </Navbar>
         );
     }

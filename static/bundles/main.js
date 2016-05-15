@@ -53,12 +53,11 @@
 	React = __webpack_require__(11);
 
 	var ReactDOM = __webpack_require__(168);
-	var NavigationBar = __webpack_require__(169);
+	var NavigationBar = __webpack_require__(439);
 	var Menu = __webpack_require__(416);
 
 	ReactDOM.render(React.createElement(NavigationBar, null), document.getElementById('navigation'));
-
-	ReactDOM.render(React.createElement(Menu, { source: '/api/menus.json' }), document.getElementById('menu'));
+	ReactDOM.render(React.createElement(Menu, { activeMenu: '0' }), document.getElementById('menu'));
 
 /***/ },
 /* 1 */
@@ -29879,131 +29878,7 @@
 
 
 /***/ },
-/* 169 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Navbar = __webpack_require__(170).Navbar;
-	var Nav = __webpack_require__(170).Nav;
-	var NavItem = __webpack_require__(170).NavItem;
-	var NavDropdown = __webpack_require__(170).NavDropdown;
-	var MenuItem = __webpack_require__(170).MenuItem;
-	var Badge = __webpack_require__(170).Badge;
-
-	var AuthorizationForm = __webpack_require__(414);
-	var NavigationBar = React.createClass({
-	    displayName: 'NavigationBar',
-
-	    render: function () {
-	        return React.createElement(
-	            Navbar,
-	            null,
-	            React.createElement(
-	                Navbar.Header,
-	                null,
-	                React.createElement(
-	                    Navbar.Brand,
-	                    null,
-	                    React.createElement(
-	                        'a',
-	                        { href: '#' },
-	                        'СИЗО ',
-	                        React.createElement(
-	                            'sup',
-	                            null,
-	                            'с тобой до конца'
-	                        )
-	                    )
-	                )
-	            ),
-	            React.createElement(
-	                Nav,
-	                null,
-	                React.createElement(
-	                    NavDropdown,
-	                    { eventKey: 1, title: 'Админские примочки', id: 'basic-nav-dropdown' },
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.6 },
-	                        'Оповещение: Привезли обеды'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.7 },
-	                        'Оповещение: Деньги за обеды'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.8 },
-	                        'Оповещение: Отправка через 10 минут'
-	                    ),
-	                    React.createElement(MenuItem, { divider: true }),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.4 },
-	                        'Загрузить меню на следующую неделю'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.5 },
-	                        'Отправить меню'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.5 },
-	                        'Отправить меню через десять минут'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.5 },
-	                        'Отложить отправку меню на пять минут'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.1 },
-	                        'Закрыть меню'
-	                    ),
-	                    React.createElement(MenuItem, { divider: true }),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.2 },
-	                        'Заказы на сегодня'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.3 },
-	                        'Неоплаченные заказы (1)'
-	                    ),
-	                    React.createElement(MenuItem, { divider: true }),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.4 },
-	                        'Поставщики'
-	                    )
-	                ),
-	                React.createElement(
-	                    NavItem,
-	                    { eventKey: 1, href: '#' },
-	                    'Мои заказы'
-	                ),
-	                React.createElement(
-	                    NavItem,
-	                    { eventKey: 1, href: '#' },
-	                    'Чек ',
-	                    React.createElement(
-	                        Badge,
-	                        { className: 'force-nobold' },
-	                        '200 ₽'
-	                    )
-	                )
-	            ),
-	            React.createElement(AuthorizationForm, { source: '/api/users/current.json' })
-	        );
-	    }
-	});
-
-	module.exports = NavigationBar;
-
-/***/ },
+/* 169 */,
 /* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -47077,167 +46952,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 414 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(415);
-
-	var Navbar = __webpack_require__(170).Navbar;
-	var Nav = __webpack_require__(170).Nav;
-	var NavItem = __webpack_require__(170).NavItem;
-	var Button = __webpack_require__(170).Button;
-	var Input = __webpack_require__(170).Input;
-	var AuthorizationForm = React.createClass({
-	    displayName: 'AuthorizationForm',
-
-	    getInitialState: function () {
-	        state = {
-	            authorized: true,
-	            fullname: ''
-	        };
-
-	        return state;
-	    },
-	    componentDidMount: function () {
-	        this.serverRequest = $.get(this.props.source, function (result) {
-	            this.setState({
-	                fullname: result[0].first_name + ' ' + result[0].last_name,
-	                authorized: true
-	            });
-	        }.bind(this)).fail(function () {
-	            this.setState({
-	                fullname: '',
-	                authorized: false
-	            });
-	        }.bind(this));
-	    },
-	    login: function () {
-	        $.ajax({
-	            type: "POST",
-	            dataType: 'json',
-	            url: '/auth/login/',
-	            data: {
-	                username: this.state.username,
-	                password: this.state.password,
-	                csrfmiddlewaretoken: $.cookie('csrftoken')
-	            },
-	            success: function (data) {
-	                this.setState({
-	                    username: '',
-	                    password: '',
-	                    authorized: true,
-	                    fullname: data.fullname,
-	                    passwordValidationState: undefined
-	                });
-	            }.bind(this),
-	            error: function (xhr, status, err) {
-	                this.setState({
-	                    username: this.state.username,
-	                    password: this.state.password,
-	                    authorized: false,
-	                    passwordValidationState: 'error'
-	                });
-	            }.bind(this)
-	        });
-	    },
-	    logout: function (e) {
-	        $.ajax({
-	            type: "POST",
-	            dataType: 'json',
-	            url: '/auth/logout/',
-	            data: {
-	                csrfmiddlewaretoken: $.cookie('csrftoken')
-	            },
-	            success: function (data) {
-	                this.setState({
-	                    username: '',
-	                    password: '',
-	                    authorized: false,
-	                    passwordValidationState: undefined
-	                });
-	            }.bind(this),
-	            error: function (xhr, status, err) {
-	                console.log('error on exit');
-	            }.bind(this)
-	        });
-	    },
-	    updateUsername: function (event) {
-	        this.state.username = event.target.value;
-	    },
-	    updatePassword: function (event) {
-	        this.state.password = event.target.value;
-	    },
-	    maybeSendForm: function (event) {
-	        if (event.key == 'Enter') {
-	            this.login();
-	        }
-	    },
-	    render: function () {
-	        if (this.state.authorized) {
-	            return React.createElement(
-	                Navbar.Collapse,
-	                null,
-	                React.createElement(
-	                    Navbar.Form,
-	                    { pullRight: true },
-	                    React.createElement(
-	                        Button,
-	                        { onClick: this.logout,
-	                            type: 'button',
-	                            bsStyle: 'danger',
-	                            bsSize: 'small' },
-	                        'Выход'
-	                    )
-	                ),
-	                React.createElement(
-	                    Navbar.Text,
-	                    { pullRight: true },
-	                    'Добро пожаловать, ',
-	                    React.createElement(
-	                        Navbar.Link,
-	                        { href: '#' },
-	                        this.state.fullname
-	                    )
-	                )
-	            );
-	        } else {
-	            return React.createElement(
-	                Navbar.Form,
-	                { pullRight: true },
-	                React.createElement(Input, { ref: 'username',
-	                    type: 'text',
-	                    bsSize: 'small',
-	                    placeholder: 'Имя пользователя',
-	                    defaultValue: this.state.username,
-	                    onChange: this.updateUsername,
-	                    autoFocus: 'True',
-	                    onKeyDown: this.maybeSendForm }),
-	                ' ',
-	                React.createElement(Input, { ref: 'password',
-	                    type: 'password',
-	                    bsStyle: this.state.passwordValidationState,
-	                    bsSize: 'small',
-	                    placeholder: 'Пароль',
-	                    defaultValue: this.state.password,
-	                    onChange: this.updatePassword,
-	                    onKeyDown: this.maybeSendForm }),
-	                ' ',
-	                React.createElement(
-	                    Button,
-	                    { onClick: this.login,
-	                        type: 'button',
-	                        bsStyle: 'success',
-	                        bsSize: 'small' },
-	                    'Вход'
-	                )
-	            );
-	        }
-	    }
-	});
-
-	module.exports = AuthorizationForm;
-
-/***/ },
+/* 414 */,
 /* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -47364,51 +47079,86 @@
 /* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// styles
+	__webpack_require__(417);
+
+	// components
 	var DropdownButton = __webpack_require__(170).DropdownButton;
 	var MenuItem = __webpack_require__(170).MenuItem;
 	var Input = __webpack_require__(170).Input;
 
-	__webpack_require__(417);
-	var Category = __webpack_require__(419);
+	/* var Category = require('./Category.react');*/
+	var ProductList = __webpack_require__(441);
 
+	// actions
 	var MenuActions = __webpack_require__(421);
+	var ProductActions = __webpack_require__(444);
+
+	// stores
 	var MenuStore = __webpack_require__(436);
 
-	function getMenuState() {
-	    var menuData = MenuStore.getMenuData();
-	    var currentMenu = menuData.menus[menuData.current_menu];
-
-	    var menuState = {
-	        id: currentMenu.id,
-	        date: currentMenu.date,
-	        orders: currentMenu.orders,
-	        products: currentMenu.products
-	    };
-
-	    // TODO 3 times here on initialize. WTF?
-	    return menuState;
-	}
+	weekdays_accusative = ['понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу', 'воскресение'];
 
 	var Menu = React.createClass({
 	    displayName: 'Menu',
 
+	    getMenuDataIfNeeded: function (props) {
+	        var meta = MenuStore.getState().metaData;
+
+	        if (props.activeMenu && props.activeMenu !== meta.id) {
+	            MenuActions.getMenuData();
+	        }
+	    },
 	    getInitialState: function () {
-	        return getMenuState();
+	        return MenuStore.getState();
+	    },
+	    componentWillMount: function () {
+	        this.getMenuDataIfNeeded(this.props);
 	    },
 	    componentDidMount: function () {
-	        MenuActions.getMenuData();
 	        MenuStore.addChangeListener(this._onChange);
+	    },
+	    componentWillReceiveProps: function (nextProps) {
+	        this.getMenuDataIfNeeded(nextProps);
 	    },
 	    componentWillUnmount: function () {
 	        this.serverRequest.abort();
+	        MenuStore.removeChangeListener(this._onChange);
 	    },
 	    render: function () {
-	        return React.createElement('div', { className: 'menu',
-	            'data-forceid': this.state.id,
-	            'data-forcedate': this.state.date });
+	        if (typeof this.state.metaData.id == 'undefined') {
+	            return React.createElement(
+	                'div',
+	                { className: 'menu' },
+	                React.createElement(
+	                    'h1',
+	                    null,
+	                    'Menu is loading...'
+	                )
+	            );
+	        }
+
+	        var menu_id = this.state.metaData.id;
+	        var menu_data = this.state.metaData.menus[menu_id];
+	        var menu_pk = menu_data.id;
+	        var menu_date = menu_data.date;
+	        var menu_weekday = menu_data.weekday;
+
+	        return React.createElement(
+	            'div',
+	            { className: 'menu', 'data-forceid': menu_id,
+	                'data-forcedate': menu_date },
+	            React.createElement(
+	                'h1',
+	                null,
+	                'Меню на ',
+	                weekdays_accusative[menu_weekday]
+	            ),
+	            React.createElement(ProductList, { activeMenu: menu_pk })
+	        );
 	    },
 	    _onChange: function () {
-	        this.setState(getMenuState);
+	        this.setState(MenuStore.getState());
 	    }
 	});
 
@@ -47455,117 +47205,8 @@
 
 
 /***/ },
-/* 419 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Product = __webpack_require__(420);
-	var Category = React.createClass({
-	    displayName: "Category",
-
-	    render: function () {
-	        return React.createElement(
-	            "div",
-	            { key: this.props.key, className: "category" },
-	            React.createElement(
-	                "h4",
-	                { key: this.props.key },
-	                this.props.value
-	            ),
-	            this.props.products.map(function (product) {
-	                return React.createElement(Product, { key: product.id,
-	                    id: product.id,
-	                    name: product.name,
-	                    description: product.description,
-	                    cost: product.cost });
-	            })
-	        );
-	    }
-	});
-
-	module.exports = Category;
-
-/***/ },
-/* 420 */
-/***/ function(module, exports) {
-
-	var ProductName = React.createClass({
-	    displayName: "ProductName",
-
-	    render: function () {
-	        return React.createElement(
-	            "dt",
-	            { className: "productName" },
-	            React.createElement(
-	                "span",
-	                { className: "productNameInner" },
-	                this.props.value
-	            )
-	        );
-	    }
-	});
-
-	var ProductCost = React.createClass({
-	    displayName: "ProductCost",
-
-	    render: function () {
-	        return React.createElement(
-	            "dd",
-	            { className: "productCost" },
-	            React.createElement(
-	                "span",
-	                { className: "productCostInner" },
-	                this.props.value,
-	                " ₽"
-	            )
-	        );
-	    }
-	});
-
-	var ProductDescription = React.createClass({
-	    displayName: "ProductDescription",
-
-	    render: function () {
-	        return React.createElement(
-	            "span",
-	            { className: "productDescription" },
-	            this.props.value
-	        );
-	    }
-	});
-
-	var Product = React.createClass({
-	    displayName: "Product",
-
-	    order: function () {
-	        $.ajax({
-	            type: "POST",
-	            dataType: 'json',
-	            url: '/api/orders/',
-	            data: {
-	                product: this.props.id,
-	                csrfmiddlewaretoken: $.cookie('csrftoken')
-	            },
-	            success: function (data) {
-	                MenuStore.getOrders();
-	            }.bind(this),
-	            error: function (xhr, status, err) {
-	                MenuStore.getOrders();
-	            }.bind(this)
-	        });
-	    },
-	    render: function () {
-	        return React.createElement(
-	            "dl",
-	            { key: this.props.key, className: "product", id: this.props.id, onClick: this.order },
-	            React.createElement(ProductName, { value: this.props.name }),
-	            React.createElement(ProductCost, { value: this.props.cost })
-	        );
-	    }
-	});
-
-	module.exports = Product;
-
-/***/ },
+/* 419 */,
+/* 420 */,
 /* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -47574,35 +47215,35 @@
 	var MenuAPI = __webpack_require__(428);
 
 	var MenuActions = {
-	    getMenuData: function () {
-	        AppDispatcher.handleViewAction({
-	            actionType: MenuConstants.MENU_GET_DATA
-	        });
-
-	        MenuAPI.get();
-	    },
-	    order: function (menu, product) {
-	        AppDispatcher.dispatch({
-	            actionType: MenuConstants.MENU_ORDER,
-	            menu: menu,
-	            product: product
-	        });
-	    },
-	    cancel: function (menu, product) {
-	        AppDispatcher.dispatch({
-	            actionType: MenuConstants.MENU_CANCEL,
-	            menu: menu,
-	            product: product
-	        });
-	    },
-	    send: function (menu) {
-	        AppDispatcher.dispatch({
-	            actionType: MenuConstants.MENU_GET_DATA,
-	            menu: menu
-	        });
-	    }
+	  getMenuData: function () {
+	    MenuAPI.getMenuData();
+	    /* AppDispatcher.handleViewAction({
+	     *     actionType: MenuConstants.MENU_GET_DATA,
+	     * });
+	     */
+	  }
 	};
 
+	/* send: function(menu) {
+	 *     AppDispatcher.dispatch({
+	 *         actionType: MenuConstants.MENU_GET_DATA,
+	 *         menu: menu,
+	 *     });
+	 * },*/
+	/* order: function(menu, product) {
+	 *     AppDispatcher.dispatch({
+	 *         actionType: MenuConstants.MENU_ORDER,
+	 *         menu: menu,
+	 *         product: product,
+	 *     });
+	 * },
+	 * cancel: function(menu, product) {
+	 *     AppDispatcher.dispatch({
+	 *         actionType: MenuConstants.MENU_CANCEL,
+	 *         menu: menu,
+	 *         product: product,
+	 *     });
+	 * },*/
 	module.exports = MenuActions;
 
 /***/ },
@@ -47943,11 +47584,9 @@
 	var keyMirror = __webpack_require__(427);
 
 	module.exports = keyMirror({
-	    MENU_ORDER: null,
-	    MENU_CANCEL: null,
 	    MENU_SEND: null,
-	    MENU_GET_DATA_RESPONSE: null,
-	    MENU_GET_DATA: null
+	    MENU_GET_DATA: null,
+	    MENU_GET_DATA_RESPONSE: null
 	});
 
 /***/ },
@@ -48013,18 +47652,81 @@
 /* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var API_URL = '/api';
+	var TIMEOUT = 10000;
+
+	var _pendingRequests = {};
+
+	var AppDispatcher = __webpack_require__(422);
 	var MenuServerActions = __webpack_require__(429);
+	var MenuConstants = __webpack_require__(426);
 	var request = __webpack_require__(430);
 
-	module.exports = {
-	  get: function () {
-	    request.get('/api/menus.json').set('Accept', 'application/json').end(function (err, response) {
-	      if (err) return console.error(err);
+	function abortPendingRequests(key) {
+	    if (_pendingRequests[key]) {
+	        _pendingRequests[key]._callback = function () {};
+	        _pendingRequests[key].abort();
+	        _pendingRequests[key] = null;
+	    }
+	}
 
-	      MenuServerActions.receiveMenuData(response.body);
+	function token() {
+	    return $.cookie('csrftoken');
+	}
+
+	function makeUrl(part) {
+	    return API_URL + part;
+	}
+
+	function dispatch(key, response, params) {
+	    /* var payload = {actionType: key, response: response};
+	     * if (params) {
+	     *     payload.queryParams = params;
+	     * }*/
+	    AppDispatcher.handleViewAction({
+	        actionType: MenuConstants.MENU_GET_DATA
 	    });
-	  }
+	}
+
+	// return successful response, else return request Constants
+	function makeDigestFun(key, params) {
+	    return function (err, res) {
+	        if (err && err.timeout === TIMEOUT) {
+	            dispatch(key, Constants.request.TIMEOUT, params);
+	        } else if (res.status === 400) {
+	            UserActions.logout();
+	        } else if (!res.ok) {
+	            dispatch(key, Constants.request.ERROR, params);
+	        } else {
+	            dispatch(key, res, params);
+	        }
+	    };
+	}
+
+	var MenuAPI = {
+	    getMenuData: function (entityId) {
+	        var url = makeUrl('/menus.json');
+	        var key = null; // Constants.api.GET_ENTITY_DATA;
+	        var params = null; // {entityId: entityId};
+	        abortPendingRequests(key);
+	        dispatch(key, MenuConstants.MENU_GET_DATA, params);
+	        _pendingRequests[key] = get(url).end(makeDigestFun(key, params));
+	    }
 	};
+
+	module.exports = MenuAPI;
+
+	/* module.exports = {
+	 *   get: function() {
+	 *     request.get(makeUrl('menus.json'))
+	 *            .set('Accept', 'application/json')
+	 *            .end(function(err, response) {
+	 *                if (err) return console.error(err);
+	 *
+	 *                MenuServerActions.receiveMenuData(response.body);
+	 *            });
+	 *   }
+	 * };*/
 
 /***/ },
 /* 429 */
@@ -49556,53 +49258,33 @@
 /* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var assign = __webpack_require__(437);
+
 	var AppDispatcher = __webpack_require__(422);
 	var MenuConstants = __webpack_require__(426);
-	var assign = __webpack_require__(437);
 	var EventEmitter = __webpack_require__(438).EventEmitter;
 
 	var _store = {
-	    menus: [{
-	        id: 0,
-	        date: '',
-	        orders: [],
-	        products: []
-	    }],
-	    orders: [],
-	    current_menu: 0
+	    metaData: {}
 	};
 
-	var CHANGE_EVENT = 'change';
-
-	function makeOrder(menu, product, count) {
-	    var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
-	    _orders[id] = {
-	        id: id,
-	        product: product,
-	        menu: menu,
-	        count: count
-	    };
-	}
-
-	function cancelOrder(id) {
-	    delete _store.orders[id];
-	}
-
 	var MenuStore = assign({}, EventEmitter.prototype, {
-	    getMenuData: function () {
+	    CHANGE_EVENT: 'change',
+
+	    getState: function () {
 	        return _store;
 	    },
 
 	    emitChange: function () {
-	        this.emit(CHANGE_EVENT);
+	        this.emit(this.CHANGE_EVENT);
 	    },
 
 	    addChangeListener: function (callback) {
-	        this.on(CHANGE_EVENT, callback);
+	        this.on(this.CHANGE_EVENT, callback);
 	    },
 
 	    removeChangeListener: function (callback) {
-	        this.removeListener(CHANGE_EVENT, callback);
+	        this.removeListener(this.CHANGE_EVENT, callback);
 	    }
 	});
 
@@ -49613,20 +49295,19 @@
 	    switch (action.actionType) {
 	        case MenuConstants.MENU_GET_DATA_RESPONSE:
 	            var response = action.response;
-	            _store.menus = response;
-	            _store.current_menu = 0;
+	            _store.metaData.menus = response;
+	            _store.metaData.id = 0;
 	            MenuStore.emitChange();
 	            break;
 
-	        case MenuConstants.MENU_ORDER:
-	            makeOrder(action.menu, action.product, count);
-	            MenuStore.emitChange();
-	            break;
-
-	        case MenuConstants.MENU_CANCEL:
-	            cancelOrder(action.menu, action.product);
-	            MenuStore.emitChange();
-	            break;
+	        /* case MenuConstants.MENU_ORDER:
+	         *     makeOrder(action.menu, action.product, count);
+	         *     MenuStore.emitChange();
+	         *     break;
+	          * case MenuConstants.MENU_CANCEL:
+	         *     cancelOrder(action.menu, action.product);
+	         *     MenuStore.emitChange();
+	         *     break;*/
 
 	        case MenuConstants.MENU_SEND:
 	            break;
@@ -49986,6 +49667,475 @@
 	  return arg === void 0;
 	}
 
+
+/***/ },
+/* 439 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Navbar = __webpack_require__(170).Navbar;
+	var Nav = __webpack_require__(170).Nav;
+	var NavItem = __webpack_require__(170).NavItem;
+	var NavDropdown = __webpack_require__(170).NavDropdown;
+	var MenuItem = __webpack_require__(170).MenuItem;
+	var Badge = __webpack_require__(170).Badge;
+
+	var AuthorizationForm = __webpack_require__(440);
+	var NavigationBar = React.createClass({
+	    displayName: 'NavigationBar',
+
+	    render: function () {
+	        return React.createElement(
+	            Navbar,
+	            null,
+	            React.createElement(
+	                Navbar.Header,
+	                null,
+	                React.createElement(
+	                    Navbar.Brand,
+	                    null,
+	                    React.createElement(
+	                        'a',
+	                        { href: '#' },
+	                        'СИЗО ',
+	                        React.createElement(
+	                            'sup',
+	                            null,
+	                            'с тобой до конца'
+	                        )
+	                    )
+	                )
+	            ),
+	            React.createElement(
+	                Nav,
+	                null,
+	                React.createElement(
+	                    NavDropdown,
+	                    { eventKey: 1, title: 'Админские примочки', id: 'basic-nav-dropdown' },
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.6 },
+	                        'Оповещение: Привезли обеды'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.7 },
+	                        'Оповещение: Деньги за обеды'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.8 },
+	                        'Оповещение: Отправка через 10 минут'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.4 },
+	                        'Загрузить меню на следующую неделю'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отправить меню'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отправить меню через десять минут'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отложить отправку меню на пять минут'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.1 },
+	                        'Закрыть меню'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.2 },
+	                        'Заказы на сегодня'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.3 },
+	                        'Неоплаченные заказы (1)'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.4 },
+	                        'Поставщики'
+	                    )
+	                ),
+	                React.createElement(
+	                    NavItem,
+	                    { eventKey: 1, href: '#' },
+	                    'Мои заказы'
+	                ),
+	                React.createElement(
+	                    NavItem,
+	                    { eventKey: 1, href: '#' },
+	                    'Чек ',
+	                    React.createElement(
+	                        Badge,
+	                        { className: 'force-nobold' },
+	                        '200 ₽'
+	                    )
+	                )
+	            ),
+	            React.createElement(AuthorizationForm, { source: '/auth/current_user' })
+	        );
+	    }
+	});
+
+	module.exports = NavigationBar;
+
+/***/ },
+/* 440 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(415);
+
+	var Navbar = __webpack_require__(170).Navbar;
+	var Nav = __webpack_require__(170).Nav;
+	var NavItem = __webpack_require__(170).NavItem;
+	var Button = __webpack_require__(170).Button;
+	var Input = __webpack_require__(170).Input;
+	var AuthorizationForm = React.createClass({
+	    displayName: 'AuthorizationForm',
+
+	    getInitialState: function () {
+	        state = {
+	            authorized: false,
+	            fullname: ''
+	        };
+
+	        return state;
+	    },
+	    setUnauthorizedState: function () {
+	        this.setState({
+	            fullname: '',
+	            authorized: false
+	        });
+	    },
+	    componentDidMount: function () {
+	        this.serverRequest = $.get(this.props.source, function (result) {
+	            if (result.unauthorized) {
+	                this.setUnauthorizedState();
+	            } else {
+	                this.setState({
+	                    fullname: result.first_name + ' ' + result.last_name,
+	                    authorized: true
+	                });
+	            }
+	        }.bind(this)).fail(function () {
+	            this.setUnauthorizedState();
+	        }.bind(this));
+	    },
+	    login: function () {
+	        $.ajax({
+	            type: "POST",
+	            dataType: 'json',
+	            url: '/auth/login/',
+	            data: {
+	                username: this.state.username,
+	                password: this.state.password,
+	                csrfmiddlewaretoken: $.cookie('csrftoken')
+	            },
+	            success: function (data) {
+	                this.setState({
+	                    username: '',
+	                    password: '',
+	                    authorized: true,
+	                    fullname: data.fullname,
+	                    passwordValidationState: undefined
+	                });
+	            }.bind(this),
+	            error: function (xhr, status, err) {
+	                this.setState({
+	                    username: this.state.username,
+	                    password: this.state.password,
+	                    authorized: false,
+	                    passwordValidationState: 'error'
+	                });
+	            }.bind(this)
+	        });
+	    },
+	    logout: function (e) {
+	        $.ajax({
+	            type: "POST",
+	            dataType: 'json',
+	            url: '/auth/logout/',
+	            data: {
+	                csrfmiddlewaretoken: $.cookie('csrftoken')
+	            },
+	            success: function (data) {
+	                this.setUnauthorizedState();
+	            }.bind(this),
+	            error: function (xhr, status, err) {
+	                console.log('error on exit');
+	            }.bind(this)
+	        });
+	    },
+	    updateUsername: function (event) {
+	        this.state.username = event.target.value;
+	    },
+	    updatePassword: function (event) {
+	        this.state.password = event.target.value;
+	    },
+	    maybeSendForm: function (event) {
+	        if (event.key == 'Enter') {
+	            this.login();
+	        }
+	    },
+	    render: function () {
+	        if (this.state.authorized) {
+	            return React.createElement(
+	                Navbar.Collapse,
+	                null,
+	                React.createElement(
+	                    Navbar.Form,
+	                    { pullRight: true },
+	                    React.createElement(
+	                        Button,
+	                        { onClick: this.logout,
+	                            type: 'button',
+	                            bsStyle: 'danger',
+	                            bsSize: 'small' },
+	                        'Выход'
+	                    )
+	                ),
+	                React.createElement(
+	                    Navbar.Text,
+	                    { pullRight: true },
+	                    'Добро пожаловать, ',
+	                    React.createElement(
+	                        Navbar.Link,
+	                        { href: '#' },
+	                        this.state.fullname
+	                    )
+	                )
+	            );
+	        } else {
+	            return React.createElement(
+	                Navbar.Form,
+	                { pullRight: true },
+	                React.createElement(Input, { ref: 'username',
+	                    type: 'text',
+	                    bsSize: 'small',
+	                    placeholder: 'Имя пользователя',
+	                    defaultValue: this.state.username,
+	                    onChange: this.updateUsername,
+	                    autoFocus: 'True',
+	                    onKeyDown: this.maybeSendForm }),
+	                ' ',
+	                React.createElement(Input, { ref: 'password',
+	                    type: 'password',
+	                    bsStyle: this.state.passwordValidationState,
+	                    bsSize: 'small',
+	                    placeholder: 'Пароль',
+	                    defaultValue: this.state.password,
+	                    onChange: this.updatePassword,
+	                    onKeyDown: this.maybeSendForm }),
+	                ' ',
+	                React.createElement(
+	                    Button,
+	                    { onClick: this.login,
+	                        type: 'button',
+	                        bsStyle: 'success',
+	                        bsSize: 'small' },
+	                    'Вход'
+	                )
+	            );
+	        }
+	    }
+	});
+
+	module.exports = AuthorizationForm;
+
+/***/ },
+/* 441 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ProductStore = __webpack_require__(442);
+	var ProductActions = __webpack_require__(444);
+
+	var ProductList = React.createClass({
+	    displayName: 'ProductList',
+
+	    getProductDataIfNeeded: function (props) {
+	        var meta = ProductStore.getState().metaData;
+
+	        if (props.activeMenu && props.activeMenu !== meta.activeMenu) {
+	            ProductActions.getProductData(props.activeMenu);
+	        }
+	    },
+	    getInitialState: function () {
+	        return ProductStore.getState();
+	    },
+	    componentWillMount: function () {
+	        this.getProductDataIfNeeded(this.props);
+	    },
+	    componentDidMount: function () {
+	        ProductStore.addChangeListener(this._onChange);
+	    },
+	    componentWillReceiveProps: function (nextProps) {
+	        this.getProductDataIfNeeded(nextProps);
+	    },
+	    componentWillUnmount: function () {
+	        this.serverRequest.abort();
+	        ProductStore.removeChangeListener(this._onChange);
+	    },
+	    render: function () {
+	        return React.createElement(
+	            'div',
+	            { className: 'productList' },
+	            'Product list is here'
+	        );
+	    },
+	    _onChange: function () {
+	        this.setState(ProductStore.getState());
+	    }
+	});
+
+	module.exports = ProductList;
+
+/***/ },
+/* 442 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assign = __webpack_require__(437);
+
+	var AppDispatcher = __webpack_require__(422);
+	var ProductConstants = __webpack_require__(443);
+	var EventEmitter = __webpack_require__(438).EventEmitter;
+
+	var _store = {
+	    metaData: {
+	        categories: [{
+	            name: ''
+	        }],
+	        products: [{
+	            id: 0,
+	            cost: 0,
+	            name: '',
+	            category: 0
+	        }]
+	    }
+	};
+
+	var ProductStore = assign({}, EventEmitter.prototype, {
+	    CHANGE_EVENT: 'change',
+
+	    getState: function () {
+	        return _store;
+	    },
+
+	    emitChange: function () {
+	        this.emit(this.CHANGE_EVENT);
+	    },
+
+	    addChangeListener: function (callback) {
+	        this.on(this.CHANGE_EVENT, callback);
+	    },
+
+	    removeChangeListener: function (callback) {
+	        this.removeListener(this.CHANGE_EVENT, callback);
+	    }
+	});
+
+	// Register callback to handle all updates
+	AppDispatcher.register(function (payload) {
+	    var action = payload.action;
+
+	    switch (action.actionType) {
+	        case ProductConstants.PRODUCT_GET_DATA_RESPONSE:
+	            var response = action.response;
+	            _store.metaData = response;
+	            ProductStore.emitChange();
+	            break;
+
+	        default:
+	        // no op
+	    }
+	});
+
+	module.exports = ProductStore;
+
+/***/ },
+/* 443 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var keyMirror = __webpack_require__(427);
+
+	module.exports = keyMirror({
+	    PRODUCT_GET_DATA_RESPONSE: null,
+	    PRODUCT_GET_DATA: null
+	});
+
+/***/ },
+/* 444 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(422);
+	var ProductConstants = __webpack_require__(443);
+	var ProductAPI = __webpack_require__(445);
+
+	var ProductActions = {
+	    getProductData: function (menu_id) {
+	        AppDispatcher.handleViewAction({
+	            actionType: ProductConstants.PRODUCT_GET_DATA
+	        });
+
+	        ProductAPI.get(menu_id);
+	    },
+	    send: function (product) {
+	        AppDispatcher.dispatch({
+	            actionType: ProductConstants.PRODUCT_GET_DATA,
+	            product: product
+	        });
+	    }
+	};
+
+	module.exports = ProductActions;
+
+/***/ },
+/* 445 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ProductServerActions = __webpack_require__(446);
+	var request = __webpack_require__(430);
+
+	module.exports = {
+	  get: function (menu_id) {
+	    request.get('/api/menus/' + menu_id + '/products.json').set('Accept', 'application/json').end(function (err, response) {
+	      if (err) return console.error(err);
+
+	      ProductServerActions.receiveProductData(response.body);
+	    });
+	  }
+	};
+
+/***/ },
+/* 446 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(422);
+	var ProductConstants = __webpack_require__(443);
+
+	var ProductServerActions = {
+	    receiveProductData: function (response) {
+	        AppDispatcher.handleServerAction({
+	            actionType: ProductConstants.PRODUCT_GET_DATA_RESPONSE,
+	            response: response
+	        });
+	    }
+	};
+
+	module.exports = ProductServerActions;
 
 /***/ }
 /******/ ]);

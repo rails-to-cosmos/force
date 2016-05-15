@@ -15,13 +15,25 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAdminUser
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.serializers import ValidationError
-from rest_framework.decorators import list_route
+from rest_framework.decorators import detail_route, list_route
 
 
 class MenuViewSet(viewsets.ModelViewSet):
-    queryset = Menu.objects.filter(date__gte=timezone.now())
+    queryset = Menu.objects.filter(date__gte=timezone.now()).order_by('date')
     serializer_class = MenuSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly, )
+
+    @detail_route(methods=['get'])
+    def products(self, request, pk=None, format=None):
+        queryset = self.get_object().products
+        serializer = ProductSerializer(
+            queryset,
+            many=True,
+            context={
+                'request': request
+            }
+        )
+        return Response(serializer.data)
 
 
 class ProductViewSet(viewsets.ModelViewSet):

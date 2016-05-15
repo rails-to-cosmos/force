@@ -18,16 +18,8 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserSerializer(
             queryset,
             many=True,
-            context={'request': request}
-        )
-        return Response(serializer.data)
-
-    @list_route(methods=['get'])
-    def current(self, request, format):
-        queryset = User.objects.filter(id=request.user.id)
-        serializer = UserSerializer(
-            queryset,
-            many=True,
-            context={'request': request}
+            context={
+                'request': request
+            }
         )
         return Response(serializer.data)

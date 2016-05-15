@@ -8,23 +8,30 @@ var Input = require('react-bootstrap').Input;
 var AuthorizationForm = React.createClass({
     getInitialState: function() {
         state = {
-            authorized: true,
+            authorized: false,
             fullname: ''
         }
 
         return state
     },
+    setUnauthorizedState: function() {
+        this.setState({
+            fullname: '',
+            authorized: false
+        });
+    },
     componentDidMount: function() {
         this.serverRequest = $.get(this.props.source, function(result) {
-            this.setState({
-                fullname: result[0].first_name + ' ' + result[0].last_name,
-                authorized: true
-            });
+            if (result.unauthorized) {
+                this.setUnauthorizedState();
+            } else {
+                this.setState({
+                    fullname: result.first_name + ' ' + result.last_name,
+                    authorized: true
+                });
+            }
         }.bind(this)).fail(function() {
-            this.setState({
-                fullname: '',
-                authorized: false
-            });
+            this.setUnauthorizedState();
         }.bind(this));
     },
     login: function() {
@@ -65,12 +72,7 @@ var AuthorizationForm = React.createClass({
                 csrfmiddlewaretoken: $.cookie('csrftoken')
             },
             success: function(data) {
-                this.setState({
-                    username: '',
-                    password: '',
-                    authorized: false,
-                    passwordValidationState: undefined,
-                });
+                this.setUnauthorizedState();
             }.bind(this),
             error: function(xhr, status, err) {
                 console.log('error on exit');

@@ -1,16 +1,24 @@
 var assign = require('object-assign');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var MenuConstants = require('../constants/MenuConstants');
+var ProductConstants = require('../constants/ProductConstants');
 var EventEmitter = require('events').EventEmitter;
 
 var _store = {
     metaData: {
-
+        categories: [{
+            name: ''
+        }],
+        products: [{
+            id: 0,
+            cost: 0,
+            name: '',
+            category: 0,
+        }],
     }
 }
 
-var MenuStore = assign({}, EventEmitter.prototype, {
+var ProductStore = assign({}, EventEmitter.prototype, {
     CHANGE_EVENT: 'change',
 
     getState: function() {
@@ -35,24 +43,10 @@ AppDispatcher.register(function(payload) {
     var action = payload.action;
 
     switch(action.actionType) {
-        case MenuConstants.MENU_GET_DATA_RESPONSE:
+        case ProductConstants.PRODUCT_GET_DATA_RESPONSE:
             var response = action.response;
-            _store.metaData.menus = response;
-            _store.metaData.id = 0;
-            MenuStore.emitChange();
-            break;
-
-            /* case MenuConstants.MENU_ORDER:
-             *     makeOrder(action.menu, action.product, count);
-             *     MenuStore.emitChange();
-             *     break;
-
-             * case MenuConstants.MENU_CANCEL:
-             *     cancelOrder(action.menu, action.product);
-             *     MenuStore.emitChange();
-             *     break;*/
-
-        case MenuConstants.MENU_SEND:
+            _store.metaData = response;
+            ProductStore.emitChange();
             break;
 
         default:
@@ -60,4 +54,4 @@ AppDispatcher.register(function(payload) {
     }
 });
 
-module.exports = MenuStore;
+module.exports = ProductStore
