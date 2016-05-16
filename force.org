@@ -8,12 +8,12 @@
 CLOSED: [2016-05-15 Sun 17:57]
 - State "DONE"       from "STARTED"    [2016-05-15 Sun 17:57]
 CLOCK: [2016-05-15 Sun 14:16]--[2016-05-15 Sun 17:57] =>  3:41
-**** STARTED Menu info
-CLOCK: [2016-05-15 Sun 17:57]
 **** DONE View to DRF
 CLOSED: [2016-04-10 Sun 02:05]
 - State "DONE"       from "STARTED"    [2016-04-10 Sun 02:05]
 CLOCK: [2016-04-10 Sun 00:31]--[2016-04-10 Sun 02:05] =>  1:34
+**** STARTED Menu info
+CLOCK: [2016-05-15 Sun 17:57]
 **** TODO Fetching
 ***** TODO Categories must have hash
 ***** TODO Verbose!
