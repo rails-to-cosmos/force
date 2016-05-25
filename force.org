@@ -1,3 +1,5 @@
+- https://tech.blog.aknin.name/2011/01/31/introducing-django-ajaxerrors/
+
 * Features
 ** API
 *** TODO Menu
