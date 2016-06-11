@@ -21,7 +21,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         menu = None
         category = None
 
-        if user_filter_by_category:
+        if user_filter_by_category(request):
             category_id = int(request.GET.get('category'))
             category = Category.objects.filter(id=category_id).first()
 
