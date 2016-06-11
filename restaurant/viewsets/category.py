@@ -5,6 +5,7 @@ from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from ..utils import user_wants_actual_menu, get_actual_menu
 from ..models import Category, Product
 from ..serializers.category import CategorySerializer
+from ..serializers.menu import MenuSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -13,6 +14,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly, )
 
     def list(self, request):
+        menu = None
+
         if user_wants_actual_menu(request):
             menu = get_actual_menu()
             actual_category_ids = Product.objects.filter(menu=menu).\
@@ -25,12 +28,21 @@ class CategoryViewSet(viewsets.ModelViewSet):
                     'request': request
                 }
             ).data
-            return Response(categories_serialized)
+            response = categories_serialized
         else:
-            return Response(CategorySerializer(
+            response = CategorySerializer(
                 Category.objects.all(),
                 many=True,
                 context={
                     'request': request
                 }
-            ).data)
+            ).data
+
+        if menu:
+            menu_serialized = MenuSerializer(menu).data
+            response = {
+                'categories': response
+            }
+            response['menu'] = menu_serialized
+
+        return Response(response)
