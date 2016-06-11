@@ -1,42 +1,24 @@
-* Brainstorm garbage
-- https://github.com/kadirahq/react-storybook
-- https://github.com/firehol/netdata
+- https://tech.blog.aknin.name/2011/01/31/introducing-django-ajaxerrors/
 
-СИЗО -- с тобой до конца!
-
-Параша справа внизу, а выше рейтинг заказывающих чуваков.
-Параша -- колонка.
-Петух -- подумать над званием.
-
-Ачивки: качер, диетолог, штрудель
-Ачивка за получение всех ачивок!
-
-** Цитаты: в тюрьме сейчас ужин, макороны.
-- украл, выпил, в тюрьму!
-- Дмитрий Андреевич, тут такое дело...
-- Дмитрий Андреевич, мы вот по какому вопросу...
-- Дмитрий Андреевич, у нас на вас кое-что есть...
-- Дмитрий Андреевич, люди разное говорят...
-- Что ты тут ищешь?
-** [[https://developers.google.com/web/fundamentals/getting-started/push-notifications/?hl%3Den][Notifications]]
-* Deploy
-** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Features
 ** API
 *** TODO Menu
+**** FLUX problems
+***** http://blog.arkency.com/2015/10/loading-all-data-when-starting-flux-spa/
+***** http://stackoverflow.com/questions/23591325/in-flux-architecture-how-do-you-manage-store-lifecycle
 **** DONE Group by categories
 CLOSED: [2016-05-15 Sun 17:57]
 - State "DONE"       from "STARTED"    [2016-05-15 Sun 17:57]
 CLOCK: [2016-05-15 Sun 14:16]--[2016-05-15 Sun 17:57] =>  3:41
-**** STARTED Menu info
-CLOCK: [2016-05-15 Sun 17:57]--[2016-05-22 Sun 00:54] => 150:57
 **** DONE View to DRF
 CLOSED: [2016-04-10 Sun 02:05]
 - State "DONE"       from "STARTED"    [2016-04-10 Sun 02:05]
 CLOCK: [2016-04-10 Sun 00:31]--[2016-04-10 Sun 02:05] =>  1:34
+**** STARTED Menu info
+CLOCK: [2016-05-15 Sun 17:57]
 **** TODO Fetching
 ***** TODO Categories must have hash
-***** TODO Verbose output
+***** TODO Verbose!
 **** TODO JSON encoding
 *** STARTED Orders
 CLOCK: [2016-04-03 Sun 15:11]--[2016-04-03 Sun 21:56] =>  6:45
@@ -66,6 +48,29 @@ CLOCK: [2016-03-22 Tue 22:25]--[2016-03-22 Tue 23:06] =>  0:41
 *** [[http://react-components.com/component/react-native-local-auth][react-native-local-auth]]
 *** Override user model
 - https://docs.djangoproject.com/en/1.9/topics/auth/customizing/
+* Brainstorm garbage
+- https://github.com/kadirahq/react-storybook
+- https://github.com/firehol/netdata
+
+СИЗО -- с тобой до конца!
+
+Параша справа внизу, а выше рейтинг заказывающих чуваков.
+Параша -- колонка.
+Петух -- подумать над званием.
+
+Ачивки: качер, диетолог, штрудель
+Ачивка за получение всех ачивок!
+
+** Цитаты: в тюрьме сейчас ужин, макороны.
+- украл, выпил, в тюрьму!
+- Дмитрий Андреевич, тут такое дело...
+- Дмитрий Андреевич, мы вот по какому вопросу...
+- Дмитрий Андреевич, у нас на вас кое-что есть...
+- Дмитрий Андреевич, люди разное говорят...
+- Что ты тут ищешь?
+** [[https://developers.google.com/web/fundamentals/getting-started/push-notifications/?hl%3Den][Notifications]]
+* Deploy
+** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Menu designs
 ** http://www.wired.co.uk/magazine/archive/2010/04/start/the-hidden-psychology-of-menu-design
 ** Всяка: http://www.creativebloq.com/design/creative-menu-designs-1131620
