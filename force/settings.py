@@ -83,7 +83,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = normpath(join(BASE_DIR, 'static/build'))
 STATICFILES_DIRS = (
     'static',
-    'bower_components',
 )
 
 STATICFILES_FINDERS = (
