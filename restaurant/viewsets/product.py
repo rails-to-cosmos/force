@@ -8,7 +8,8 @@ from ..serializers.product import ProductSerializer
 
 from ..utils import (user_wants_actual_menu,
                      user_filter_by_category,
-                     get_actual_menu)
+                     get_actual_menu,
+                     extend_response)
 from ..models import Category, Product
 
 
@@ -68,23 +69,24 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         response_extended = False
 
-        def extend_response(response, key, addition, extended=False):
-            result = response if extended else {'products': response}
-            result[key] = addition
-            return result, True
-
         if menu:
             menu_serialized = MenuSerializer(menu).data
-            response, response_extended = extend_response(response,
-                                                          'menu',
-                                                          menu_serialized,
-                                                          response_extended)
+            response, response_extended = extend_response(
+                response,
+                'menu',
+                menu_serialized,
+                'products',
+                response_extended
+            )
 
         if category:
             category_serialized = CategorySerializer(category).data
-            response, response_extended = extend_response(response,
-                                                          'category',
-                                                          category_serialized,
-                                                          response_extended)
+            response, response_extended = extend_response(
+                response,
+                'category',
+                category_serialized,
+                'products',
+                response_extended
+            )
 
         return Response(response)

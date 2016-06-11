@@ -2,7 +2,9 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
-from ..utils import user_wants_actual_menu, get_actual_menu
+from ..utils import (user_wants_actual_menu,
+                     get_actual_menu,
+                     extend_response)
 from ..models import Category, Product
 from ..serializers.category import CategorySerializer
 from ..serializers.menu import MenuSerializer
@@ -38,11 +40,16 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 }
             ).data
 
+        response_extended = False
+
         if menu:
             menu_serialized = MenuSerializer(menu).data
-            response = {
-                'categories': response
-            }
-            response['menu'] = menu_serialized
+            response, response_extended = extend_response(
+                response,
+                'menu',
+                menu_serialized,
+                'categories',
+                response_extended
+            )
 
         return Response(response)

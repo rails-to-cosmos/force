@@ -12,3 +12,9 @@ def user_filter_by_category(request):
 
 def get_actual_menu():
     return Menu.objects.filter(date__gte=timezone.now()).order_by('date')[0]
+
+
+def extend_response(response, key, addition, defkey, extended=False):
+    result = response if extended else {defkey: response}
+    result[key] = addition
+    return result, True
