@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+
+from rest_framework import status
 
 from models import Menu
 from models import Category
@@ -60,21 +61,23 @@ def fetch_menu():
     for menu_file in menu_files:
         load_menu_from_file(menu_file)
 
-    # TODO return not only boolean
+    # TODO extend return
     return True
 
 
 @login_required
 def load_menu(request):
-    if fetch_menu():
+    try:
+        fetch_menu()
+    except:
         response = JsonResponse({
-            'success': u'Menu successfully loaded'
+            'error': 'Unable to load menu'
         })
-        response.status_code = 200
+        response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     else:
         response = JsonResponse({
-            'error': u'Unable to load menu'
+            'success': 'Menu successfully loaded'
         })
-        response.status_code = 503
+        response.status_code = status.HTTP_200_OK
 
     return response

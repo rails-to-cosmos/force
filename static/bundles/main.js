@@ -53,7 +53,7 @@
 	React = __webpack_require__(11);
 
 	var ReactDOM = __webpack_require__(168);
-	var NavigationBar = __webpack_require__(439);
+	var NavigationBar = __webpack_require__(169);
 	var Menu = __webpack_require__(416);
 
 	ReactDOM.render(React.createElement(NavigationBar, null), document.getElementById('navigation'));
@@ -29878,7 +29878,131 @@
 
 
 /***/ },
-/* 169 */,
+/* 169 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Navbar = __webpack_require__(170).Navbar;
+	var Nav = __webpack_require__(170).Nav;
+	var NavItem = __webpack_require__(170).NavItem;
+	var NavDropdown = __webpack_require__(170).NavDropdown;
+	var MenuItem = __webpack_require__(170).MenuItem;
+	var Badge = __webpack_require__(170).Badge;
+
+	var AuthorizationForm = __webpack_require__(414);
+	var NavigationBar = React.createClass({
+	    displayName: 'NavigationBar',
+
+	    render: function () {
+	        return React.createElement(
+	            Navbar,
+	            null,
+	            React.createElement(
+	                Navbar.Header,
+	                null,
+	                React.createElement(
+	                    Navbar.Brand,
+	                    null,
+	                    React.createElement(
+	                        'a',
+	                        { href: '#' },
+	                        'СИЗО ',
+	                        React.createElement(
+	                            'sup',
+	                            null,
+	                            'с тобой до конца'
+	                        )
+	                    )
+	                )
+	            ),
+	            React.createElement(
+	                Nav,
+	                null,
+	                React.createElement(
+	                    NavDropdown,
+	                    { eventKey: 1, title: 'Админские примочки', id: 'basic-nav-dropdown' },
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.6 },
+	                        'Оповещение: Привезли обеды'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.7 },
+	                        'Оповещение: Деньги за обеды'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.8 },
+	                        'Оповещение: Отправка через 10 минут'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.4 },
+	                        'Загрузить меню на следующую неделю'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отправить меню'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отправить меню через десять минут'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.5 },
+	                        'Отложить отправку меню на пять минут'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.1 },
+	                        'Закрыть меню'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.2 },
+	                        'Заказы на сегодня'
+	                    ),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.3 },
+	                        'Неоплаченные заказы (1)'
+	                    ),
+	                    React.createElement(MenuItem, { divider: true }),
+	                    React.createElement(
+	                        MenuItem,
+	                        { eventKey: 1.4 },
+	                        'Поставщики'
+	                    )
+	                ),
+	                React.createElement(
+	                    NavItem,
+	                    { eventKey: 1, href: '#' },
+	                    'Мои заказы'
+	                ),
+	                React.createElement(
+	                    NavItem,
+	                    { eventKey: 1, href: '#' },
+	                    'Чек ',
+	                    React.createElement(
+	                        Badge,
+	                        { className: 'force-nobold' },
+	                        '200 ₽'
+	                    )
+	                )
+	            ),
+	            React.createElement(AuthorizationForm, { source: '/auth/current_user' })
+	        );
+	    }
+	});
+
+	module.exports = NavigationBar;
+
+/***/ },
 /* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -46952,7 +47076,169 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 414 */,
+/* 414 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(415);
+
+	var Navbar = __webpack_require__(170).Navbar;
+	var Nav = __webpack_require__(170).Nav;
+	var NavItem = __webpack_require__(170).NavItem;
+	var Button = __webpack_require__(170).Button;
+	var Input = __webpack_require__(170).Input;
+	var AuthorizationForm = React.createClass({
+	    displayName: 'AuthorizationForm',
+
+	    getInitialState: function () {
+	        state = {
+	            authorized: false,
+	            fullname: ''
+	        };
+
+	        return state;
+	    },
+	    setUnauthorizedState: function () {
+	        this.setState({
+	            fullname: '',
+	            authorized: false
+	        });
+	    },
+	    componentDidMount: function () {
+	        this.serverRequest = $.get(this.props.source, function (result) {
+	            if (result.unauthorized) {
+	                this.setUnauthorizedState();
+	            } else {
+	                this.setState({
+	                    fullname: result.first_name + ' ' + result.last_name,
+	                    authorized: true
+	                });
+	            }
+	        }.bind(this)).fail(function () {
+	            this.setUnauthorizedState();
+	        }.bind(this));
+	    },
+	    login: function () {
+	        $.ajax({
+	            type: "POST",
+	            dataType: 'json',
+	            url: '/auth/login/',
+	            data: {
+	                username: this.state.username,
+	                password: this.state.password,
+	                csrfmiddlewaretoken: $.cookie('csrftoken')
+	            },
+	            success: function (data) {
+	                this.setState({
+	                    username: '',
+	                    password: '',
+	                    authorized: true,
+	                    fullname: data.fullname,
+	                    passwordValidationState: undefined
+	                });
+	            }.bind(this),
+	            error: function (xhr, status, err) {
+	                this.setState({
+	                    username: this.state.username,
+	                    password: this.state.password,
+	                    authorized: false,
+	                    passwordValidationState: 'error'
+	                });
+	            }.bind(this)
+	        });
+	    },
+	    logout: function (e) {
+	        $.ajax({
+	            type: "POST",
+	            dataType: 'json',
+	            url: '/auth/logout/',
+	            data: {
+	                csrfmiddlewaretoken: $.cookie('csrftoken')
+	            },
+	            success: function (data) {
+	                this.setUnauthorizedState();
+	            }.bind(this),
+	            error: function (xhr, status, err) {
+	                console.log('error on exit');
+	            }.bind(this)
+	        });
+	    },
+	    updateUsername: function (event) {
+	        this.state.username = event.target.value;
+	    },
+	    updatePassword: function (event) {
+	        this.state.password = event.target.value;
+	    },
+	    maybeSendForm: function (event) {
+	        if (event.key == 'Enter') {
+	            this.login();
+	        }
+	    },
+	    render: function () {
+	        if (this.state.authorized) {
+	            return React.createElement(
+	                Navbar.Collapse,
+	                null,
+	                React.createElement(
+	                    Navbar.Form,
+	                    { pullRight: true },
+	                    React.createElement(
+	                        Button,
+	                        { onClick: this.logout,
+	                            type: 'button',
+	                            bsStyle: 'danger',
+	                            bsSize: 'small' },
+	                        'Выход'
+	                    )
+	                ),
+	                React.createElement(
+	                    Navbar.Text,
+	                    { pullRight: true },
+	                    'Добро пожаловать, ',
+	                    React.createElement(
+	                        Navbar.Link,
+	                        { href: '#' },
+	                        this.state.fullname
+	                    )
+	                )
+	            );
+	        } else {
+	            return React.createElement(
+	                Navbar.Form,
+	                { pullRight: true },
+	                React.createElement(Input, { ref: 'username',
+	                    type: 'text',
+	                    bsSize: 'small',
+	                    placeholder: 'Имя пользователя',
+	                    defaultValue: this.state.username,
+	                    onChange: this.updateUsername,
+	                    autoFocus: 'True',
+	                    onKeyDown: this.maybeSendForm }),
+	                ' ',
+	                React.createElement(Input, { ref: 'password',
+	                    type: 'password',
+	                    bsStyle: this.state.passwordValidationState,
+	                    bsSize: 'small',
+	                    placeholder: 'Пароль',
+	                    defaultValue: this.state.password,
+	                    onChange: this.updatePassword,
+	                    onKeyDown: this.maybeSendForm }),
+	                ' ',
+	                React.createElement(
+	                    Button,
+	                    { onClick: this.login,
+	                        type: 'button',
+	                        bsStyle: 'success',
+	                        bsSize: 'small' },
+	                    'Вход'
+	                )
+	            );
+	        }
+	    }
+	});
+
+	module.exports = AuthorizationForm;
+
+/***/ },
 /* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -47088,14 +47374,14 @@
 	var Input = __webpack_require__(170).Input;
 
 	/* var Category = require('./Category.react');*/
-	var ProductList = __webpack_require__(441);
+	var ProductList = __webpack_require__(419);
 
 	// actions
-	var MenuActions = __webpack_require__(421);
-	var ProductActions = __webpack_require__(444);
+	var MenuActions = __webpack_require__(438);
+	var ProductActions = __webpack_require__(429);
 
 	// stores
-	var MenuStore = __webpack_require__(436);
+	var MenuStore = __webpack_require__(442);
 
 	weekdays_accusative = ['понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу', 'воскресение'];
 
@@ -47205,46 +47491,158 @@
 
 
 /***/ },
-/* 419 */,
-/* 420 */,
-/* 421 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var AppDispatcher = __webpack_require__(422);
-	var MenuConstants = __webpack_require__(426);
-	var MenuAPI = __webpack_require__(428);
+	var ProductStore = __webpack_require__(420);
+	var ProductActions = __webpack_require__(429);
 
-	var MenuActions = {
-	  getMenuData: function () {
-	    MenuAPI.getMenuData();
-	    /* AppDispatcher.handleViewAction({
-	     *     actionType: MenuConstants.MENU_GET_DATA,
-	     * });
-	     */
-	  }
+	var ProductList = React.createClass({
+	    displayName: 'ProductList',
+
+	    getProductDataIfNeeded: function (props) {
+	        var meta = ProductStore.getState().metaData;
+
+	        if (props.activeMenu && props.activeMenu !== meta.activeMenu) {
+	            ProductActions.getProductData(props.activeMenu);
+	        }
+	    },
+	    getInitialState: function () {
+	        return ProductStore.getState();
+	    },
+	    componentWillMount: function () {
+	        this.getProductDataIfNeeded(this.props);
+	    },
+	    componentDidMount: function () {
+	        ProductStore.addChangeListener(this._onChange);
+	    },
+	    componentWillReceiveProps: function (nextProps) {
+	        this.getProductDataIfNeeded(nextProps);
+	    },
+	    componentWillUnmount: function () {
+	        this.serverRequest.abort();
+	        ProductStore.removeChangeListener(this._onChange);
+	    },
+	    render: function () {
+	        return React.createElement(
+	            'div',
+	            { className: 'productList' },
+	            'Product list is here'
+	        );
+	    },
+	    _onChange: function () {
+	        this.setState(ProductStore.getState());
+	    }
+	});
+
+	module.exports = ProductList;
+
+/***/ },
+/* 420 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assign = __webpack_require__(421);
+
+	var AppDispatcher = __webpack_require__(422);
+	var ProductConstants = __webpack_require__(426);
+	var EventEmitter = __webpack_require__(428).EventEmitter;
+
+	var _store = {
+	    metaData: {
+	        categories: [{
+	            name: ''
+	        }],
+	        products: [{
+	            id: 0,
+	            cost: 0,
+	            name: '',
+	            category: 0
+	        }]
+	    }
 	};
 
-	/* send: function(menu) {
-	 *     AppDispatcher.dispatch({
-	 *         actionType: MenuConstants.MENU_GET_DATA,
-	 *         menu: menu,
-	 *     });
-	 * },*/
-	/* order: function(menu, product) {
-	 *     AppDispatcher.dispatch({
-	 *         actionType: MenuConstants.MENU_ORDER,
-	 *         menu: menu,
-	 *         product: product,
-	 *     });
-	 * },
-	 * cancel: function(menu, product) {
-	 *     AppDispatcher.dispatch({
-	 *         actionType: MenuConstants.MENU_CANCEL,
-	 *         menu: menu,
-	 *         product: product,
-	 *     });
-	 * },*/
-	module.exports = MenuActions;
+	var ProductStore = assign({}, EventEmitter.prototype, {
+	    CHANGE_EVENT: 'change',
+
+	    getState: function () {
+	        return _store;
+	    },
+
+	    emitChange: function () {
+	        this.emit(this.CHANGE_EVENT);
+	    },
+
+	    addChangeListener: function (callback) {
+	        this.on(this.CHANGE_EVENT, callback);
+	    },
+
+	    removeChangeListener: function (callback) {
+	        this.removeListener(this.CHANGE_EVENT, callback);
+	    }
+	});
+
+	// Register callback to handle all updates
+	AppDispatcher.register(function (payload) {
+	    var action = payload.action;
+
+	    switch (action.actionType) {
+	        case ProductConstants.PRODUCT_GET_DATA_RESPONSE:
+	            var response = action.response;
+	            _store.metaData = response;
+	            ProductStore.emitChange();
+	            break;
+
+	        default:
+	        // no op
+	    }
+	});
+
+	module.exports = ProductStore;
+
+/***/ },
+/* 421 */
+/***/ function(module, exports) {
+
+	/* eslint-disable no-unused-vars */
+	'use strict';
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+
+		return Object(val);
+	}
+
+	module.exports = Object.assign || function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
+
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
+				}
+			}
+
+			if (Object.getOwnPropertySymbols) {
+				symbols = Object.getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
+
+		return to;
+	};
+
 
 /***/ },
 /* 422 */
@@ -47584,9 +47982,8 @@
 	var keyMirror = __webpack_require__(427);
 
 	module.exports = keyMirror({
-	    MENU_SEND: null,
-	    MENU_GET_DATA: null,
-	    MENU_GET_DATA_RESPONSE: null
+	    PRODUCT_GET_DATA_RESPONSE: null,
+	    PRODUCT_GET_DATA: null
 	});
 
 /***/ },
@@ -47650,114 +48047,381 @@
 
 /***/ },
 /* 428 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var API_URL = '/api';
-	var TIMEOUT = 10000;
+	// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-	var _pendingRequests = {};
-
-	var AppDispatcher = __webpack_require__(422);
-	var MenuServerActions = __webpack_require__(429);
-	var MenuConstants = __webpack_require__(426);
-	var request = __webpack_require__(430);
-
-	function abortPendingRequests(key) {
-	    if (_pendingRequests[key]) {
-	        _pendingRequests[key]._callback = function () {};
-	        _pendingRequests[key].abort();
-	        _pendingRequests[key] = null;
-	    }
+	function EventEmitter() {
+	  this._events = this._events || {};
+	  this._maxListeners = this._maxListeners || undefined;
 	}
+	module.exports = EventEmitter;
 
-	function token() {
-	    return $.cookie('csrftoken');
-	}
+	// Backwards-compat with node 0.10.x
+	EventEmitter.EventEmitter = EventEmitter;
 
-	function makeUrl(part) {
-	    return API_URL + part;
-	}
+	EventEmitter.prototype._events = undefined;
+	EventEmitter.prototype._maxListeners = undefined;
 
-	function dispatch(key, response, params) {
-	    /* var payload = {actionType: key, response: response};
-	     * if (params) {
-	     *     payload.queryParams = params;
-	     * }*/
-	    AppDispatcher.handleViewAction({
-	        actionType: MenuConstants.MENU_GET_DATA
-	    });
-	}
+	// By default EventEmitters will print a warning if more than 10 listeners are
+	// added to it. This is a useful default which helps finding memory leaks.
+	EventEmitter.defaultMaxListeners = 10;
 
-	// return successful response, else return request Constants
-	function makeDigestFun(key, params) {
-	    return function (err, res) {
-	        if (err && err.timeout === TIMEOUT) {
-	            dispatch(key, Constants.request.TIMEOUT, params);
-	        } else if (res.status === 400) {
-	            UserActions.logout();
-	        } else if (!res.ok) {
-	            dispatch(key, Constants.request.ERROR, params);
-	        } else {
-	            dispatch(key, res, params);
-	        }
-	    };
-	}
-
-	var MenuAPI = {
-	    getMenuData: function (entityId) {
-	        var url = makeUrl('/menus.json');
-	        var key = null; // Constants.api.GET_ENTITY_DATA;
-	        var params = null; // {entityId: entityId};
-	        abortPendingRequests(key);
-	        dispatch(key, MenuConstants.MENU_GET_DATA, params);
-	        _pendingRequests[key] = get(url).end(makeDigestFun(key, params));
-	    }
+	// Obviously not all Emitters should be limited to 10. This function allows
+	// that to be increased. Set to zero for unlimited.
+	EventEmitter.prototype.setMaxListeners = function(n) {
+	  if (!isNumber(n) || n < 0 || isNaN(n))
+	    throw TypeError('n must be a positive number');
+	  this._maxListeners = n;
+	  return this;
 	};
 
-	module.exports = MenuAPI;
+	EventEmitter.prototype.emit = function(type) {
+	  var er, handler, len, args, i, listeners;
 
-	/* module.exports = {
-	 *   get: function() {
-	 *     request.get(makeUrl('menus.json'))
-	 *            .set('Accept', 'application/json')
-	 *            .end(function(err, response) {
-	 *                if (err) return console.error(err);
-	 *
-	 *                MenuServerActions.receiveMenuData(response.body);
-	 *            });
-	 *   }
-	 * };*/
+	  if (!this._events)
+	    this._events = {};
+
+	  // If there is no 'error' event listener then throw.
+	  if (type === 'error') {
+	    if (!this._events.error ||
+	        (isObject(this._events.error) && !this._events.error.length)) {
+	      er = arguments[1];
+	      if (er instanceof Error) {
+	        throw er; // Unhandled 'error' event
+	      }
+	      throw TypeError('Uncaught, unspecified "error" event.');
+	    }
+	  }
+
+	  handler = this._events[type];
+
+	  if (isUndefined(handler))
+	    return false;
+
+	  if (isFunction(handler)) {
+	    switch (arguments.length) {
+	      // fast cases
+	      case 1:
+	        handler.call(this);
+	        break;
+	      case 2:
+	        handler.call(this, arguments[1]);
+	        break;
+	      case 3:
+	        handler.call(this, arguments[1], arguments[2]);
+	        break;
+	      // slower
+	      default:
+	        args = Array.prototype.slice.call(arguments, 1);
+	        handler.apply(this, args);
+	    }
+	  } else if (isObject(handler)) {
+	    args = Array.prototype.slice.call(arguments, 1);
+	    listeners = handler.slice();
+	    len = listeners.length;
+	    for (i = 0; i < len; i++)
+	      listeners[i].apply(this, args);
+	  }
+
+	  return true;
+	};
+
+	EventEmitter.prototype.addListener = function(type, listener) {
+	  var m;
+
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  if (!this._events)
+	    this._events = {};
+
+	  // To avoid recursion in the case that type === "newListener"! Before
+	  // adding it to the listeners, first emit "newListener".
+	  if (this._events.newListener)
+	    this.emit('newListener', type,
+	              isFunction(listener.listener) ?
+	              listener.listener : listener);
+
+	  if (!this._events[type])
+	    // Optimize the case of one listener. Don't need the extra array object.
+	    this._events[type] = listener;
+	  else if (isObject(this._events[type]))
+	    // If we've already got an array, just append.
+	    this._events[type].push(listener);
+	  else
+	    // Adding the second element, need to change to array.
+	    this._events[type] = [this._events[type], listener];
+
+	  // Check for listener leak
+	  if (isObject(this._events[type]) && !this._events[type].warned) {
+	    if (!isUndefined(this._maxListeners)) {
+	      m = this._maxListeners;
+	    } else {
+	      m = EventEmitter.defaultMaxListeners;
+	    }
+
+	    if (m && m > 0 && this._events[type].length > m) {
+	      this._events[type].warned = true;
+	      console.error('(node) warning: possible EventEmitter memory ' +
+	                    'leak detected. %d listeners added. ' +
+	                    'Use emitter.setMaxListeners() to increase limit.',
+	                    this._events[type].length);
+	      if (typeof console.trace === 'function') {
+	        // not supported in IE 10
+	        console.trace();
+	      }
+	    }
+	  }
+
+	  return this;
+	};
+
+	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+	EventEmitter.prototype.once = function(type, listener) {
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  var fired = false;
+
+	  function g() {
+	    this.removeListener(type, g);
+
+	    if (!fired) {
+	      fired = true;
+	      listener.apply(this, arguments);
+	    }
+	  }
+
+	  g.listener = listener;
+	  this.on(type, g);
+
+	  return this;
+	};
+
+	// emits a 'removeListener' event iff the listener was removed
+	EventEmitter.prototype.removeListener = function(type, listener) {
+	  var list, position, length, i;
+
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  if (!this._events || !this._events[type])
+	    return this;
+
+	  list = this._events[type];
+	  length = list.length;
+	  position = -1;
+
+	  if (list === listener ||
+	      (isFunction(list.listener) && list.listener === listener)) {
+	    delete this._events[type];
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+
+	  } else if (isObject(list)) {
+	    for (i = length; i-- > 0;) {
+	      if (list[i] === listener ||
+	          (list[i].listener && list[i].listener === listener)) {
+	        position = i;
+	        break;
+	      }
+	    }
+
+	    if (position < 0)
+	      return this;
+
+	    if (list.length === 1) {
+	      list.length = 0;
+	      delete this._events[type];
+	    } else {
+	      list.splice(position, 1);
+	    }
+
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	  }
+
+	  return this;
+	};
+
+	EventEmitter.prototype.removeAllListeners = function(type) {
+	  var key, listeners;
+
+	  if (!this._events)
+	    return this;
+
+	  // not listening for removeListener, no need to emit
+	  if (!this._events.removeListener) {
+	    if (arguments.length === 0)
+	      this._events = {};
+	    else if (this._events[type])
+	      delete this._events[type];
+	    return this;
+	  }
+
+	  // emit removeListener for all listeners on all events
+	  if (arguments.length === 0) {
+	    for (key in this._events) {
+	      if (key === 'removeListener') continue;
+	      this.removeAllListeners(key);
+	    }
+	    this.removeAllListeners('removeListener');
+	    this._events = {};
+	    return this;
+	  }
+
+	  listeners = this._events[type];
+
+	  if (isFunction(listeners)) {
+	    this.removeListener(type, listeners);
+	  } else if (listeners) {
+	    // LIFO order
+	    while (listeners.length)
+	      this.removeListener(type, listeners[listeners.length - 1]);
+	  }
+	  delete this._events[type];
+
+	  return this;
+	};
+
+	EventEmitter.prototype.listeners = function(type) {
+	  var ret;
+	  if (!this._events || !this._events[type])
+	    ret = [];
+	  else if (isFunction(this._events[type]))
+	    ret = [this._events[type]];
+	  else
+	    ret = this._events[type].slice();
+	  return ret;
+	};
+
+	EventEmitter.prototype.listenerCount = function(type) {
+	  if (this._events) {
+	    var evlistener = this._events[type];
+
+	    if (isFunction(evlistener))
+	      return 1;
+	    else if (evlistener)
+	      return evlistener.length;
+	  }
+	  return 0;
+	};
+
+	EventEmitter.listenerCount = function(emitter, type) {
+	  return emitter.listenerCount(type);
+	};
+
+	function isFunction(arg) {
+	  return typeof arg === 'function';
+	}
+
+	function isNumber(arg) {
+	  return typeof arg === 'number';
+	}
+
+	function isObject(arg) {
+	  return typeof arg === 'object' && arg !== null;
+	}
+
+	function isUndefined(arg) {
+	  return arg === void 0;
+	}
+
 
 /***/ },
 /* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(422);
-	var MenuConstants = __webpack_require__(426);
+	var ProductConstants = __webpack_require__(426);
+	var ProductAPI = __webpack_require__(430);
 
-	var MenuServerActions = {
-	    receiveMenuData: function (response) {
+	var ProductActions = {
+	    getProductData: function (menu_id) {
+	        AppDispatcher.handleViewAction({
+	            actionType: ProductConstants.PRODUCT_GET_DATA
+	        });
+
+	        ProductAPI.get(menu_id);
+	    },
+	    send: function (product) {
+	        AppDispatcher.dispatch({
+	            actionType: ProductConstants.PRODUCT_GET_DATA,
+	            product: product
+	        });
+	    }
+	};
+
+	module.exports = ProductActions;
+
+/***/ },
+/* 430 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ProductServerActions = __webpack_require__(431);
+	var request = __webpack_require__(432);
+
+	module.exports = {
+	  get: function (menu_id) {
+	    request.get('/api/menus/' + menu_id + '/products.json').set('Accept', 'application/json').end(function (err, response) {
+	      if (err) return console.error(err);
+
+	      ProductServerActions.receiveProductData(response.body);
+	    });
+	  }
+	};
+
+/***/ },
+/* 431 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(422);
+	var ProductConstants = __webpack_require__(426);
+
+	var ProductServerActions = {
+	    receiveProductData: function (response) {
 	        AppDispatcher.handleServerAction({
-	            actionType: MenuConstants.MENU_GET_DATA_RESPONSE,
+	            actionType: ProductConstants.PRODUCT_GET_DATA_RESPONSE,
 	            response: response
 	        });
 	    }
 	};
 
-	module.exports = MenuServerActions;
+	module.exports = ProductServerActions;
 
 /***/ },
-/* 430 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 
-	var Emitter = __webpack_require__(431);
-	var reduce = __webpack_require__(432);
-	var requestBase = __webpack_require__(433);
-	var isObject = __webpack_require__(434);
+	var Emitter = __webpack_require__(433);
+	var reduce = __webpack_require__(434);
+	var requestBase = __webpack_require__(435);
+	var isObject = __webpack_require__(436);
 
 	/**
 	 * Root reference for iframes.
@@ -47806,7 +48470,7 @@
 	 * Expose `request`.
 	 */
 
-	var request = module.exports = __webpack_require__(435).bind(null, Request);
+	var request = module.exports = __webpack_require__(437).bind(null, Request);
 
 	/**
 	 * Determine XHR.
@@ -48830,7 +49494,7 @@
 
 
 /***/ },
-/* 431 */
+/* 433 */
 /***/ function(module, exports) {
 
 	
@@ -48997,7 +49661,7 @@
 
 
 /***/ },
-/* 432 */
+/* 434 */
 /***/ function(module, exports) {
 
 	
@@ -49026,13 +49690,13 @@
 	};
 
 /***/ },
-/* 433 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module of mixed-in functions shared between node and client code
 	 */
-	var isObject = __webpack_require__(434);
+	var isObject = __webpack_require__(436);
 
 	/**
 	 * Clear previous timeout.
@@ -49198,7 +49862,7 @@
 
 
 /***/ },
-/* 434 */
+/* 436 */
 /***/ function(module, exports) {
 
 	/**
@@ -49217,7 +49881,7 @@
 
 
 /***/ },
-/* 435 */
+/* 437 */
 /***/ function(module, exports) {
 
 	// The node and browser modules expose versions of this with the
@@ -49255,14 +49919,164 @@
 
 
 /***/ },
-/* 436 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assign = __webpack_require__(437);
+	var AppDispatcher = __webpack_require__(422);
+	var MenuConstants = __webpack_require__(439);
+	var MenuAPI = __webpack_require__(440);
+
+	var MenuActions = {
+	  getMenuData: function () {
+	    MenuAPI.getMenuData();
+	    /* AppDispatcher.handleViewAction({
+	     *     actionType: MenuConstants.MENU_GET_DATA,
+	     * });
+	     */
+	  }
+	};
+
+	/* send: function(menu) {
+	 *     AppDispatcher.dispatch({
+	 *         actionType: MenuConstants.MENU_GET_DATA,
+	 *         menu: menu,
+	 *     });
+	 * },*/
+	/* order: function(menu, product) {
+	 *     AppDispatcher.dispatch({
+	 *         actionType: MenuConstants.MENU_ORDER,
+	 *         menu: menu,
+	 *         product: product,
+	 *     });
+	 * },
+	 * cancel: function(menu, product) {
+	 *     AppDispatcher.dispatch({
+	 *         actionType: MenuConstants.MENU_CANCEL,
+	 *         menu: menu,
+	 *         product: product,
+	 *     });
+	 * },*/
+	module.exports = MenuActions;
+
+/***/ },
+/* 439 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var keyMirror = __webpack_require__(427);
+
+	module.exports = keyMirror({
+	    MENU_SEND: null,
+	    MENU_GET_DATA: null,
+	    MENU_GET_DATA_RESPONSE: null
+	});
+
+/***/ },
+/* 440 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var API_URL = '/api';
+	var TIMEOUT = 10000;
+
+	var _pendingRequests = {};
 
 	var AppDispatcher = __webpack_require__(422);
-	var MenuConstants = __webpack_require__(426);
-	var EventEmitter = __webpack_require__(438).EventEmitter;
+	var MenuServerActions = __webpack_require__(441);
+	var MenuConstants = __webpack_require__(439);
+	var request = __webpack_require__(432);
+
+	function abortPendingRequests(key) {
+	    if (_pendingRequests[key]) {
+	        _pendingRequests[key]._callback = function () {};
+	        _pendingRequests[key].abort();
+	        _pendingRequests[key] = null;
+	    }
+	}
+
+	function token() {
+	    return $.cookie('csrftoken');
+	}
+
+	function makeUrl(part) {
+	    return API_URL + part;
+	}
+
+	function dispatch(key, response, params) {
+	    /* var payload = {actionType: key, response: response};
+	     * if (params) {
+	     *     payload.queryParams = params;
+	     * }*/
+	    AppDispatcher.handleViewAction({
+	        actionType: MenuConstants.MENU_GET_DATA
+	    });
+	}
+
+	// return successful response, else return request Constants
+	function makeDigestFun(key, params) {
+	    return function (err, res) {
+	        if (err && err.timeout === TIMEOUT) {
+	            dispatch(key, Constants.request.TIMEOUT, params);
+	        } else if (res.status === 400) {
+	            UserActions.logout();
+	        } else if (!res.ok) {
+	            dispatch(key, Constants.request.ERROR, params);
+	        } else {
+	            dispatch(key, res, params);
+	        }
+	    };
+	}
+
+	var MenuAPI = {
+	    getMenuData: function (entityId) {
+	        var url = makeUrl('/menus.json');
+	        var key = null; // Constants.api.GET_ENTITY_DATA;
+	        var params = null; // {entityId: entityId};
+	        abortPendingRequests(key);
+	        dispatch(key, MenuConstants.MENU_GET_DATA, params);
+	        _pendingRequests[key] = get(url).end(makeDigestFun(key, params));
+	    }
+	};
+
+	module.exports = MenuAPI;
+
+	/* module.exports = {
+	 *   get: function() {
+	 *     request.get(makeUrl('menus.json'))
+	 *            .set('Accept', 'application/json')
+	 *            .end(function(err, response) {
+	 *                if (err) return console.error(err);
+	 *
+	 *                MenuServerActions.receiveMenuData(response.body);
+	 *            });
+	 *   }
+	 * };*/
+
+/***/ },
+/* 441 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(422);
+	var MenuConstants = __webpack_require__(439);
+
+	var MenuServerActions = {
+	    receiveMenuData: function (response) {
+	        AppDispatcher.handleServerAction({
+	            actionType: MenuConstants.MENU_GET_DATA_RESPONSE,
+	            response: response
+	        });
+	    }
+	};
+
+	module.exports = MenuServerActions;
+
+/***/ },
+/* 442 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assign = __webpack_require__(421);
+
+	var AppDispatcher = __webpack_require__(422);
+	var MenuConstants = __webpack_require__(439);
+	var EventEmitter = __webpack_require__(428).EventEmitter;
 
 	var _store = {
 	    metaData: {}
@@ -49318,824 +50132,6 @@
 	});
 
 	module.exports = MenuStore;
-
-/***/ },
-/* 437 */
-/***/ function(module, exports) {
-
-	/* eslint-disable no-unused-vars */
-	'use strict';
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-	function toObject(val) {
-		if (val === null || val === undefined) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-
-		return Object(val);
-	}
-
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var to = toObject(target);
-		var symbols;
-
-		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
-
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
-			}
-		}
-
-		return to;
-	};
-
-
-/***/ },
-/* 438 */
-/***/ function(module, exports) {
-
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
-
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
-
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
-
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
-
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
-
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      }
-	      throw TypeError('Uncaught, unspecified "error" event.');
-	    }
-	  }
-
-	  handler = this._events[type];
-
-	  if (isUndefined(handler))
-	    return false;
-
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        args = Array.prototype.slice.call(arguments, 1);
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    args = Array.prototype.slice.call(arguments, 1);
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
-
-	  return true;
-	};
-
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  var fired = false;
-
-	  function g() {
-	    this.removeListener(type, g);
-
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-
-	  g.listener = listener;
-	  this.on(type, g);
-
-	  return this;
-	};
-
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events || !this._events[type])
-	    return this;
-
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-
-	    if (position < 0)
-	      return this;
-
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-
-	  if (!this._events)
-	    return this;
-
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-
-	  listeners = this._events[type];
-
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else if (listeners) {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-
-	  return this;
-	};
-
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-
-	EventEmitter.prototype.listenerCount = function(type) {
-	  if (this._events) {
-	    var evlistener = this._events[type];
-
-	    if (isFunction(evlistener))
-	      return 1;
-	    else if (evlistener)
-	      return evlistener.length;
-	  }
-	  return 0;
-	};
-
-	EventEmitter.listenerCount = function(emitter, type) {
-	  return emitter.listenerCount(type);
-	};
-
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
-
-/***/ },
-/* 439 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Navbar = __webpack_require__(170).Navbar;
-	var Nav = __webpack_require__(170).Nav;
-	var NavItem = __webpack_require__(170).NavItem;
-	var NavDropdown = __webpack_require__(170).NavDropdown;
-	var MenuItem = __webpack_require__(170).MenuItem;
-	var Badge = __webpack_require__(170).Badge;
-
-	var AuthorizationForm = __webpack_require__(440);
-	var NavigationBar = React.createClass({
-	    displayName: 'NavigationBar',
-
-	    render: function () {
-	        return React.createElement(
-	            Navbar,
-	            null,
-	            React.createElement(
-	                Navbar.Header,
-	                null,
-	                React.createElement(
-	                    Navbar.Brand,
-	                    null,
-	                    React.createElement(
-	                        'a',
-	                        { href: '#' },
-	                        'СИЗО ',
-	                        React.createElement(
-	                            'sup',
-	                            null,
-	                            'с тобой до конца'
-	                        )
-	                    )
-	                )
-	            ),
-	            React.createElement(
-	                Nav,
-	                null,
-	                React.createElement(
-	                    NavDropdown,
-	                    { eventKey: 1, title: 'Админские примочки', id: 'basic-nav-dropdown' },
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.6 },
-	                        'Оповещение: Привезли обеды'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.7 },
-	                        'Оповещение: Деньги за обеды'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.8 },
-	                        'Оповещение: Отправка через 10 минут'
-	                    ),
-	                    React.createElement(MenuItem, { divider: true }),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.4 },
-	                        'Загрузить меню на следующую неделю'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.5 },
-	                        'Отправить меню'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.5 },
-	                        'Отправить меню через десять минут'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.5 },
-	                        'Отложить отправку меню на пять минут'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.1 },
-	                        'Закрыть меню'
-	                    ),
-	                    React.createElement(MenuItem, { divider: true }),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.2 },
-	                        'Заказы на сегодня'
-	                    ),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.3 },
-	                        'Неоплаченные заказы (1)'
-	                    ),
-	                    React.createElement(MenuItem, { divider: true }),
-	                    React.createElement(
-	                        MenuItem,
-	                        { eventKey: 1.4 },
-	                        'Поставщики'
-	                    )
-	                ),
-	                React.createElement(
-	                    NavItem,
-	                    { eventKey: 1, href: '#' },
-	                    'Мои заказы'
-	                ),
-	                React.createElement(
-	                    NavItem,
-	                    { eventKey: 1, href: '#' },
-	                    'Чек ',
-	                    React.createElement(
-	                        Badge,
-	                        { className: 'force-nobold' },
-	                        '200 ₽'
-	                    )
-	                )
-	            ),
-	            React.createElement(AuthorizationForm, { source: '/auth/current_user' })
-	        );
-	    }
-	});
-
-	module.exports = NavigationBar;
-
-/***/ },
-/* 440 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(415);
-
-	var Navbar = __webpack_require__(170).Navbar;
-	var Nav = __webpack_require__(170).Nav;
-	var NavItem = __webpack_require__(170).NavItem;
-	var Button = __webpack_require__(170).Button;
-	var Input = __webpack_require__(170).Input;
-	var AuthorizationForm = React.createClass({
-	    displayName: 'AuthorizationForm',
-
-	    getInitialState: function () {
-	        state = {
-	            authorized: false,
-	            fullname: ''
-	        };
-
-	        return state;
-	    },
-	    setUnauthorizedState: function () {
-	        this.setState({
-	            fullname: '',
-	            authorized: false
-	        });
-	    },
-	    componentDidMount: function () {
-	        this.serverRequest = $.get(this.props.source, function (result) {
-	            if (result.unauthorized) {
-	                this.setUnauthorizedState();
-	            } else {
-	                this.setState({
-	                    fullname: result.first_name + ' ' + result.last_name,
-	                    authorized: true
-	                });
-	            }
-	        }.bind(this)).fail(function () {
-	            this.setUnauthorizedState();
-	        }.bind(this));
-	    },
-	    login: function () {
-	        $.ajax({
-	            type: "POST",
-	            dataType: 'json',
-	            url: '/auth/login/',
-	            data: {
-	                username: this.state.username,
-	                password: this.state.password,
-	                csrfmiddlewaretoken: $.cookie('csrftoken')
-	            },
-	            success: function (data) {
-	                this.setState({
-	                    username: '',
-	                    password: '',
-	                    authorized: true,
-	                    fullname: data.fullname,
-	                    passwordValidationState: undefined
-	                });
-	            }.bind(this),
-	            error: function (xhr, status, err) {
-	                this.setState({
-	                    username: this.state.username,
-	                    password: this.state.password,
-	                    authorized: false,
-	                    passwordValidationState: 'error'
-	                });
-	            }.bind(this)
-	        });
-	    },
-	    logout: function (e) {
-	        $.ajax({
-	            type: "POST",
-	            dataType: 'json',
-	            url: '/auth/logout/',
-	            data: {
-	                csrfmiddlewaretoken: $.cookie('csrftoken')
-	            },
-	            success: function (data) {
-	                this.setUnauthorizedState();
-	            }.bind(this),
-	            error: function (xhr, status, err) {
-	                console.log('error on exit');
-	            }.bind(this)
-	        });
-	    },
-	    updateUsername: function (event) {
-	        this.state.username = event.target.value;
-	    },
-	    updatePassword: function (event) {
-	        this.state.password = event.target.value;
-	    },
-	    maybeSendForm: function (event) {
-	        if (event.key == 'Enter') {
-	            this.login();
-	        }
-	    },
-	    render: function () {
-	        if (this.state.authorized) {
-	            return React.createElement(
-	                Navbar.Collapse,
-	                null,
-	                React.createElement(
-	                    Navbar.Form,
-	                    { pullRight: true },
-	                    React.createElement(
-	                        Button,
-	                        { onClick: this.logout,
-	                            type: 'button',
-	                            bsStyle: 'danger',
-	                            bsSize: 'small' },
-	                        'Выход'
-	                    )
-	                ),
-	                React.createElement(
-	                    Navbar.Text,
-	                    { pullRight: true },
-	                    'Добро пожаловать, ',
-	                    React.createElement(
-	                        Navbar.Link,
-	                        { href: '#' },
-	                        this.state.fullname
-	                    )
-	                )
-	            );
-	        } else {
-	            return React.createElement(
-	                Navbar.Form,
-	                { pullRight: true },
-	                React.createElement(Input, { ref: 'username',
-	                    type: 'text',
-	                    bsSize: 'small',
-	                    placeholder: 'Имя пользователя',
-	                    defaultValue: this.state.username,
-	                    onChange: this.updateUsername,
-	                    autoFocus: 'True',
-	                    onKeyDown: this.maybeSendForm }),
-	                ' ',
-	                React.createElement(Input, { ref: 'password',
-	                    type: 'password',
-	                    bsStyle: this.state.passwordValidationState,
-	                    bsSize: 'small',
-	                    placeholder: 'Пароль',
-	                    defaultValue: this.state.password,
-	                    onChange: this.updatePassword,
-	                    onKeyDown: this.maybeSendForm }),
-	                ' ',
-	                React.createElement(
-	                    Button,
-	                    { onClick: this.login,
-	                        type: 'button',
-	                        bsStyle: 'success',
-	                        bsSize: 'small' },
-	                    'Вход'
-	                )
-	            );
-	        }
-	    }
-	});
-
-	module.exports = AuthorizationForm;
-
-/***/ },
-/* 441 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ProductStore = __webpack_require__(442);
-	var ProductActions = __webpack_require__(444);
-
-	var ProductList = React.createClass({
-	    displayName: 'ProductList',
-
-	    getProductDataIfNeeded: function (props) {
-	        var meta = ProductStore.getState().metaData;
-
-	        if (props.activeMenu && props.activeMenu !== meta.activeMenu) {
-	            ProductActions.getProductData(props.activeMenu);
-	        }
-	    },
-	    getInitialState: function () {
-	        return ProductStore.getState();
-	    },
-	    componentWillMount: function () {
-	        this.getProductDataIfNeeded(this.props);
-	    },
-	    componentDidMount: function () {
-	        ProductStore.addChangeListener(this._onChange);
-	    },
-	    componentWillReceiveProps: function (nextProps) {
-	        this.getProductDataIfNeeded(nextProps);
-	    },
-	    componentWillUnmount: function () {
-	        this.serverRequest.abort();
-	        ProductStore.removeChangeListener(this._onChange);
-	    },
-	    render: function () {
-	        return React.createElement(
-	            'div',
-	            { className: 'productList' },
-	            'Product list is here'
-	        );
-	    },
-	    _onChange: function () {
-	        this.setState(ProductStore.getState());
-	    }
-	});
-
-	module.exports = ProductList;
-
-/***/ },
-/* 442 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var assign = __webpack_require__(437);
-
-	var AppDispatcher = __webpack_require__(422);
-	var ProductConstants = __webpack_require__(443);
-	var EventEmitter = __webpack_require__(438).EventEmitter;
-
-	var _store = {
-	    metaData: {
-	        categories: [{
-	            name: ''
-	        }],
-	        products: [{
-	            id: 0,
-	            cost: 0,
-	            name: '',
-	            category: 0
-	        }]
-	    }
-	};
-
-	var ProductStore = assign({}, EventEmitter.prototype, {
-	    CHANGE_EVENT: 'change',
-
-	    getState: function () {
-	        return _store;
-	    },
-
-	    emitChange: function () {
-	        this.emit(this.CHANGE_EVENT);
-	    },
-
-	    addChangeListener: function (callback) {
-	        this.on(this.CHANGE_EVENT, callback);
-	    },
-
-	    removeChangeListener: function (callback) {
-	        this.removeListener(this.CHANGE_EVENT, callback);
-	    }
-	});
-
-	// Register callback to handle all updates
-	AppDispatcher.register(function (payload) {
-	    var action = payload.action;
-
-	    switch (action.actionType) {
-	        case ProductConstants.PRODUCT_GET_DATA_RESPONSE:
-	            var response = action.response;
-	            _store.metaData = response;
-	            ProductStore.emitChange();
-	            break;
-
-	        default:
-	        // no op
-	    }
-	});
-
-	module.exports = ProductStore;
-
-/***/ },
-/* 443 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var keyMirror = __webpack_require__(427);
-
-	module.exports = keyMirror({
-	    PRODUCT_GET_DATA_RESPONSE: null,
-	    PRODUCT_GET_DATA: null
-	});
-
-/***/ },
-/* 444 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(422);
-	var ProductConstants = __webpack_require__(443);
-	var ProductAPI = __webpack_require__(445);
-
-	var ProductActions = {
-	    getProductData: function (menu_id) {
-	        AppDispatcher.handleViewAction({
-	            actionType: ProductConstants.PRODUCT_GET_DATA
-	        });
-
-	        ProductAPI.get(menu_id);
-	    },
-	    send: function (product) {
-	        AppDispatcher.dispatch({
-	            actionType: ProductConstants.PRODUCT_GET_DATA,
-	            product: product
-	        });
-	    }
-	};
-
-	module.exports = ProductActions;
-
-/***/ },
-/* 445 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ProductServerActions = __webpack_require__(446);
-	var request = __webpack_require__(430);
-
-	module.exports = {
-	  get: function (menu_id) {
-	    request.get('/api/menus/' + menu_id + '/products.json').set('Accept', 'application/json').end(function (err, response) {
-	      if (err) return console.error(err);
-
-	      ProductServerActions.receiveProductData(response.body);
-	    });
-	  }
-	};
-
-/***/ },
-/* 446 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(422);
-	var ProductConstants = __webpack_require__(443);
-
-	var ProductServerActions = {
-	    receiveProductData: function (response) {
-	        AppDispatcher.handleServerAction({
-	            actionType: ProductConstants.PRODUCT_GET_DATA_RESPONSE,
-	            response: response
-	        });
-	    }
-	};
-
-	module.exports = ProductServerActions;
 
 /***/ }
 /******/ ]);

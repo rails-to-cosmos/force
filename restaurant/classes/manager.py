@@ -1,5 +1,5 @@
 import xlrd
-from menu.classes.sheet import Sheet
+from sheet import Sheet
 
 
 class MenuManager(object):

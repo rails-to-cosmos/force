@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'webpack_loader',
 
-    'menu',
+    'restaurant',
     'providers',
 ]
 

@@ -44,7 +44,7 @@ module.exports = {
     ],
   },
   resolve: {
-    modulesDirectories: ['node_modules', 'menu/static/css'],
+    modulesDirectories: ['node_modules', 'restaurant/static/css'],
     extensions: ['', '.js', '.jsx']
   }
 }

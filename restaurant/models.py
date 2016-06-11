@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 
 import mmh3
@@ -14,7 +12,7 @@ class Category(models.Model):
     order = models.IntegerField(default=0)
 
     def __repr__(self):
-        return '<Category: {name}>'.format(name=self.name.encode('utf-8'))
+        return self.name
 
     def __unicode__(self):
         return self.name
