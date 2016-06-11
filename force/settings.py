@@ -167,7 +167,6 @@ USE_TZ = True
 
 
 # Parse database configuration from $DATABASE_URL
-os.environ['DATABASE_URL'] = 'postgres://akatovda:qwadzv@localhost:5432/force'
 DATABASES['default'] = dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
