@@ -5,11 +5,17 @@ import mmh3
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.db.models import Max
 
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    order = models.IntegerField(default=0)
+
+    def max_order():
+        mo = Category.objects.values('order').aggregate(Max('order')).get('order__max') or 0
+        return mo + 10
+
+    order = models.IntegerField(default=max_order)
 
     def __repr__(self):
         return self.name

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import re
 
 from django.utils import timezone
@@ -55,12 +56,12 @@ class Sheet(object):
 
     def cleanup_category(self, category):
         replacements = {
-            u'ПЕРВЫЕ БЛЮДА': u'Первые блюда',
-            u'ВТОРЫЕ БЛЮДА': u'Вторые блюда',
-            u'САЛАТЫ ЗАПРАВЛЕННЫЕ  И ЗАКУСКИ': u'Салаты заправленные и закуски',
-            u'САЛАТЫ НЕ ЗАПРАВЛЕННЫЕ': u'Салаты незаправленные',
-            u'ЗАПРАВКИ К САЛАТАМ И СОУСЫ': u'Заправки к салатам и соуса',
-            u'ПИРОЖНОЕ': u'Пирожные',
+            'ПЕРВЫЕ БЛЮДА': 'Первые блюда',
+            'ВТОРЫЕ БЛЮДА': 'Вторые блюда',
+            'САЛАТЫ ЗАПРАВЛЕННЫЕ  И ЗАКУСКИ': 'Салаты заправленные и закуски',
+            'САЛАТЫ НЕ ЗАПРАВЛЕННЫЕ': 'Салаты незаправленные',
+            'ЗАПРАВКИ К САЛАТАМ И СОУСЫ': 'Заправки к салатам и соусы',
+            'ПИРОЖНОЕ': 'Пирожные',
         }
         for was, then in replacements.iteritems():
             category = re.sub(was, then, category)
@@ -73,31 +74,31 @@ class Sheet(object):
         counter = 0
         text = list(text)
         for i, c in enumerate(text):
-            if (c == u'"'):
+            if (c == '"'):
                 counter += 1
                 if (counter % 2 == 1):
-                    text[i] = u'«'
+                    text[i] = '«'
                 else:
-                    text[i] = u'»'
+                    text[i] = '»'
         return ''.join(text)
 
     def cleanup_product_name(self, product_name):
         clean_product_name = product_name
 
         replacements = {
-            ur'\.': u'',
-            ur',(\W)': u', \\1',
-            ur'[,. ]+$': u'',
-            ur'[ ]+': u' ',
-            u'Шоколад «Аленка» с начинкой Вареная сгущенка': u'Шоколад «Алёнка» с варёной сгущёнкой',
-            u'Щи Щавелевые с яйцом': u'Щи щавелевые с яйцом',
-            u'Печень Куриная с жареным луком в сливочном соусе': u'Печень куриная с жареным луком в сливочном соусе',
-            u'Лапша Грибная домашняя': u'Лапша грибная домашняя',
-            u'Суп Фасолевый с говядиной': u'Суп фасолевый с говядиной',
-            u'Борщ «Украинский» с курицей': u'Борщ украинский с курицей',
-            u'Суп Рыбный': u'Суп рыбный',
-            u'ПАСТА Таглиателли с курицей в сырном соусе': u'Паста тальятелле с курицей в сырном соусе',
-            u'Лапша пшеничная удон с курицей, бульоном и яйцом': u'Лапша пшеничная удон (курица, бульон и яйцо)',
+            r'\.': '',
+            r',(\W)': ', \\1',
+            r'[,. ]+$': '',
+            r'[ ]+': ' ',
+            'Шоколад «Аленка» с начинкой Вареная сгущенка': 'Шоколад «Алёнка» с варёной сгущёнкой',
+            'Щи Щавелевые с яйцом': 'Щи щавелевые с яйцом',
+            'Печень Куриная с жареным луком в сливочном соусе': 'Печень куриная с жареным луком в сливочном соусе',
+            'Лапша Грибная домашняя': 'Лапша грибная домашняя',
+            'Суп Фасолевый с говядиной': 'Суп фасолевый с говядиной',
+            'Борщ «Украинский» с курицей': 'Борщ украинский с курицей',
+            'Суп Рыбный': 'Суп рыбный',
+            'ПАСТА Таглиателли с курицей в сырном соусе': 'Паста тальятелле с курицей в сырном соусе',
+            'Лапша пшеничная удон с курицей, бульоном и яйцом': 'Лапша пшеничная удон (курица, бульон и яйцо)',
         }
 
         for was, then in replacements.iteritems():
@@ -109,33 +110,33 @@ class Sheet(object):
         product_name = self.parse_product_name(row)
         weight = unicode(row[2].value).replace('.0', '').strip('-')
         if weight:
-            weight = weight + u' \u0433'
+            weight = weight + ' \u0433'
         else:
             parsing_attempts = [
                 {
                     'name': 'grams',
                     'result': re.findall(ur'([0-9,]+)(\W?\u0433\u0440)', product_name),
-                    'extension': u' \u0433'
+                    'extension': ' \u0433'
                 },
                 {
                     'name': 'things',
                     'result': re.findall(ur'(\d+)(\W?\u0448\u0442)', product_name),
-                    'extension': u' \u0448\u0442'
+                    'extension': ' \u0448\u0442'
                 },
                 {
                     'name': 'flinders',
                     'result': re.findall(ur'(\d+)(\W?\u043a)', product_name),
-                    'extension': u' \u043a'
+                    'extension': ' \u043a'
                 },
                 {
                     'name': 'liters',
                     'result': re.findall(ur'([0-9,]+)(\W?\u043b)', product_name),
-                    'extension': u' \u043b'
+                    'extension': ' \u043b'
                 },
                 {
                     'name': 'milliliters',
                     'result': re.findall(ur'([0-9,]+)(\W?\u043c\u043b)', product_name),
-                    'extension': u' \u043c\u043b'
+                    'extension': ' \u043c\u043b'
                 }
             ]
 
@@ -148,11 +149,11 @@ class Sheet(object):
                     if parsing_attempt.get('name') == 'grams':
                         pieces = re.findall(ur'\u043f\u043e\W*\d+\W*\u043f', product_name)
                         if pieces:
-                            piece_part = u' (' + pieces.pop() + u')'
+                            piece_part = ' (' + pieces.pop() + ')'
                             weight = weight + piece_part
                             product_name = product_name.replace(piece_part, '')
 
-        weight = re.sub(u'(\w)(\u0448\u0442)', '\\1 \\2', weight)
+        weight = re.sub('(\w)(\u0448\u0442)', '\\1 \\2', weight)
         return (product_name, weight)
 
     def parse_product_compound(self, product_name):

@@ -1,10 +1,10 @@
 from django.db import connection
 from django.core.management.base import BaseCommand, CommandError
-from menu.models import Product, Category, Menu, XLStructure, Order
+from ...models import Product, Category, Menu, XLStructure, Order
 
 
 class Command(BaseCommand):
-    help = 'Truncates menu tables'
+    help = 'Truncate menu tables.'
 
     def handle(self, *args, **options):
         cursor = connection.cursor()
