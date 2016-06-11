@@ -3,8 +3,12 @@ from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.response import Response
 
 from ..serializers.menu import MenuSerializer
+from ..serializers.category import CategorySerializer
 from ..serializers.product import ProductSerializer
-from ..utils import user_wants_actual_menu, get_actual_menu
+
+from ..utils import (user_wants_actual_menu,
+                     user_filter_by_category,
+                     get_actual_menu)
 from ..models import Category, Product
 
 
@@ -15,11 +19,24 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         menu = None
+        category = None
+
+        if user_filter_by_category:
+            category_id = int(request.GET.get('category'))
+            category = Category.objects.filter(id=category_id).first()
+
         if user_wants_actual_menu(request):
             menu = get_actual_menu()
-            queryset = Product.objects.filter(menu=menu)
+            if category:
+                queryset = Product.objects.filter(menu=menu,
+                                                  category=category)
+            else:
+                queryset = Product.objects.filter(menu=menu)
         else:
-            queryset = Product.objects.all()
+            if category:
+                queryset = Product.objects.filter(category=category)
+            else:
+                queryset = Product.objects.all()
 
         serializer = ProductSerializer(
             queryset,
@@ -42,7 +59,6 @@ class ProductViewSet(viewsets.ModelViewSet):
                         if category.id == category_id:
                             category_cache[category_id] = category.name
                             break
-
                 category_name = category_cache.get(category_id)
                 if category_name not in response:
                     response[category_name] = []
@@ -50,11 +66,25 @@ class ProductViewSet(viewsets.ModelViewSet):
         else:
             response = products
 
+        response_extended = False
+
+        def extend_response(response, key, addition, extended=False):
+            result = response if extended else {'products': response}
+            result[key] = addition
+            return result, True
+
         if menu:
             menu_serialized = MenuSerializer(menu).data
-            response = {
-                'products': response
-            }
-            response['menu'] = menu_serialized
+            response, response_extended = extend_response(response,
+                                                          'menu',
+                                                          menu_serialized,
+                                                          response_extended)
+
+        if category:
+            category_serialized = CategorySerializer(category).data
+            response, response_extended = extend_response(response,
+                                                          'category',
+                                                          category_serialized,
+                                                          response_extended)
 
         return Response(response)
