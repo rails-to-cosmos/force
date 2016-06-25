@@ -61,3 +61,4 @@ uploads/*
 node_modules
 static/uploads
 .static
+media

@@ -1,26 +1,28 @@
 from __future__ import unicode_literals
 
+import os.path
+import time
+
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.core.files import File
 
 from rest_framework import status
 
-from models import Menu
-from models import Category
-from models import Product
-from models import XLStructure
+from models import Menu, Category, Product, XLStructure, Attachment
 
 from classes.manager import MenuManager
 from classes.downloader import download_menu_files
 
 
-def load_menu_from_file(menu_file):
+def load_menu_from_file(menu_file, attachment):
     manager = MenuManager()
     manager.add_menus_from_file(menu_file)
 
     menus = manager.menus
     for date, products_json in menus.iteritems():
-        menu, menu_created = Menu.objects.get_or_create(date=date)
+        menu, menu_created = Menu.objects.get_or_create(date=date,
+                                                        attachment=attachment)
 
         products = []
         for product_json in products_json:
@@ -58,10 +60,14 @@ def load_menu_from_file(menu_file):
 def fetch_menu():
     # get provider, provider->get_fresh_menus
     menu_files = download_menu_files()
-    for menu_file in menu_files:
-        load_menu_from_file(menu_file)
 
-    # TODO extend return
+    for menu_file in menu_files:
+        with open(menu_file, 'r') as mf:
+            fs = Attachment(path=File(mf))
+            fs.save()
+            load_menu_from_file(menu_file, fs)
+
+    # TODO verbose output
     return True
 
 
@@ -80,4 +86,5 @@ def load_menu(request):
         })
         response.status_code = status.HTTP_200_OK
 
+    # TODO verbose output
     return response

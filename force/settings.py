@@ -85,6 +85,8 @@ STATIC_ROOT = normpath(join(BASE_DIR, 'static/build'))
 STATICFILES_DIRS = (
     'static',
 )
+MEDIA_URL = '/media/'
+MEDIA_ROOT = normpath(join(BASE_DIR, 'media/'))
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',

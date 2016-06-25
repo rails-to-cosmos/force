@@ -1,3 +1,5 @@
+# TODO Move all to provider's settings
+
 import os
 import urllib
 
@@ -8,7 +10,7 @@ from django.utils import timezone
 
 
 def download_menu_files():
-    menu_files = list()
+    menu_files = []
     site_url = "http://hleb-sol.biz"
 
     wpp = WebPageProcessor()
@@ -30,8 +32,10 @@ def download_menu_files():
     for lind, link in enumerate(links):
         rel_url = link.get('link')
         abs_url = site_url + rel_url
-        upload_dir = 'static/uploads/'  # TODO move to settings
-        os.path.exists(upload_dir) or os.makedirs(upload_dir)
+        upload_dir = '/tmp/force/'
+        if not os.path.exists(upload_dir):
+            os.makedirs(upload_dir)
+
         filename = u'{dt}-{di}.xls'.format(dt=unicode(timezone.now()),
                                            di=lind)
         urllib.urlretrieve(abs_url, upload_dir+filename)

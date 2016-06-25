@@ -8,12 +8,13 @@ from django.utils import timezone
 from django.db.models import Max
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+def max_order():
+    mo = Category.objects.values('order').aggregate(Max('order')).get('order__max') or 0
+    return mo + 10
 
-    def max_order():
-        mo = Category.objects.values('order').aggregate(Max('order')).get('order__max') or 0
-        return mo + 10
+
+class Category(models.Model):
+    name = models.CharField(max_length=512, unique=True)
 
     order = models.IntegerField(default=max_order)
 
@@ -56,9 +57,21 @@ class Product(models.Model):
                          weight.encode('utf-8'))
 
 
+class Attachment(models.Model):
+    path = models.FileField(upload_to='uploads',
+                            blank=False,
+                            max_length=1024)
+    # title = models.CharField(max_length=255, blank=False)
+    upload_date = models.DateField(default=timezone.now)
+
+    def __unicode__(self):
+        return self.upload_date.strftime('%d.%m.%Y')
+
+
 class Menu(models.Model):
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateField(default=timezone.now)
     products = models.ManyToManyField(Product)
+    attachment = models.ForeignKey(Attachment)
 
     def __unicode__(self):
         return self.date.strftime('%d.%m.%Y')
