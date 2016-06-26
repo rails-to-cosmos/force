@@ -36,7 +36,7 @@ class Product(models.Model):
     cost = models.PositiveIntegerField(default=0)
     name = models.CharField(max_length=255)
     popularity = models.PositiveIntegerField(default=0, blank=True)
-    added = models.DateTimeField(default=timezone.now)
+    added = models.DateField(default=timezone.now)
     hash = models.CharField(max_length=255, unique=True)
     description = models.CharField(max_length=1024, default='', blank=True)
     tags = models.CharField(max_length=1024, blank=True)
@@ -78,6 +78,10 @@ class Menu(models.Model):
 
     def date_fmt(self):
         return self.date.strftime('%d.%m.%Y')
+
+    @classmethod
+    def get_current_menu(cls):
+        return cls.objects.filter(date__gt=timezone.now()).order_by('date').first()
 
 
 class XLStructure(models.Model):

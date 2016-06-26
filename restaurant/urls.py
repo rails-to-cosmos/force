@@ -4,5 +4,6 @@ from django.conf.urls import url
 
 
 urlpatterns = [
-    url(r'^load/', views.load_menu),
+    url(r'^menu/load', views.load_menu),
+    url(r'^menu/get', views.get_menu),
 ]

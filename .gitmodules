@@ -1,0 +1,3 @@
+[submodule "cyrdp"]
+	path = cyrdp
+	url = https://github.com/rails-to-cosmos/cyrillic-date-parser
