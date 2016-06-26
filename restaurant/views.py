@@ -106,7 +106,11 @@ def load_menu(request):
 @login_required
 def get_menu(request):
     menu = Menu.get_current_menu()
-    contents = menu.attachment.path.read()
+
+    try:
+        contents = menu.attachment.path.read()
+    except IOError:
+        raise
 
     tmp_filename = '/tmp/tmp.xls'
     tmp_xls = open(tmp_filename, 'w')

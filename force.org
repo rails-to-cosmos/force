@@ -1,5 +1,6 @@
 - https://tech.blog.aknin.name/2011/01/31/introducing-django-ajaxerrors/
 
+
 * Features
 ** API
 *** TODO Menu
@@ -70,6 +71,7 @@ CLOCK: [2016-03-22 Tue 22:25]--[2016-03-22 Tue 23:06] =>  0:41
 - Что ты тут ищешь?
 ** [[https://developers.google.com/web/fundamentals/getting-started/push-notifications/?hl%3Den][Notifications]]
 * Deploy
+** [[https://devcenter.heroku.com/articles/s3][S3 on Heroku]]
 ** heroku config:add BUILDPACK_URL=git://github.com/jiaaro/heroku-buildpack-django.git
 * Menu designs
 ** http://www.wired.co.uk/magazine/archive/2010/04/start/the-hidden-psychology-of-menu-design
