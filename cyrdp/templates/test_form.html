@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <style>
+         a {
+             font-size: 14px;
+             text-decoration: none;
+             border-bottom: 1px solid;
+             color: #008ACE;
+         }
+
+         a:hover {
+             color: #CC0000;
+             border-color: #f0b2b2 !important;
+         }
+
+         .myinput {
+             position: absolute;
+             left: 80px;
+             width: 500px;
+             height: 25px;
+         }
+        </style>
+        <script src="/js/jquery/dist/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>DateParser test form</h1>
+        <form action="/" method="GET">
+            <p>
+                <label for="content">Текст
+                    <input value="{{content}}" id="content" list="history" name="content" class="myinput"/></label>
+                <datalist id="history">
+                  {% for hi in history %}
+                  <option value="{{ hi }}"/>
+                  {% endfor %}
+                </datalist>
+            </p>
+            <p>
+                <label for="pattern">Паттерн</label>
+                <input id="pattern" name="pattern" type="text" value="{{pattern}}" class="myinput" list="patterns"/>
+            </p>
+            <input type="submit" value="Submit"/>
+            <input id="copyPatternButton" type="button" value="Copy date_format"/>
+        </form>
+        {% if result %}
+        {{ result }}
+        {% endif %}
+        <div style="width: 200px; border-top: 1px solid lightgray; margin-top: 5px;"></div>
+        <script>document.getElementById('content').focus(); document.getElementById('content').select();</script>
+        <script>
+            $('#copyPatternButton').on('click', function() {
+                var pattern = $('#pattern').val();
+                var escaped_pattern = pattern.replace(/\\/g,"\\\\");
+                var text = '"date_format": "' + escaped_pattern + '",';
+                window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+            });
+        </script>
+    </body>
+</html>
