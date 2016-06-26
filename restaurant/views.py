@@ -34,8 +34,12 @@ def load_menu_from_file(menu_file, attachment):
 
     menus = manager.menus
     for date, products_json in menus.iteritems():
-        menu, menu_created = Menu.objects.get_or_create(date=date,
-                                                        attachment=attachment)
+        menu, menu_created = Menu.objects.get_or_create(
+            date=date,
+            defaults={
+                'attachment': attachment
+            }
+        )
 
         products = []
         for product_json in products_json:
