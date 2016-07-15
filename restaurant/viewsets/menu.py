@@ -11,7 +11,7 @@ from ..models import Menu
 
 
 class MenuViewSet(viewsets.ModelViewSet):
-    queryset = Menu.objects.filter(date__gte=timezone.now()).order_by('date')
+    queryset = Menu.objects.filter(date__gt=timezone.now()).order_by('date')
     serializer_class = MenuSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly, )
 

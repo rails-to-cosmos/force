@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+
 from builtins import range
 
 from django.http import JsonResponse
@@ -6,11 +7,13 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 
-import mimetypes
 import urllib
-import os
+
+from datetime import datetime
+
 import xlrd
 import xlwt
+
 from xlutils.copy import copy as xlcopy
 
 from rest_framework import status
@@ -116,12 +119,7 @@ def get_menu(request):
     except IOError:
         raise
 
-    tmp_filename = '/tmp/tmp.xls'
-    tmp_xls = open(tmp_filename, 'w')
-    tmp_xls.write(contents)
-    tmp_xls.close()
-
-    read_book = xlrd.open_workbook(tmp_filename, on_demand=True, formatting_info=True)
+    read_book = xlrd.open_workbook(file_contents=contents, on_demand=True, formatting_info=True)
     write_book = xlcopy(read_book)
 
     dp = DateParser()
@@ -161,31 +159,24 @@ def get_menu(request):
         write_sheet.write(ppix.row_in_xls, 5, cost, style=style)
         total += cost
     write_sheet.write(total_row_pos, 5, total, style=total_cell_style)
-    write_book.save(tmp_filename)
 
-    tmp_xls = open(tmp_filename)
-    response = HttpResponse(tmp_xls.read(), content_type='application/vnd.ms-excel')
-    tmp_xls.close()
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    write_book.save(response)
 
-    _type, encoding = mimetypes.guess_type(tmp_filename)
-    if _type is None:
-        _type = 'application/octet-stream'
-    response['Content-Type'] = _type
-    response['Content-Length'] = str(os.stat(tmp_filename).st_size)
-    if encoding is not None:
-        response['Content-Encoding'] = encoding
+    menu_dt = datetime.strptime(menu_date, '%Y-%m-%dT%H:%M:%S')
+    filename = menu_dt.strftime('%d.%m.%Y')
 
     # To inspect details for the below code, see http://greenbytes.de/tech/tc2231/
     if u'WebKit' in request.META['HTTP_USER_AGENT']:
         # Safari 3.0 and Chrome 2.0 accepts UTF-8 encoded string directly.
-        filename_header = 'filename=%s.xls' % menu_date
+        filename_header = 'filename={fn}.xls'.format(fn=filename)
     elif u'MSIE' in request.META['HTTP_USER_AGENT']:
         # IE does not support internationalized filename at all.
         # It can only recognize internationalized URL, so we do the trick via routing rules.
         filename_header = ''
     else:
         # For others like Firefox, we follow RFC2231 (encoding extension in HTTP headers).
-        filename_header = 'filename*=UTF-8\'\'%s' % urllib.quote(menu_date.encode('utf-8'))
+        filename_header = 'filename*=UTF-8\'\'%s' % urllib.quote(filename)
     response['Content-Disposition'] = 'attachment; ' + filename_header
 
     return response
