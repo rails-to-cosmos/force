@@ -83,7 +83,7 @@ def fetch_menu():
 
     for menu_file in menu_files:
         with open(menu_file, 'r') as mf:
-            fs = Attachment(path=File(mf))
+            fs = Attachment(menufile=File(mf))
             fs.save()
             load_menu_from_file(menu_file, fs)
 
@@ -115,7 +115,7 @@ def get_menu(request):
     menu = Menu.get_current_menu()
 
     try:
-        contents = menu.attachment.path.read()
+        contents = menu.attachment.menufile.read()
     except IOError:
         raise
 

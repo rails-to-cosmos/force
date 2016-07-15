@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'webpack_loader',
+    'db_file_storage',
 
     'restaurant',
     'providers',
@@ -64,6 +65,8 @@ REST_FRAMEWORK = {
     ),
     'UNICODE_JSON': False
 }
+
+DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
 
 # LOGIN_REDIRECT_URL = '/'
 
@@ -85,8 +88,8 @@ STATIC_ROOT = normpath(join(BASE_DIR, 'static/build'))
 STATICFILES_DIRS = (
     'static',
 )
-MEDIA_URL = '/media/'
-MEDIA_ROOT = normpath(join(BASE_DIR, 'media/'))
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = normpath(join(BASE_DIR, 'media/'))
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',

@@ -22,7 +22,7 @@
 
 (prodigy-define-service
   :name "Force"
-  :command "~/.virtualenvs/force/bin/python"
+  :command "~/Documents/Stuff/force/env/bin/python"
   :args '("manage.py" "runserver")
   :init (lambda ()
           (prodigy-define-service

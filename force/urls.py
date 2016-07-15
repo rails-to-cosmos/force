@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^auth/', include('authorization.urls')),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^files/', include('db_file_storage.urls')),
 ]

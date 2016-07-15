@@ -24,4 +24,4 @@ class MenuAdmin(admin.ModelAdmin):
 
 @admin.register(Attachment)
 class AttachmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'upload_date', 'path')
+    list_display = ('id', 'upload_date', 'menufile')

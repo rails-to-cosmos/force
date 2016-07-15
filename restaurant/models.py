@@ -57,11 +57,16 @@ class Product(models.Model):
                          weight.encode('utf-8'))
 
 
+class MenuFile(models.Model):
+    bytes = models.TextField()
+    filename = models.CharField(max_length=255)
+    mimetype = models.CharField(max_length=50)
+
+
 class Attachment(models.Model):
-    path = models.FileField(upload_to='uploads',
+    menufile = models.FileField(upload_to='restaurant.MenuFile/bytes/filename/mimetype',
                             blank=False,
                             max_length=1024)
-    # title = models.CharField(max_length=255, blank=False)
     upload_date = models.DateField(default=timezone.now)
 
     def __unicode__(self):
