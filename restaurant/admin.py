@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import Menu, Category, Product, Attachment
+from models import Menu, Category, Product, Attachment, Order
 
 
 @admin.register(Category)
@@ -21,6 +21,12 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
     list_display = ('date_fmt',)
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('product', 'count', 'menu', 'user', 'date')
+
 
 @admin.register(Attachment)
 class AttachmentAdmin(admin.ModelAdmin):

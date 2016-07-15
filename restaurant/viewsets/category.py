@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
@@ -10,7 +10,9 @@ from ..serializers.category import CategorySerializer
 from ..serializers.menu import MenuSerializer
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(mixins.RetrieveModelMixin,
+                      mixins.ListModelMixin,
+                      viewsets.GenericViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly, )

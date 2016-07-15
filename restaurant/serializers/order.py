@@ -7,4 +7,5 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('menu', 'product', 'count', 'date')
+        fields = ('menu', 'product', 'count', 'date', 'user')
+        read_only_fields = ('user', )

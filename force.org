@@ -11,8 +11,7 @@
 ***** TODO Categories must have hash
 ***** TODO Verbose!
 **** TODO Don't show menu after sending
-*** STARTED Orders
-CLOCK: [2016-04-03 Sun 15:11]--[2016-04-03 Sun 21:56] =>  6:45
+*** Orders
 **** DONE List all orders
 CLOSED: [2016-04-03 Sun 22:07]
 - State "DONE"       from "STARTED"    [2016-04-03 Sun 22:07]
@@ -28,9 +27,14 @@ CLOSED: [2016-07-15 Fri 23:42]
 ****** TODO Make check component output actual order cost
 CLOCK: [2016-04-09 Sat 23:45]--[2016-04-10 Sun 00:05] =>  0:20
 ****** TODO Modal
-**** STARTED File uploads on heroku
-SCHEDULED: <2016-07-15 Fri>
-CLOCK: [2016-07-15 Fri 23:44]
+**** DONE File uploads on heroku
+CLOSED: [2016-07-16 Sat 01:04] SCHEDULED: <2016-07-15 Fri>
+- State "DONE"       from "STARTED"    [2016-07-16 Sat 01:04]
+CLOCK: [2016-07-15 Fri 23:44]--[2016-07-16 Sat 01:04] =>  1:20
+**** DONE User in order
+CLOSED: [2016-07-16 Sat 01:32]
+- State "DONE"       from "TODO"       [2016-07-16 Sat 01:32]
+**** TODO Verify product is in menu
 *** TODO Product API
 **** DONE product hash
 CLOSED: [2016-03-22 Tue 23:06]

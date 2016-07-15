@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models import Max
 
+from db_file_storage.model_utils import delete_file, delete_file_if_needed
+
+
 
 def max_order():
     mo = Category.objects.values('order').aggregate(Max('order')).get('order__max') or 0
@@ -68,6 +71,14 @@ class Attachment(models.Model):
                             blank=False,
                             max_length=1024)
     upload_date = models.DateField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        delete_file_if_needed(self, 'menufile')
+        super(Attachment, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        super(Attachment, self).delete(*args, **kwargs)
+        delete_file(self, 'menufile')
 
     def __unicode__(self):
         return self.upload_date.strftime('%d.%m.%Y')

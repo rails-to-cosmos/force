@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.response import Response
 
@@ -13,7 +13,9 @@ from ..utils import (user_wants_actual_menu,
 from ..models import Category, Product
 
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(mixins.RetrieveModelMixin,
+                     mixins.ListModelMixin,
+                     viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly, )
