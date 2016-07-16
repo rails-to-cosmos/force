@@ -3,44 +3,13 @@
 
 * Features
 ** API
-*** TODO Menu
-**** TODO FLUX problems
-***** http://blog.arkency.com/2015/10/loading-all-data-when-starting-flux-spa/
-***** http://stackoverflow.com/questions/23591325/in-flux-architecture-how-do-you-manage-store-lifecycle
-**** TODO Fetching
+*** TODO Fetching
 ***** TODO Categories must have hash
 ***** TODO Verbose!
-**** TODO Don't show menu after sending
-*** Orders
-**** DONE List all orders
-CLOSED: [2016-04-03 Sun 22:07]
-- State "DONE"       from "STARTED"    [2016-04-03 Sun 22:07]
-CLOCK: [2016-04-03 Sun 21:58]--[2016-04-03 Sun 22:07] =>  0:09
-**** DONE API
-CLOSED: [2016-04-09 Sat 20:42]
-- State "DONE"       from "TODO"       [2016-04-09 Sat 20:42]
-**** CANCELLED Front-end
-CLOSED: [2016-07-15 Fri 23:42]
-- State "CANCELLED"  from "TODO"       [2016-07-15 Fri 23:42]
-***** TODO Add order on click
-***** TODO Check
-****** TODO Make check component output actual order cost
-CLOCK: [2016-04-09 Sat 23:45]--[2016-04-10 Sun 00:05] =>  0:20
-****** TODO Modal
-**** DONE File uploads on heroku
-CLOSED: [2016-07-16 Sat 01:04] SCHEDULED: <2016-07-15 Fri>
-- State "DONE"       from "STARTED"    [2016-07-16 Sat 01:04]
-CLOCK: [2016-07-15 Fri 23:44]--[2016-07-16 Sat 01:04] =>  1:20
-**** DONE User in order
-CLOSED: [2016-07-16 Sat 01:32]
-- State "DONE"       from "TODO"       [2016-07-16 Sat 01:32]
-**** TODO Verify product is in menu
+*** TODO Don't show menu after sending
+*** TODO Verify product is in menu
 *** TODO Product API
-**** DONE product hash
-CLOSED: [2016-03-22 Tue 23:06]
-- State "DONE"       from "STARTED"    [2016-03-22 Tue 23:06]
-CLOCK: [2016-03-22 Tue 22:25]--[2016-03-22 Tue 23:06] =>  0:41
-**** TODO product cost history
+*** TODO product cost history
 ** Authentication
 *** TODO [[https://github.com/GetBlimp/django-rest-framework-jwt/tree/master/rest_framework_jwt][Upgrade authentication]]
 *** TODO Bad credentials returns password via GET, fix it

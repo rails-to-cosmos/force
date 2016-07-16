@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'webpack_loader',
     'db_file_storage',
+    'djoser',
 
     'restaurant',
     'providers',
@@ -57,6 +58,7 @@ REST_FRAMEWORK = {
     #     # 'rest_framework.permissions.IsAuthenticated',
     # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
@@ -67,6 +69,30 @@ REST_FRAMEWORK = {
 }
 
 DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
+
+DJOSER = {
+    'DOMAIN': 'aurant.herokuapp.com',
+    'SITE_NAME': 'REST.Aurant',
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
+    'SEND_CONFIRMATION_EMAIL': False,
+    'PASSWORD_VALIDATORS': [],
+    'SERIALIZERS': {
+    'activation': 'djoser.serializers.ActivationSerializer',
+        'login': 'djoser.serializers.LoginSerializer',
+        'password_reset': 'djoser.serializers.PasswordResetSerializer',
+        'password_reset_confirm': 'djoser.serializers.PasswordResetConfirmSerializer',
+        'password_reset_confirm_retype': 'djoser.serializers.PasswordResetConfirmRetypeSerializer',
+        'set_password': 'djoser.serializers.SetPasswordSerializer',
+        'set_password_retype': 'djoser.serializers.SetPasswordRetypeSerializer',
+        'set_username': 'djoser.serializers.SetUsernameSerializer',
+        'set_username_retype': 'djoser.serializers.SetUsernameRetypeSerializer',
+        'user_registration': 'djoser.serializers.UserRegistrationSerializer',
+        'user': 'djoser.serializers.UserSerializer',
+        'token': 'djoser.serializers.TokenSerializer',
+    },
+}
 
 # LOGIN_REDIRECT_URL = '/'
 
