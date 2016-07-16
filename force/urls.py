@@ -28,8 +28,8 @@ urlpatterns = [
     url(r'^rest/', include('restaurant.urls')),
     # url(r'^auth/', include('authorization.urls')),
     url(r'^api/', include(router.urls)),
-    url(r'^authentication/', include('rest_framework.urls')),
-    url(r'^files/', include('db_file_storage.urls')),
+    url(r'^accounts/', include('rest_framework.urls')),
     url(r'^accounts/', include('djoser.urls')),
+    url(r'^files/', include('db_file_storage.urls')),
     # url(r'^tokens/', include('djoser.urls.authtoken')),
 ]
