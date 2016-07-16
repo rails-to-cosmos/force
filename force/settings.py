@@ -63,7 +63,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
-    # 'UNICODE_JSON': False
+    'UNICODE_JSON': False
 }
 
 DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
