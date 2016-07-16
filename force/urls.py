@@ -25,9 +25,9 @@ for viewset in viewsets:
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^admin/', admin.site.urls),
+    url(r'^rest/', include(router.urls)),
     url(r'^rest/', include('restaurant.urls')),
     # url(r'^auth/', include('authorization.urls')),
-    url(r'^api/', include(router.urls)),
     url(r'^accounts/', include('rest_framework.urls')),
     url(r'^accounts/', include('djoser.urls')),
     url(r'^files/', include('db_file_storage.urls')),
