@@ -2,6 +2,9 @@
 ;;; Commentary:
 ;;; Code:
 
+(defun project-buffer-name-by-feature (project-name feature-name)
+  (concatenate 'string "*" project-name "-" feature-name "*"))
+
 (setq force-project-name "force"
       force-project-dir "~/Documents/Stuff/force/"
       force-elconf-buffer (project-buffer-name-by-feature
