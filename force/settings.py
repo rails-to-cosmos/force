@@ -117,6 +117,7 @@ STATICFILES_DIRS = (
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = normpath(join(BASE_DIR, 'media/'))
 
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -199,7 +200,9 @@ USE_TZ = True
 
 
 # Parse database configuration from $DATABASE_URL
-DATABASES['default'] = dj_database_url.config()
+env_conf = dj_database_url.config()
+if env_conf:
+    DATABASES['default'] = env_conf
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -62,3 +62,4 @@ node_modules
 static/uploads
 .static
 media
+/db.sqlite3
